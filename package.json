@@ -1,0 +1,129 @@
+{
+  "name": "cn-model-for-copilot",
+  "displayName": "飞码扣",
+  "description": "为 Copilot 提供稳定高速的中国模型(DeepSeek, 通义千问等)支持，并针对全球顶级模型提供免配置加速。更懂中文，连接更稳。",
+  "version": "0.1.0",
+  "publisher": "feima",
+  "author": {
+    "name": "Feima Technology",
+    "email": "support@feima.tech"
+  },
+  "license": "MIT",
+  "icon": "assets/feima-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/feima-tech/cn-model-for-copilot"
+  },
+  "bugs": {
+    "url": "https://github.com/feima-tech/cn-model-for-copilot/issues"
+  },
+  "homepage": "https://github.com/feima-tech/cn-model-for-copilot#readme",
+  "keywords": [
+    "Copilot",
+    "飞码扣",
+    "Feima",
+    "DeepSeek",
+    "GPT-4o",
+    "Claude",
+    "中文",
+    "加速",
+    "AI",
+    "language-model",
+    "authentication"
+  ],
+  "categories": [
+    "AI",
+    "Programming Languages",
+    "Chat"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "enabledApiProposals": [
+    "chatProvider"
+  ],
+  "extensionDependencies": [
+    "github.copilot-chat"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguageModelChatProvider:feima"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languageModelChatProviders": [
+      {
+        "vendor": "feima",
+        "displayName": "飞码扣 (Feima)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "feima.signIn",
+        "title": "登录",
+        "category": "Feima"
+      },
+      {
+        "command": "feima.signOut",
+        "title": "登出",
+        "category": "Feima"
+      },
+      {
+        "command": "feima.showAccount",
+        "title": "查看账号",
+        "category": "Feima"
+      }
+    ],
+    "configuration": {
+      "title": "飞码扣",
+      "properties": {
+        "feima.showQuotaInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "在状态栏显示剩余请求配额"
+        },
+        "feima.warnWhenQuotaLow": {
+          "type": "number",
+          "default": 50,
+          "description": "当剩余请求少于此数量时显示警告"
+        },
+        "feima.apiEndpoint": {
+          "type": "string",
+          "default": "https://api.feima.tech",
+          "description": "飞码 API 服务端点（仅供调试）"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "build": "tsx .esbuild.ts",
+    "compile": "tsx .esbuild.ts --dev",
+    "watch": "tsx .esbuild.ts --watch --dev",
+    "package": "tsx .esbuild.ts",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/node-fetch": "^2.6.11",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@vscode/test-electron": "^2.3.8",
+    "esbuild": "^0.25.6",
+    "eslint": "^8.56.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.2.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}
