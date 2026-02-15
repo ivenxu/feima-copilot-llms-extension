@@ -40,7 +40,8 @@
     "vscode": "^1.85.0"
   },
   "enabledApiProposals": [
-    "chatProvider"
+    "chatProvider",
+    "inlineCompletionsAdditions"
   ],
   "extensionDependencies": [
     "github.copilot-chat"
@@ -124,6 +125,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "js-tiktoken": "^1.0.12",
     "node-fetch": "^2.7.0"
   }
 }

@@ -33,43 +33,35 @@ export interface IJWTClaims {
 }
 
 /**
- * OAuth2 flow state for PKCE validation
+ * OAuth2 authorization URL with metadata.
  */
-interface IOAuth2FlowState {
-	codeVerifier: string;
-	state: string;
-	nonce?: string;
-	redirectUri: string;
-	startedAt: number;
+export interface IAuthorizationUrl {
+	url: string;
+	nonce: string;          // State/nonce for callback routing
+	codeVerifier: string;   // PKCE code verifier for token exchange
 }
 
 /**
- * Simplified OAuth2 service for authorization code flow with PKCE.
- * No dependency injection - uses fixed configuration.
+ * Stateless OAuth2 service for authorization code flow with PKCE.
+ * No internal state management - all flow state is returned to caller.
+ * Pattern adapted from feima-code OAuth2Service.
  */
 export class OAuth2Service {
-	private _currentFlow: IOAuth2FlowState | undefined;
 
 	/**
-	 * Build authorization URL for OAuth2 flow
+	 * Build authorization URL for OAuth2 flow.
+	 * Returns URL along with nonce and codeVerifier for caller to manage.
+	 * 
+	 * @param redirectUri OAuth2 redirect URI
+	 * @returns Authorization URL with nonce and codeVerifier
 	 */
-	async buildAuthorizationUrl(redirectUri: string): Promise<string> {
+	async buildAuthorizationUrl(redirectUri: string): Promise<IAuthorizationUrl> {
 		// Generate PKCE parameters
 		const codeVerifier = this.generateCodeVerifier();
 		const codeChallenge = await this.generateCodeChallenge(codeVerifier);
 
-		// Generate state and nonce
+		// Generate state (used as nonce for callback routing)
 		const state = this.generateState();
-		const nonce = this.generateNonce();
-
-		// Store flow state
-		this._currentFlow = {
-			codeVerifier,
-			state,
-			nonce,
-			redirectUri,
-			startedAt: Date.now()
-		};
 
 		// Build authorization URL
 		const authUrl = new URL(OAUTH2_ENDPOINTS.authorizationEndpoint);
@@ -80,60 +72,31 @@ export class OAuth2Service {
 		authUrl.searchParams.set('code_challenge', codeChallenge);
 		authUrl.searchParams.set('code_challenge_method', 'S256');
 		authUrl.searchParams.set('scope', FEIMA_CONFIG.scopes.join(' '));
-		authUrl.searchParams.set('nonce', nonce);
 
-		console.log('[OAuth2Service] Authorization URL:', authUrl.toString());
-		return authUrl.toString();
+		return {
+			url: authUrl.toString(),
+			nonce: state,
+			codeVerifier
+		};
 	}
 
-	/**
-	 * Validate callback and extract authorization code
-	 */
-	validateCallback(query: string): { code: string } | { error: string } {
-		const params = new URLSearchParams(query);
 
-		// Check for error
-		const error = params.get('error');
-		if (error) {
-			return { error: params.get('error_description') || error };
-		}
-
-		// Extract code and state
-		const code = params.get('code');
-		const state = params.get('state');
-
-		if (!code || !state) {
-			console.error('[OAuth2Service] Missing code or state');
-			return { error: 'Missing code or state in callback' };
-		}
-
-		// Validate state
-		if (!this._currentFlow || this._currentFlow.state !== state) {
-			return { error: 'Invalid state - possible CSRF attack' };
-		}
-
-		// Check flow expiration (10 minutes)
-		if (Date.now() - this._currentFlow.startedAt > 10 * 60 * 1000) {
-			return { error: 'Authorization flow expired' };
-		}
-
-		return { code };
-	}
 
 	/**
-	 * Exchange authorization code for access token
+	 * Exchange authorization code for access token.
+	 * 
+	 * @param code Authorization code from callback
+	 * @param codeVerifier PKCE code verifier from buildAuthorizationUrl
+	 * @param redirectUri Redirect URI used in authorization request
+	 * @returns Token response with access token, refresh token, etc.
 	 */
-	async exchangeCodeForToken(code: string): Promise<ITokenResponse> {
-		if (!this._currentFlow) {
-			throw new Error('No active OAuth2 flow');
-		}
-
+	async exchangeCodeForToken(code: string, codeVerifier: string, redirectUri: string): Promise<ITokenResponse> {
 		const body = new URLSearchParams();
 		body.append('grant_type', 'authorization_code');
 		body.append('client_id', FEIMA_CONFIG.clientId);
 		body.append('code', code);
-		body.append('redirect_uri', this._currentFlow.redirectUri);
-		body.append('code_verifier', this._currentFlow.codeVerifier);
+		body.append('redirect_uri', redirectUri);
+		body.append('code_verifier', codeVerifier);
 
 		const response = await fetch(OAUTH2_ENDPOINTS.tokenEndpoint, {
 			method: 'POST',
@@ -149,10 +112,7 @@ export class OAuth2Service {
 			throw new Error(`Token exchange failed: ${response.status} ${errorText}`);
 		}
 
-		const tokenResponse: ITokenResponse = await response.json() as ITokenResponse;
-		this._currentFlow = undefined;
-
-		return tokenResponse;
+		return await response.json() as ITokenResponse;
 	}
 
 	/**
@@ -182,7 +142,11 @@ export class OAuth2Service {
 	}
 
 	/**
-	 * Extract user claims from JWT token
+	 * Extract user claims from JWT token.
+	 * Decodes without verification (server already validated).
+	 * 
+	 * @param tokenResponse Token response containing access_token or id_token
+	 * @returns Parsed JWT claims or null if parsing fails
 	 */
 	getUserInfo(tokenResponse: ITokenResponse): IJWTClaims | null {
 		try {
@@ -202,8 +166,8 @@ export class OAuth2Service {
 			const paddedPayload = payload + '='.repeat((4 - payload.length % 4) % 4);
 			const decoded = Buffer.from(paddedPayload, 'base64').toString('utf8');
 			return JSON.parse(decoded);
-		} catch (error) {
-			console.error('[OAuth2Service] Failed to parse JWT:', error);
+		} catch {
+			// Silent error - JWT parsing is optional
 			return null;
 		}
 	}

@@ -3,214 +3,92 @@
  * 
  * Implements vscode.LanguageModelChatProvider to expose Chinese LLM models
  * (DeepSeek, Qwen, etc.) to GitHub Copilot Chat through feima-api.
+ * 
+ * Architecture follows feima-code pattern:
+ * - Provider: Lists models and delegates requests
+ * - Wrapper (FeimaLanguageModelWrapper): Handles streaming and tool calls
  */
 
 import * as vscode from 'vscode';
-import fetch from 'node-fetch';
-import { FEIMA_CONFIG } from '../config';
-import { FeimaAuthProvider } from '../auth/feimaAuthProvider';
+import { FeimaAuthenticationService } from '../platform/authentication/vscode/feimaAuthenticationService';
+import { ModelCatalogService } from './modelCatalog';
+import { FeimaLanguageModelWrapper } from './languageModelWrapper';
+import { FeimaChatEndpoint, ModelInfo } from './feimaChatEndpoint';
+import { ILogService } from '../platform/log/common/logService';
 
 /**
- * Model information from feima-api (/v1/models endpoint)
- * Matches IModelAPIResponse structure from feima-api spec
- */
-interface ModelInfo {
-	// Core identification
-	id: string;
-	name: string;
-	version: string;
-	object: string;
-	vendor?: string;
-	
-	// Model picker configuration
-	model_picker_enabled: boolean;
-	model_picker_category?: string; // 'lightweight', 'versatile', 'powerful'
-	preview?: boolean;
-	is_chat_default?: boolean;
-	is_chat_fallback?: boolean;
-	
-	// Nested capabilities object
-	capabilities: {
-		type: 'chat' | 'completion' | 'embeddings';
-		family: string;
-		tokenizer?: string;
-		object?: string;
-		limits: {
-			max_prompt_tokens: number;
-			max_output_tokens: number;
-			max_context_window_tokens?: number;
-		};
-		supports: {
-			streaming: boolean;
-			tool_calls?: boolean;
-			parallel_tool_calls?: boolean;
-			vision?: boolean;
-			structured_outputs?: boolean;
-		};
-	};
-	
-	// Policy and billing
-	policy?: {
-		state: 'enabled' | 'disabled' | 'unconfigured';
-		terms?: string;
-	};
-	billing?: {
-		is_premium: boolean;
-		multiplier: number;
-		restricted_to?: string[];
-	};
-	
-	// Optional fields
-	supported_endpoints?: string[];
-	warning_messages?: Array<{ code: string; message: string }>;
-	info_messages?: Array<{ code: string; message: string }>;
-	custom_model?: { key_name?: string; owner_name?: string };
-	
-	// Other fields
-	created?: number;
-	owned_by?: string;
-	enabled?: boolean;
-}
-
-/**
- * Chat message format (OpenAI-compatible)
- */
-interface ChatMessage {
-	role: 'system' | 'user' | 'assistant';
-	content: string;
-}
-
-/**
- * Chat completion request body
- */
-interface ChatCompletionRequest {
-	model: string;
-	messages: ChatMessage[];
-	temperature?: number;
-	max_tokens?: number;
-	stream: boolean;
-	top_p?: number;
-	n?: number;
-	stop?: string[];
-}
-
-/**
- * Chat completion response (non-streaming)
- */
-interface _ChatCompletionResponse {
-	id: string;
-	object: string;
-	created: number;
-	model: string;
-	choices: Array<{
-		index: number;
-		message: {
-			role: string;
-			content: string;
-		};
-		finish_reason: string;
-	}>;
-	usage: {
-		prompt_tokens: number;
-		completion_tokens: number;
-		total_tokens: number;
-	};
-}
-
-/**
- * Feima Language Model Provider
+ * Feima Language Model Chat Provider
  * 
- * Integrates Chinese LLM models into VS Code's Language Model API,
- * allowing them to be used in GitHub Copilot Chat alongside GitHub's models.
+ * Integrates Chinese LLM models into VS Code's Language Model API.
+ * Delegates actual streaming and tool call handling to FeimaLanguageModelWrapper.
+ * 
+ * Architecture follows feima-code pattern:
+ * - Provider: Lists models, delegates to wrapper
+ * - Wrapper: Handles streaming, tool calls, validation
  */
 export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvider {
 	private readonly _onDidChange = new vscode.EventEmitter<void>();
 	readonly onDidChangeLanguageModelChatInformation = this._onDidChange.event;
-
-	private _modelCache: vscode.LanguageModelChatInformation[] = [];
-	private _lastFetchTime = 0;
-	private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+	private readonly _log: ILogService;
+	private readonly _wrapper: FeimaLanguageModelWrapper;
+	private readonly _endpointCache = new Map<string, FeimaChatEndpoint>();
 
 	constructor(
-		private readonly authProvider: FeimaAuthProvider,
-		private readonly outputChannel: vscode.OutputChannel
+		private readonly authService: FeimaAuthenticationService,
+		private readonly modelCatalog: ModelCatalogService,
+		log: ILogService
 	) {
-		this.log('=== FeimaLanguageModelProvider constructor called ===');
-		this.log(`Output channel: ${outputChannel.name}`);
+		this._log = log;
+		this._wrapper = new FeimaLanguageModelWrapper(log);
 		
-		// Listen to auth changes to refresh model list
-		authProvider.onDidChangeSessions(() => {
-			this.log('🔄 Auth session changed, firing onDidChange event to refresh models');
+		this._log.debug('FeimaLanguageModelProvider constructor called');
+		
+		// Listen to model catalog changes
+		modelCatalog.onDidChangeModels(() => {
+			this._log.debug('Model catalog changed event received');
+			this._log.debug('Firing onDidChangeLanguageModelChatInformation to notify VS Code');
 			this._onDidChange.fire();
+			this._log.debug('VS Code notified, it will call provideLanguageModelChatInformation()');
 		});
 		
-		this.log('✅ FeimaLanguageModelProvider initialized successfully');
+		this._log.debug('FeimaLanguageModelProvider initialized successfully');
 	}
 
 	/**
 	 * Provide available Feima models to VS Code
 	 * 
-	 * Fetches model catalog from feima-api and transforms into
+	 * Fetches chat models from ModelCatalogService and transforms into
 	 * vscode.LanguageModelChatInformation format.
 	 */
 	async provideLanguageModelChatInformation(
 		_options: { silent: boolean },
 		token: vscode.CancellationToken
 	): Promise<vscode.LanguageModelChatInformation[]> {
-		this.log('=================================================');
-		this.log('🎯 provideLanguageModelChatInformation called');
-		this.log(`   Options: silent=${_options.silent}`);
-		this.log(`   Token: cancelled=${token.isCancellationRequested}`);
-		this.log('=================================================');
+		this._log.info('provideLanguageModelChatInformation called');
+		this._log.debug(`Options: silent=${_options.silent}, cancelled=${token.isCancellationRequested}`);
 		
 		try {
 			// Check authentication
-			this.log('📝 Step 1: Checking authentication...');
-			const sessions = await this.authProvider.getSessions([]);
-			this.log(`   Found ${sessions.length} auth sessions`);
+			const isAuthenticated = await this.authService.isAuthenticated();
+			this._log.debug(`Authentication check: ${isAuthenticated}`);
 			
-			if (sessions.length > 0) {
-				const session = sessions[0];
-				this.log(`   Session ID: ${session.id}`);
-				this.log(`   Account: ${session.account.label}`);
-				this.log(`   Access token length: ${session.accessToken.length}`);
-				this.log(`   Access token prefix: ${session.accessToken.substring(0, 20)}...`);
-			}
-			
-			if (sessions.length === 0) {
-				this.log('❌ No auth session, returning empty model list');
+			if (!isAuthenticated) {
+				this._log.debug('Not authenticated, returning empty model list');
 				return [];
 			}
 
-			// Use cached models if still valid
-			this.log('📝 Step 2: Checking cache...');
-			const now = Date.now();
-			const cacheAge = now - this._lastFetchTime;
-			this.log(`   Cache size: ${this._modelCache.length} models`);
-			this.log(`   Cache age: ${Math.floor(cacheAge / 1000)}s (TTL: ${this.CACHE_TTL / 1000}s)`);
+			// Fetch chat models from catalog service
+			const chatModels = await this.modelCatalog.getChatModels();
+			this._log.debug(`Fetched ${chatModels.length} chat models from catalog`);
 			
-			if (this._modelCache.length > 0 && cacheAge < this.CACHE_TTL) {
-				this.log(`✅ Using cached models (${this._modelCache.length} models)`);
-				return this._modelCache;
-			}
-			this.log('   Cache expired or empty, fetching fresh data...');
-
-			// Fetch models from feima-api
-			this.log('📝 Step 3: Fetching models from API...');
-			const accessToken = sessions[0].accessToken;
-			const models = await this.fetchModels(accessToken, token);
-			this.log(`   ✅ Fetched ${models.length} models from API`);
-			
-			if (models.length > 0) {
-				this.log(`   First model raw: ${JSON.stringify(models[0], null, 2)}`);
+			if (chatModels.length > 0) {
+				this._log.debug(`First chat model: ${JSON.stringify(chatModels[0], null, 2)}`);
 			}
 
 			// Transform to VS Code format
-			this.log('📝 Step 4: Transforming to VS Code format...');
-			
-			// Filter models that are enabled for model picker
-			const pickerModels = models.filter(model => model.model_picker_enabled);
-			this.log(`   Filtered to ${pickerModels.length} picker-enabled models (from ${models.length} total)`);
+			// Filter models enabled for picker
+			const pickerModels = chatModels.filter(model => model.model_picker_enabled);
+			this._log.debug(`Filtered to ${pickerModels.length} picker-enabled models`);
 			
 			const vsCodeModels: vscode.LanguageModelChatInformation[] = pickerModels.map(model => {
 				// Build tooltip from policy terms or version
@@ -238,254 +116,105 @@ export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvi
 					}
 				};
 			});
-			this.log(`   ✅ Transformed to ${vsCodeModels.length} VS Code models`);
-			this.log(`   First transformed model:`);
+			this._log.debug(`Transformed to ${vsCodeModels.length} VS Code models`);
 			if (vsCodeModels.length > 0) {
-				this.log(`   ${JSON.stringify(vsCodeModels[0], null, 2)}`);
+				this._log.debug(`First VS Code model: ${JSON.stringify(vsCodeModels[0], null, 2)}`);
 			}
 
-			// Update cache
-			this.log('📝 Step 5: Updating cache...');
-			this._modelCache = vsCodeModels;
-			this._lastFetchTime = now;
-			this.log('   ✅ Cache updated');
+			this._log.info(`Returning ${vsCodeModels.length} models to VS Code`);
 
-			this.log('=================================================');
-			this.log(`🎉 Returning ${vsCodeModels.length} models to VS Code`);
-
-
-			return this._modelCache;
+			return vsCodeModels;
 		} catch (error) {
-			this.log('=================================================');
-			this.logError('❌ Failed to fetch models', error);
-			// Return cached models as fallback
-			this.log(`⚠️  Returning ${this._modelCache.length} cached models as fallback`);
-			this.log('=================================================');
-			return this._modelCache;
+			this._log.error(error as Error, 'Failed to fetch models');
+			return [];
 		}
 	}
 
 	/**
-	 * Provide chat response by proxying to feima-api
+	 * Get or create endpoint for a model.
+	 * Endpoints are cached to avoid recreating them.
+	 */
+	private async _getEndpoint(modelId: string): Promise<FeimaChatEndpoint> {
+		// Check cache first
+		let endpoint = this._endpointCache.get(modelId);
+		if (endpoint) {
+			return endpoint;
+		}
+
+		// Fetch model metadata from catalog
+		const chatModels = await this.modelCatalog.getChatModels();
+		const catalogModel = chatModels.find(m => m.id === modelId);
+		
+		if (!catalogModel) {
+			throw new Error(`Model not found: ${modelId}`);
+		}
+
+		// Convert catalog model to ModelInfo
+		const modelInfo: ModelInfo = {
+			id: catalogModel.id,
+			name: catalogModel.name,
+			family: catalogModel.capabilities.family,
+			maxInputTokens: catalogModel.capabilities.limits.max_prompt_tokens,
+			maxOutputTokens: catalogModel.capabilities.limits.max_output_tokens,
+			supportsToolCalls: catalogModel.capabilities.supports.tool_calls || false,
+			supportsVision: catalogModel.capabilities.supports.vision || false
+		};
+
+		// Create and cache endpoint
+		endpoint = new FeimaChatEndpoint(modelInfo, this.authService, this._log);
+		this._endpointCache.set(modelId, endpoint);
+		
+		this._log.debug(`Created endpoint for model: ${modelId}`);
+		return endpoint;
+	}
+
+	/**
+	 * Provide chat response by delegating to FeimaLanguageModelWrapper.
 	 * 
-	 * Transforms VS Code chat messages to OpenAI format, sends to feima-api,
-	 * and streams the response back through the progress reporter.
+	 * Architecture follows feima-code pattern:
+	 * - Provider validates and creates endpoint
+	 * - Wrapper handles streaming and tool calls
 	 */
 	async provideLanguageModelChatResponse(
 		model: vscode.LanguageModelChatInformation,
 		messages: vscode.LanguageModelChatMessage[],
 		options: vscode.ProvideLanguageModelChatResponseOptions,
-		progress: vscode.Progress<vscode.LanguageModelResponsePart>,
+		progress: vscode.Progress<vscode.LanguageModelResponsePart | vscode.LanguageModelToolCallPart>,
 		token: vscode.CancellationToken
 	): Promise<void> {
-		try {
-			// Extract model ID (no prefix to remove, use as-is)
-			const modelId = model.id;
-			this.log(`Chat request for model: ${modelId}`);
-
-			// Get access token
-			const sessions = await this.authProvider.getSessions([]);
-			if (sessions.length === 0) {
-				throw new Error('Not authenticated. Please sign in to Feima.');
-			}
-			const accessToken = sessions[0].accessToken;
-
-			// Transform VS Code messages to OpenAI format
-			const chatMessages: ChatMessage[] = messages.map(msg => ({
-				role: msg.role === vscode.LanguageModelChatMessageRole.User ? 'user' : 'assistant',
-				content: typeof msg.content === 'string' ? msg.content : 
-					msg.content.map(part => {
-						if (typeof part === 'string') { return part; }
-						if (part instanceof vscode.LanguageModelTextPart) { return part.value; }
-						return ''; // Other part types
-					}).join('')
-			}));
-
-			// Build request
-			const request: ChatCompletionRequest = {
-				model: modelId,
-				messages: chatMessages,
-				temperature: 0.7,
-				stream: true, // Always stream for better UX
-				...options.modelOptions
-			};
-
-			// Send request and stream response
-			await this.streamChatCompletion(request, accessToken, progress, token);
-
-		} catch (error) {
-			this.logError('Chat request failed', error);
-			throw error;
+		this._log.info(`Chat request for model: ${model.id}`);
+		this._log.debug(`Options received - tools: ${options.tools?.length ?? 0}, toolMode: ${options.toolMode}`);
+		
+		if (options.tools) {
+			this._log.debug(`Tool names: ${options.tools.map(t => t.name).join(', ')}`);
 		}
+		
+		// Get endpoint for model
+		const endpoint = await this._getEndpoint(model.id);
+		
+		// Delegate to wrapper
+		return this._wrapper.provideLanguageModelResponse(
+			endpoint,
+			messages,
+			{
+				tools: options.tools,
+				toolMode: options.toolMode
+			},
+			progress,
+			token
+		);
 	}
 
 	/**
-	 * Provide token count for rate limiting
-	 * 
-	 * Simple estimation: 1 token ≈ 4 characters for English, 1 token ≈ 1.5-2 characters for Chinese
+	 * Provide token count by delegating to FeimaLanguageModelWrapper.
 	 */
 	async provideTokenCount(
-		_model: vscode.LanguageModelChatInformation,
+		model: vscode.LanguageModelChatInformation,
 		text: string | vscode.LanguageModelChatMessage,
 		_token: vscode.CancellationToken
 	): Promise<number> {
-		// Extract text content
-		let content: string;
-		if (typeof text === 'string') {
-			content = text;
-		} else {
-			content = typeof text.content === 'string' ? text.content :
-				text.content.map(part => {
-					if (typeof part === 'string') { return part; }
-					if (part instanceof vscode.LanguageModelTextPart) { return part.value; }
-					return ''; // Other part types
-				}).join('');
-		}
-
-		// Simple heuristic: count Chinese and English characters separately
-		const chineseChars = (content.match(/[\u4e00-\u9fa5]/g) || []).length;
-		const otherChars = content.length - chineseChars;
-
-		// Estimate tokens: Chinese ~1.5 chars/token, English ~4 chars/token
-		const chineseTokens = Math.ceil(chineseChars / 1.5);
-		const otherTokens = Math.ceil(otherChars / 4);
-
-		return chineseTokens + otherTokens;
-	}
-
-	/**
-	 * Fetch models from feima-api
-	 */
-	private async fetchModels(
-		accessToken: string,
-		token: vscode.CancellationToken
-	): Promise<ModelInfo[]> {
-		const url = `${FEIMA_CONFIG.apiBaseUrl}/v1/models`;
-		this.log(`🌐 Fetching models from: ${url}`);
-		this.log(`   Using access token: ${accessToken.substring(0, 20)}...`);
-
-		const abortController = new AbortController();
-		token.onCancellationRequested(() => {
-			this.log('❌ Fetch cancelled by token');
-			abortController.abort();
-		});
-
-		const response = await fetch(url, {
-			method: 'GET',
-			headers: {
-				'Authorization': `Bearer ${accessToken}`,
-				'Content-Type': 'application/json'
-			},
-			signal: abortController.signal
-		});
-
-		this.log(`   Response status: ${response.status} ${response.statusText}`);
-		this.log(`   Response headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()))}`);
-		
-		if (!response.ok) {
-			const errorText = await response.text();
-			this.log(`   Error response body: ${errorText}`);
-			throw new Error(`Failed to fetch models: ${response.status} ${response.statusText}`);
-		}
-
-		const responseText = await response.text();
-		this.log(`   Response body length: ${responseText.length} chars`);
-		this.log(`   Response body preview: ${responseText.substring(0, 500)}...`);
-		
-		const data = JSON.parse(responseText) as { object: string; data: ModelInfo[] };
-		this.log(`   Parsed data.object: ${data.object}`);
-		this.log(`   Parsed data.data length: ${data.data?.length || 0}`);
-		return data.data || [];
-	}
-
-	/**
-	 * Stream chat completion from feima-api
-	 */
-	private async streamChatCompletion(
-		request: ChatCompletionRequest,
-		accessToken: string,
-		progress: vscode.Progress<vscode.LanguageModelResponsePart>,
-		token: vscode.CancellationToken
-	): Promise<void> {
-		const url = `${FEIMA_CONFIG.apiBaseUrl}/v1/chat/completions`;
-		this.log(`Streaming chat completion to: ${url}`);
-
-		const abortController = new AbortController();
-		token.onCancellationRequested(() => abortController.abort());
-
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Authorization': `Bearer ${accessToken}`,
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(request),
-			signal: abortController.signal
-		});
-
-		if (!response.ok) {
-			const errorText = await response.text();
-			throw new Error(`Chat request failed: ${response.status} ${errorText}`);
-		}
-
-		// Parse SSE stream
-		if (!response.body) {
-			throw new Error('No response body');
-		}
-
-		const reader = response.body;
-		let buffer = '';
-
-		for await (const chunk of reader) {
-			if (token.isCancellationRequested) {
-				break;
-			}
-
-			buffer += chunk.toString();
-			const lines = buffer.split('\n');
-			buffer = lines.pop() || '';
-
-			for (const line of lines) {
-				if (!line.trim() || !line.startsWith('data: ')) {
-					continue;
-				}
-
-				const data = line.slice(6); // Remove 'data: ' prefix
-				if (data === '[DONE]') {
-					return;
-				}
-
-				try {
-					const parsed = JSON.parse(data);
-					const delta = parsed.choices?.[0]?.delta;
-					if (delta?.content) {
-						progress.report(new vscode.LanguageModelTextPart(delta.content));
-					}
-				} catch (parseError) {
-					this.logError('Failed to parse SSE chunk', parseError);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Log message to output channel
-	 */
-	private log(message: string): void {
-		const timestamp = new Date().toISOString();
-		this.outputChannel.appendLine(`[${timestamp}] [FeimaModelProvider] ${message}`);
-	}
-
-	/**
-	 * Log error to output channel
-	 */
-	private logError(message: string, error: unknown): void {
-		const timestamp = new Date().toISOString();
-		const errorMessage = error instanceof Error ? error.message : String(error);
-		this.outputChannel.appendLine(`[${timestamp}] [FeimaModelProvider] ERROR: ${message} - ${errorMessage}`);
-		if (error instanceof Error && error.stack) {
-			this.outputChannel.appendLine(error.stack);
-		}
+		const endpoint = await this._getEndpoint(model.id);
+		return this._wrapper.provideTokenCount(endpoint, text);
 	}
 
 	/**
