@@ -5,7 +5,6 @@
 
 import * as crypto from 'crypto';
 import fetch from 'node-fetch';
-import { FEIMA_CONFIG, OAUTH2_ENDPOINTS } from '../config';
 
 /**
  * OAuth2 token response structure
@@ -42,6 +41,26 @@ export interface IAuthorizationUrl {
 }
 
 /**
+ * OAuth2 configuration (from ConfigService or region defaults).
+ * Can be overridden by VS Code settings.
+ */
+export interface IOAuth2Config {
+	authBaseUrl: string;      // Base URL for auth server
+	clientId: string;         // OAuth2 client ID
+	scopes: string[];         // OAuth2 scopes to request
+}
+
+/**
+ * OAuth2 endpoints derived from config.
+ */
+export interface IOAuth2Endpoints {
+	authorizationEndpoint: string;
+	tokenEndpoint: string;
+	revokeEndpoint: string;
+	userinfoEndpoint: string;
+}
+
+/**
  * Stateless OAuth2 service for authorization code flow with PKCE.
  * No internal state management - all flow state is returned to caller.
  * Pattern adapted from feima-code OAuth2Service.
@@ -53,9 +72,12 @@ export class OAuth2Service {
 	 * Returns URL along with nonce and codeVerifier for caller to manage.
 	 * 
 	 * @param redirectUri OAuth2 redirect URI
+	 * @param config OAuth2 configuration (can be from VS Code settings or region defaults)
 	 * @returns Authorization URL with nonce and codeVerifier
 	 */
-	async buildAuthorizationUrl(redirectUri: string): Promise<IAuthorizationUrl> {
+	async buildAuthorizationUrl(redirectUri: string, config: IOAuth2Config): Promise<IAuthorizationUrl> {
+		const endpoints = this.deriveEndpoints(config);
+
 		// Generate PKCE parameters
 		const codeVerifier = this.generateCodeVerifier();
 		const codeChallenge = await this.generateCodeChallenge(codeVerifier);
@@ -64,14 +86,14 @@ export class OAuth2Service {
 		const state = this.generateState();
 
 		// Build authorization URL
-		const authUrl = new URL(OAUTH2_ENDPOINTS.authorizationEndpoint);
-		authUrl.searchParams.set('client_id', FEIMA_CONFIG.clientId);
+		const authUrl = new URL(endpoints.authorizationEndpoint);
+		authUrl.searchParams.set('client_id', config.clientId);
 		authUrl.searchParams.set('response_type', 'code');
 		authUrl.searchParams.set('redirect_uri', redirectUri);
 		authUrl.searchParams.set('state', state);
 		authUrl.searchParams.set('code_challenge', codeChallenge);
 		authUrl.searchParams.set('code_challenge_method', 'S256');
-		authUrl.searchParams.set('scope', FEIMA_CONFIG.scopes.join(' '));
+		authUrl.searchParams.set('scope', config.scopes.join(' '));
 
 		return {
 			url: authUrl.toString(),
@@ -88,17 +110,20 @@ export class OAuth2Service {
 	 * @param code Authorization code from callback
 	 * @param codeVerifier PKCE code verifier from buildAuthorizationUrl
 	 * @param redirectUri Redirect URI used in authorization request
+	 * @param config OAuth2 configuration (can be from VS Code settings or region defaults)
 	 * @returns Token response with access token, refresh token, etc.
 	 */
-	async exchangeCodeForToken(code: string, codeVerifier: string, redirectUri: string): Promise<ITokenResponse> {
+	async exchangeCodeForToken(code: string, codeVerifier: string, redirectUri: string, config: IOAuth2Config): Promise<ITokenResponse> {
+		const endpoints = this.deriveEndpoints(config);
+
 		const body = new URLSearchParams();
 		body.append('grant_type', 'authorization_code');
-		body.append('client_id', FEIMA_CONFIG.clientId);
+		body.append('client_id', config.clientId);
 		body.append('code', code);
 		body.append('redirect_uri', redirectUri);
 		body.append('code_verifier', codeVerifier);
 
-		const response = await fetch(OAUTH2_ENDPOINTS.tokenEndpoint, {
+		const response = await fetch(endpoints.tokenEndpoint, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -116,15 +141,21 @@ export class OAuth2Service {
 	}
 
 	/**
-	 * Refresh access token using refresh token
+	 * Refresh access token using refresh token.
+	 * 
+	 * @param refreshToken Refresh token from token response
+	 * @param config OAuth2 configuration (can be from VS Code settings or region defaults)
+	 * @returns New token response with refreshed access token
 	 */
-	async refreshAccessToken(refreshToken: string): Promise<ITokenResponse> {
+	async refreshAccessToken(refreshToken: string, config: IOAuth2Config): Promise<ITokenResponse> {
+		const endpoints = this.deriveEndpoints(config);
+
 		const body = new URLSearchParams();
 		body.append('grant_type', 'refresh_token');
-		body.append('client_id', FEIMA_CONFIG.clientId);
+		body.append('client_id', config.clientId);
 		body.append('refresh_token', refreshToken);
 
-		const response = await fetch(OAUTH2_ENDPOINTS.tokenEndpoint, {
+		const response = await fetch(endpoints.tokenEndpoint, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -186,6 +217,22 @@ export class OAuth2Service {
 		const fiveMinutes = 5 * 60 * 1000;
 
 		return timeUntilExpiry < fiveMinutes;
+	}
+
+	// ============ Configuration Helpers ============
+
+	/**
+	 * Derive OAuth2 endpoints from configuration.
+	 * Allows config to come from either VS Code settings or region defaults.
+	 */
+	private deriveEndpoints(config: IOAuth2Config): IOAuth2Endpoints {
+		const baseUrl = config.authBaseUrl;
+		return {
+			authorizationEndpoint: `${baseUrl}/oauth/authorize`,
+			tokenEndpoint: `${baseUrl}/oauth/token`,
+			revokeEndpoint: `${baseUrl}/oauth/revoke`,
+			userinfoEndpoint: `${baseUrl}/oauth/userinfo`,
+		};
 	}
 
 	// ============ PKCE Helpers ============

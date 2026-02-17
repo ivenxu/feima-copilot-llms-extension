@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { encodingForModel } from 'js-tiktoken';
-import type { Encoding } from 'js-tiktoken';
 
 /**
  * Maps model families to their encoding names
@@ -29,7 +28,8 @@ const MODEL_ENCODING_MAP: Record<string, string> = {
  * - DeepSeek and other Chinese models
  */
 export class TikTokenizer {
-	private _encoding: Encoding | null = null;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	private _encoding: any = null;
 	private _modelName: string;
 
 	/**
@@ -48,6 +48,7 @@ export class TikTokenizer {
 	private _initializeEncoding(): void {
 		try {
 			// Try to get encoding directly by model name
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			this._encoding = encodingForModel(this._modelName as any);
 		} catch {
 			// Fallback: extract model family and use known mapping

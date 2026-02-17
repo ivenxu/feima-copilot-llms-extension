@@ -2,12 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch cn-model-for-copilot Extension",
+      "name": "Launch feima-copilot-llms Extension",
       "type": "extensionHost",
       "request": "launch",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
+      "env": {
+        "FEIMA_REGION": "cn"
+      },
       "outFiles": [
         "${workspaceFolder}/dist/**/*.js"
       ],
@@ -21,6 +24,9 @@
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
       ],
+      "env": {
+        "FEIMA_REGION": "cn"
+      },
       "outFiles": [
         "${workspaceFolder}/out/test/**/*.js"
       ],

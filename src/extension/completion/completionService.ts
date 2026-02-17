@@ -5,7 +5,7 @@
 
 import * as vscode from 'vscode';
 import { FeimaAuthenticationService } from '../platform/authentication/vscode/feimaAuthenticationService';
-import { FEIMA_CONFIG } from '../config';
+import { getResolvedConfig } from '../../config/configService';
 import { ILogger } from '../platform/log/common/logService';
 
 /**
@@ -101,8 +101,9 @@ export class CompletionService {
 			throw new Error('Not authenticated with Feima');
 		}
 
-		// Build request URL
-		const url = `${FEIMA_CONFIG.apiBaseUrl}/v1/completions`;
+		// Build request URL using resolved config (settings override region defaults)
+		const apiBase = getResolvedConfig().apiBaseUrl || '';
+		const url = `${apiBase}/completions`;
 		this._log.trace(`POST ${url}`);
 
 		// Create AbortController for timeout and cancellation

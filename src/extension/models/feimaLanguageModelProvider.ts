@@ -141,31 +141,39 @@ export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvi
 			return endpoint;
 		}
 
-		// Fetch model metadata from catalog
-		const chatModels = await this.modelCatalog.getChatModels();
-		const catalogModel = chatModels.find(m => m.id === modelId);
-		
-		if (!catalogModel) {
-			throw new Error(`Model not found: ${modelId}`);
+		try {
+			// P2 #12: Add error handling for endpoint creation
+			// Fetch model metadata from catalog
+			const chatModels = await this.modelCatalog.getChatModels();
+			const catalogModel = chatModels.find(m => m.id === modelId);
+			
+			if (!catalogModel) {
+				this._log.error(new Error(`Model not found: ${modelId}`), `Failed to find model in catalog`);
+				throw new Error(`Model not found: ${modelId}`);
+			}
+
+			// Convert catalog model to ModelInfo
+			const modelInfo: ModelInfo = {
+				id: catalogModel.id,
+				name: catalogModel.name,
+				family: catalogModel.capabilities.family,
+				maxInputTokens: catalogModel.capabilities.limits.max_prompt_tokens,
+				maxOutputTokens: catalogModel.capabilities.limits.max_output_tokens,
+				supportsToolCalls: catalogModel.capabilities.supports.tool_calls || false,
+				supportsVision: catalogModel.capabilities.supports.vision || false
+			};
+
+			// Create and cache endpoint
+			endpoint = new FeimaChatEndpoint(modelInfo, this.authService, this._log);
+			this._endpointCache.set(modelId, endpoint);
+			
+			this._log.debug(`Created endpoint for model: ${modelId}`);
+			return endpoint;
+		} catch (error) {
+			const reason = error instanceof Error ? error.message : String(error);
+			this._log.error(error as Error, `Failed to create endpoint for model ${modelId}`);
+			throw new Error(`Failed to create endpoint for model ${modelId}: ${reason}`);
 		}
-
-		// Convert catalog model to ModelInfo
-		const modelInfo: ModelInfo = {
-			id: catalogModel.id,
-			name: catalogModel.name,
-			family: catalogModel.capabilities.family,
-			maxInputTokens: catalogModel.capabilities.limits.max_prompt_tokens,
-			maxOutputTokens: catalogModel.capabilities.limits.max_output_tokens,
-			supportsToolCalls: catalogModel.capabilities.supports.tool_calls || false,
-			supportsVision: catalogModel.capabilities.supports.vision || false
-		};
-
-		// Create and cache endpoint
-		endpoint = new FeimaChatEndpoint(modelInfo, this.authService, this._log);
-		this._endpointCache.set(modelId, endpoint);
-		
-		this._log.debug(`Created endpoint for model: ${modelId}`);
-		return endpoint;
 	}
 
 	/**

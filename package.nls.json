@@ -1,0 +1,88 @@
+{
+	"extension.name": "copilot-more-models",
+	"extension.displayName": "Feima Code Models",
+	"extension.description": "VS Code code completion and editing extension with support for Claude, GPT-4, and more models.",
+	
+	"error.languageModelNotAvailable": "Language Model API not available. Please ensure GitHub Copilot Chat is installed.",
+	"error.activationFailed": "Feima extension activation failed: {0}",
+	"error.authUrlFailed": "Failed to open authentication URL",
+	"error.oauthStateLost": "OAuth flow state lost",
+	"error.notAuthenticated": "Not authenticated",
+	"error.invalidRequest.noMessages": "Invalid request: no messages.",
+	"error.invalidToolName": "Invalid tool name \"{0}\": only alphanumeric characters, hyphens, and underscores are allowed.",
+	"error.tooManyTools": "Cannot have more than 128 tools per request.",
+	"error.toolModeNotSupported": "LanguageModelChatToolMode.Required is not supported with more than one tool",
+	"error.toolResultsRequired": "Tool call must be followed by User message with tool results",
+	"error.authenticationFailed": "Authentication failed: no token available",
+	"error.httpRequest": "HTTP {0}: {1}",
+	"error.noResponseBody": "No response body received",
+	"error.encodingNotInitialized": "Encoding not initialized",
+	"error.unknownRegion": "Unknown region: {0}",
+	"error.failedToParseToken": "Failed to parse stored token",
+	
+	"command.triggerCompletion.title": "Trigger Code Completion",
+	"command.triggerCompletion.description": "Trigger code completion suggestions from Feima Code Models",
+	
+	"command.explainCode.title": "Explain Code",
+	"command.explainCode.description": "Explain the selected code using Feima AI",
+	
+	"command.refactorCode.title": "Refactor Code",
+	"command.refactorCode.description": "Refactor the selected code using Feima AI",
+	
+	"command.generateTest.title": "Generate Tests",
+	"command.generateTest.description": "Generate unit tests for the selected code using Feima AI",
+	
+	"command.signIn.title": "Sign In",
+	"command.signIn.category": "Feima",
+	
+	"command.signOut.title": "Sign Out",
+	"command.signOut.category": "Feima",
+	
+	"command.showAccount.title": "View Account",
+	"command.showAccount.category": "Feima",
+	
+	"settings.region.title": "Region Setting",
+	"settings.region.description": "Current extension region (immutable)",
+	"settings.region.cn": "China",
+	"settings.region.global": "Global",
+	
+	"settings.auth.endpoint.title": "Authentication Endpoint",
+	"settings.auth.endpoint.description": "OAuth2 authentication server address",
+	
+	"settings.api.endpoint.title": "API Endpoint",
+	"settings.api.endpoint.description": "Model inference API server address",
+	
+	"settings.modelProviders.title": "Available Models",
+	"settings.modelProviders.description": "List of available AI models in this region",
+	
+	"settings.language.title": "Interface Language",
+	"settings.language.description": "VS Code interface language",
+	"settings.language.auto": "Auto (Follow VS Code)",
+	
+	"settings.auth.baseUrl.description": "OAuth2 authentication server base URL (overrides region default)",
+	"settings.api.baseUrl.description": "Model inference API server base URL (overrides region default)",
+	"settings.auth.clientId.description": "OAuth2 client ID for authentication (overrides region default)",
+	"settings.auth.issuer.description": "OAuth2 issuer URL (overrides region default)",
+	"settings.showQuotaInStatusBar.description": "Show remaining request quota in status bar",
+	"settings.warnWhenQuotaLow.description": "Show warning when remaining requests drop below this number",
+	"settings.apiEndpoint.description": "Feima API service endpoint (debug only)",
+	
+	"error.auth.failed": "Authentication failed",
+	"error.auth.unauthorized": "Unauthorized: Please log in again",
+	"error.auth.tokenExpired": "Login token has expired, please log in again",
+	"error.apiConnection.failed": "API connection failed",
+	"error.apiConnection.timeout": "API request timed out",
+	"error.invalidConfig": "Invalid configuration",
+	
+	"message.loggedIn": "Logged in as {0}",
+	"message.loggedOut": "Logged out",
+	"message.completionReady": "Code completion is ready",
+	"message.selectModelProvider": "Please select a model provider",
+	
+	"status.authenticating": "Authenticating...",
+	"status.authenticated": "Authenticated",
+	"status.notAuthenticated": "Not authenticated",
+	"status.connecting": "Connecting to server...",
+	"status.connected": "Connected",
+	"status.disconnected": "Disconnected"
+}
