@@ -4,9 +4,18 @@
 
 import * as vscode from 'vscode';
 import fetch from 'node-fetch';
-import { FEIMA_CONFIG } from '../config';
+import { /*activeRegionConfig,*/ } from '../../config/regions';
+import { getResolvedConfig } from '../../config/configService';
 import { FeimaAuthenticationService } from '../platform/authentication/vscode/feimaAuthenticationService';
 import { ILogService } from '../platform/log/common/logService';
+
+// Minimal response shape used to avoid depending on conflicting Response typedefs
+interface FetchResponseLike {
+	ok: boolean;
+	status: number;
+	statusText: string;
+	json(): Promise<unknown>;
+}
 
 /**
  * Raw model information from feima-api /v1/models endpoint
@@ -83,6 +92,8 @@ export class ModelCatalogService {
 	private _lastFetch: number = 0;
 	private readonly _cacheDuration = 5 * 60 * 1000; // 5 minutes
 	private readonly _log: ILogService;
+	// P2 #10: Track token change listener for cleanup
+	private _tokenChangeListener: vscode.Disposable | undefined;
 
 	constructor(
 		private readonly authService: FeimaAuthenticationService,
@@ -202,13 +213,29 @@ export class ModelCatalogService {
 				throw new Error('No access token available');
 			}
 			
-			const response = await fetch(`${FEIMA_CONFIG.apiBaseUrl}/v1/models`, {
-				method: 'GET',
-				headers: {
-					'Authorization': `Bearer ${accessToken}`,
-					'Content-Type': 'application/json'
-				}
-			});
+			// P2 #11: Add fetch timeout (30 seconds)
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), 30000);
+			
+			// Use a minimal response interface to avoid type conflicts between
+			// node-fetch and the environment's fetch/undici types.
+			let response: FetchResponseLike;
+			try {
+				const apiBase = getResolvedConfig().apiBaseUrl || '';
+				// Settings always provide apiBaseUrl ending with 'v1/', so simply append 'models'
+				const modelsUrl = `${apiBase}/models`;
+				this._log.debug(`[ModelCatalog] Fetching models from ${modelsUrl}`);
+				response = await fetch(modelsUrl, {
+					method: 'GET',
+					headers: {
+						'Authorization': `Bearer ${accessToken}`,
+						'Content-Type': 'application/json'
+					},
+					signal: controller.signal
+				});
+			} finally {
+				clearTimeout(timeoutId);
+			}
 
 			if (!response.ok) {
 				throw new Error(`Failed to fetch models: ${response.status} ${response.statusText}`);

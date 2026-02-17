@@ -5,9 +5,11 @@
 
 import * as vscode from 'vscode';
 import { IFeimaAuthenticationService } from '../common/feimaAuthentication';
-import { OAuth2Service, ITokenResponse, IAuthorizationUrl } from '../../../auth/oauth2Service';
+import { OAuth2Service, ITokenResponse, IAuthorizationUrl, IOAuth2Config } from '../../../auth/oauth2Service';
 import { FeimaUriEventHandler, ICallbackData } from '../common/feimaUriEventHandler';
 import { ILogService } from '../../log/common/logService';
+import { activeRegionConfig } from '../../../../config/regions';
+import { FeimaConfigService } from '../../../../config/configService';
 
 /**
  * Stored token data in VS Code secrets
@@ -66,8 +68,9 @@ export class FeimaAuthenticationService implements IFeimaAuthenticationService {
 		this._oauth2Service = new OAuth2Service();
 		this._uriHandler = new FeimaUriEventHandler(_logService);
 		
-		// Construct redirect URI: vscode://feima.cn-model-for-copilot/oauth/callback
-		this._redirectUri = `${vscode.env.uriScheme}://feima.cn-model-for-copilot/oauth/callback`;
+		// Construct redirect URI dynamically based on region-specific extension ID
+		// Format: vscode://feima.<extensionId>/oauth/callback
+		this._redirectUri = `${vscode.env.uriScheme}://feima.${activeRegionConfig.extensionId}/oauth/callback`;
 		
 		this._logService.debug('[FeimaAuthenticationService] Initialized with multi-request support');
 		this._logService.debug(`[FeimaAuthenticationService] Redirect URI: ${this._redirectUri}`);
@@ -120,7 +123,10 @@ export class FeimaAuthenticationService implements IFeimaAuthenticationService {
 		if (this._oauth2Service.shouldRefreshToken(stored.tokenResponse, stored.issuedAt) && stored.tokenResponse.refresh_token) {
 			try {
 				this._logService.info('Refreshing expired token');
-				const refreshed = await this._oauth2Service.refreshAccessToken(stored.tokenResponse.refresh_token);
+				const refreshed = await this._oauth2Service.refreshAccessToken(
+					stored.tokenResponse.refresh_token,
+					this._getOAuth2Config()
+				);
 				
 				// Preserve refresh token if not returned
 				if (!refreshed.refresh_token) {
@@ -167,8 +173,11 @@ export class FeimaAuthenticationService implements IFeimaAuthenticationService {
 	): Promise<vscode.AuthenticationSession> {
 		this._logService.info('[FeimaAuthenticationService] Starting OAuth2 flow');
 
-		// Build authorization URL (returns nonce and codeVerifier)
-		const authData: IAuthorizationUrl = await this._oauth2Service.buildAuthorizationUrl(this._redirectUri);
+		// Build authorization URL with config (respects VS Code settings)
+		const authData: IAuthorizationUrl = await this._oauth2Service.buildAuthorizationUrl(
+			this._redirectUri,
+			this._getOAuth2Config()
+		);
 		const { url: authUrl, nonce, codeVerifier } = authData;
 
 		this._logService.debug(`[FeimaAuthenticationService] Generated OAuth flow: nonce=${nonce}`);
@@ -188,7 +197,7 @@ export class FeimaAuthenticationService implements IFeimaAuthenticationService {
 		if (!opened) {
 			this._activeFlows.delete(nonce);
 			this._uriHandler.cancelPendingCallback(nonce);
-			throw new Error('Failed to open authentication URL');
+			throw new Error(vscode.l10n.t('error.authUrlFailed'));
 		}
 
 		this._logService.info('[FeimaAuthenticationService] Browser opened, waiting for callback...');
@@ -201,16 +210,17 @@ export class FeimaAuthenticationService implements IFeimaAuthenticationService {
 			// Retrieve flow state
 			const flowState = this._activeFlows.get(nonce);
 			if (!flowState) {
-				throw new Error('OAuth flow state lost');
+				throw new Error(vscode.l10n.t('error.oauthStateLost'));
 			}
 
 			this._logService.info('[FeimaAuthenticationService] Callback received, exchanging code for token');
 
-			// Exchange code for token (pass codeVerifier and redirectUri)
+			// Exchange code for token (pass config for user overridable endpoints)
 			const tokenResponse = await this._oauth2Service.exchangeCodeForToken(
 				code,
 				flowState.codeVerifier,
-				flowState.redirectUri
+				flowState.redirectUri,
+				this._getOAuth2Config()
 			);
 
 			// Extract user info
@@ -351,6 +361,23 @@ export class FeimaAuthenticationService implements IFeimaAuthenticationService {
 
 	private async _clearStoredToken(): Promise<void> {
 		await this._context.secrets.delete(this._secretsKey);
+	}
+
+	/**
+	 * Get OAuth2 configuration from ConfigService.
+	 * This merges VS Code settings with region defaults.
+	 * 
+	 * Private method to provide config to OAuth2Service methods,
+	 * ensuring all OAuth flows use user-overridable settings.
+	 */
+	private _getOAuth2Config(): IOAuth2Config {
+		const configService = FeimaConfigService.getInstance();
+		const config = configService.getConfig();
+		return {
+			authBaseUrl: config.authBaseUrl,
+			clientId: config.clientId,
+			scopes: config.scopes,
+		};
 	}
 
 	/**

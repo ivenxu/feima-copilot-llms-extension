@@ -46,6 +46,24 @@ export class FeimaLanguageModelWrapper {
 				progress.report(new vscode.LanguageModelTextPart(delta.text));
 			}
 
+			// P2 #26: Report thinking blocks
+			if (delta.thinking && vscode.LanguageModelThinkingPart) {
+				try {
+					progress.report(new vscode.LanguageModelThinkingPart(delta.thinking));
+				} catch (e) {
+					this.log.warn(`[Wrapper] Failed to report thinking part: ${e instanceof Error ? e.message : String(e)}`);
+				}
+			}
+
+			// P2 #27: Report stateful markers
+			if (delta.stateful_marker && vscode.LanguageModelDataPart) {
+				try {
+					progress.report(new vscode.LanguageModelDataPart(delta.stateful_marker));
+				} catch (e) {
+					this.log.warn(`[Wrapper] Failed to report data part: ${e instanceof Error ? e.message : String(e)}`);
+				}
+			}
+
 			// Report tool calls
 			if (delta.toolCalls) {
 				this.log.debug(`[Wrapper] Emitting ${delta.toolCalls.length} tool calls`);
@@ -66,13 +84,12 @@ export class FeimaLanguageModelWrapper {
 						const argsStr = call.arguments || '{}';
 						this.log.debug(`[Wrapper] Tool call ${call.name} (${call.id}) arguments length: ${argsStr.length}`);
 
-						// Validate JSON before parsing
+						// P1 #25: Fail-hard on invalid JSON (pattern from feima-code)
+						// Validate JSON format first
 						const trimmedArgs = argsStr.trim();
 						if (!trimmedArgs.startsWith('{') && !trimmedArgs.startsWith('[')) {
 							this.log.error(`[Wrapper] Tool call ${call.name} has invalid JSON format (doesn't start with { or [): ${argsStr.substring(0, 100)}`);
-							progress.report(new vscode.LanguageModelToolCallPart(call.id, call.name, {}));
-							reportedToolCallIds.add(call.id); // Track even fallback reports
-							continue;
+							throw new Error(`Tool call arguments must be valid JSON object or array, got: ${argsStr.substring(0, 50)}`);
 						}
 
 						// Parse accumulated arguments
@@ -81,16 +98,15 @@ export class FeimaLanguageModelWrapper {
 						// Validate parsed result is an object
 						if (typeof parameters !== 'object' || parameters === null) {
 							this.log.error(`[Wrapper] Tool call ${call.name} parsed to non-object: ${typeof parameters}`);
-							progress.report(new vscode.LanguageModelToolCallPart(call.id, call.name, {}));
-							reportedToolCallIds.add(call.id); // Track even fallback reports
-							continue;
+							throw new Error(`Tool call arguments must parse to object, got: ${typeof parameters}`);
 						}
 
 						progress.report(new vscode.LanguageModelToolCallPart(call.id, call.name, parameters));
 						reportedToolCallIds.add(call.id); // Track as reported
 						this.log.debug(`[Wrapper] Successfully emitted tool call: ${call.name} (id: ${call.id})`);
 					} catch (err) {
-						// Enhanced error logging with more context
+						// P1 #25: Fail-hard on invalid JSON
+						// Log error and re-throw (pattern from feima-code)
 						const errorDetail = err instanceof Error ? err.message : String(err);
 						const argsPreview = call.arguments ? call.arguments.substring(0, 200) : '<empty>';
 						this.log.error(
@@ -98,12 +114,8 @@ export class FeimaLanguageModelWrapper {
 							`Error: ${errorDetail}. Arguments preview: ${argsPreview}` +
 							(call.arguments && call.arguments.length > 200 ? `... (${call.arguments.length} total chars)` : '')
 						);
-						// Report with empty parameters as fallback
-						const callId = call.id || 'unknown';
-						if (callId !== 'unknown') {
-							reportedToolCallIds.add(callId); // Track fallback reports
-						}
-						progress.report(new vscode.LanguageModelToolCallPart(callId, call.name || 'unknown', {}));
+						// Throw instead of silently recovering - let caller handle error
+						throw err;
 					}
 				}
 			}
@@ -121,9 +133,21 @@ export class FeimaLanguageModelWrapper {
 		);
 
 		// Handle error result
-		if (result.type === 'error') {
-			this.log.error(`[Wrapper] Chat request failed: ${result.reason}`);
-			throw new Error(result.reason);
+		// P1 #23: Handle structured error types (blocked, quotaExceeded, rateLimited)
+		if (result.type !== 'success') {
+			if (result.type === 'blocked') {
+				this.log.error(`[Wrapper] Chat request blocked: ${result.reason}`);
+				throw new Error(result.reason);
+			} else if (result.type === 'quotaExceeded') {
+				this.log.error(`[Wrapper] Chat request quota exceeded: ${result.reason}`);
+				throw new Error(result.reason);
+			} else if (result.type === 'rateLimited') {
+				this.log.error(`[Wrapper] Chat request rate limited: ${result.reason}`);
+				throw new Error(result.reason);
+			} else {
+				this.log.error(`[Wrapper] Chat request failed: ${result.reason}`);
+				throw new Error(result.reason);
+			}
 		}
 
 		this.log.debug('[Wrapper] Chat request completed successfully');

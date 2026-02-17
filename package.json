@@ -1,7 +1,7 @@
 {
-  "name": "cn-model-for-copilot",
-  "displayName": "飞码扣",
-  "description": "为 Copilot 提供稳定高速的中国模型(DeepSeek, 通义千问等)支持，并针对全球顶级模型提供免配置加速。更懂中文，连接更稳。",
+  "name": "copilot-cn-models",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
   "version": "0.1.0",
   "publisher": "feima",
   "author": {
@@ -55,43 +55,62 @@
     "languageModelChatProviders": [
       {
         "vendor": "feima",
-        "displayName": "飞码扣 (Feima)"
+        "displayName": "%extension.displayName% (Feima)"
       }
     ],
     "commands": [
       {
         "command": "feima.signIn",
-        "title": "登录",
-        "category": "Feima"
+        "title": "%command.signIn.title%",
+        "category": "%command.signIn.category%"
       },
       {
         "command": "feima.signOut",
-        "title": "登出",
-        "category": "Feima"
+        "title": "%command.signOut.title%",
+        "category": "%command.signOut.category%"
       },
       {
         "command": "feima.showAccount",
-        "title": "查看账号",
-        "category": "Feima"
+        "title": "%command.showAccount.title%",
+        "category": "%command.showAccount.category%"
       }
     ],
     "configuration": {
-      "title": "飞码扣",
+      "title": "%extension.displayName%",
       "properties": {
+        "feima.auth.baseUrl": {
+          "type": "string",
+          "default": "https://auth.feima.ai/cn",
+          "markdownDescription": "%settings.auth.baseUrl.description%",
+          "scope": "machine-overridable"
+        },
+        "feima.api.baseUrl": {
+          "type": "string",
+          "default": "https://api.feima.ai/cn",
+          "markdownDescription": "%settings.api.baseUrl.description%",
+          "scope": "machine-overridable"
+        },
+        "feima.auth.clientId": {
+          "type": "string",
+          "default": "vscode-feima-client",
+          "markdownDescription": "%settings.auth.clientId.description%",
+          "scope": "machine-overridable"
+        },
+        "feima.auth.issuer": {
+          "type": "string",
+          "default": "https://auth.feima.ai",
+          "markdownDescription": "%settings.auth.issuer.description%",
+          "scope": "machine-overridable"
+        },
         "feima.showQuotaInStatusBar": {
           "type": "boolean",
           "default": true,
-          "description": "在状态栏显示剩余请求配额"
+          "description": "%settings.showQuotaInStatusBar.description%"
         },
         "feima.warnWhenQuotaLow": {
           "type": "number",
           "default": 50,
-          "description": "当剩余请求少于此数量时显示警告"
-        },
-        "feima.apiEndpoint": {
-          "type": "string",
-          "default": "https://api.feima.tech",
-          "description": "飞码 API 服务端点（仅供调试）"
+          "description": "%settings.warnWhenQuotaLow.description%"
         }
       }
     }

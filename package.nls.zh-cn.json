@@ -1,0 +1,88 @@
+{
+	"extension.name": "copilot-cn-models",
+	"extension.displayName": "飞码扣",
+	"extension.description": "中国优化版 VS Code 代码补全和编辑工具，集成本地推理模型。",
+	
+	"error.languageModelNotAvailable": "语言模型 API 不可用。请确保已安装 GitHub Copilot Chat。",
+	"error.activationFailed": "飞码扣扩展激活失败：{0}",
+	"error.authUrlFailed": "无法打开身份验证 URL",
+	"error.oauthStateLost": "OAuth 流程状态丢失",
+	"error.notAuthenticated": "未身份验证",
+	"error.invalidRequest.noMessages": "无效请求：没有消息。",
+	"error.invalidToolName": "无效的工具名称 \"{0}\"：仅允许字母数字字符、连字符和下划线。",
+	"error.tooManyTools": "每个请求不能有超过 128 个工具。",
+	"error.toolModeNotSupported": "LanguageModelChatToolMode.Required 不支持多个工具",
+	"error.toolResultsRequired": "工具调用必须后跟包含工具结果的用户消息",
+	"error.authenticationFailed": "身份验证失败：没有可用的令牌",
+	"error.httpRequest": "HTTP {0}: {1}",
+	"error.noResponseBody": "未收到响应体",
+	"error.encodingNotInitialized": "编码未初始化",
+	"error.unknownRegion": "未知区域：{0}",
+	"error.failedToParseToken": "无法解析存储的令牌",
+	
+	"command.triggerCompletion.title": "触发代码补全",
+	"command.triggerCompletion.description": "从飞码扣触发代码补全建议",
+	
+	"command.explainCode.title": "解释代码",
+	"command.explainCode.description": "使用飞码扣 AI 来解释选中的代码",
+	
+	"command.refactorCode.title": "重构代码",
+	"command.refactorCode.description": "使用飞码扣 AI 来重构选中的代码",
+	
+	"command.generateTest.title": "生成测试",
+	"command.generateTest.description": "使用飞码扣 AI 为选中的代码生成测试",
+	
+	"command.signIn.title": "登录",
+	"command.signIn.category": "飞码扣",
+	
+	"command.signOut.title": "登出",
+	"command.signOut.category": "飞码扣",
+	
+	"command.showAccount.title": "查看账号",
+	"command.showAccount.category": "飞码扣",
+	
+	"settings.region.title": "区域设置",
+	"settings.region.description": "当前扩展运行区域（不可修改）",
+	"settings.region.cn": "中国",
+	"settings.region.global": "全球",
+	
+	"settings.auth.endpoint.title": "认证端点",
+	"settings.auth.endpoint.description": "OAuth2 认证服务器地址",
+	
+	"settings.api.endpoint.title": "API 端点",
+	"settings.api.endpoint.description": "模型推理 API 服务器地址",
+	
+	"settings.modelProviders.title": "可用模型",
+	"settings.modelProviders.description": "此区域的可用 AI 模型列表",
+	
+	"settings.language.title": "界面语言",
+	"settings.language.description": "VS Code 界面语言",
+	"settings.language.auto": "自动（跟随 VS Code）",
+	
+	"settings.auth.baseUrl.description": "OAuth2 认证服务器基础 URL（覆盖区域默认值）",
+	"settings.api.baseUrl.description": "模型推理 API 服务器基础 URL（覆盖区域默认值）",
+	"settings.auth.clientId.description": "用于认证的 OAuth2 客户端 ID（覆盖区域默认值）",
+	"settings.auth.issuer.description": "OAuth2 发行者 URL（覆盖区域默认值）",
+	"settings.showQuotaInStatusBar.description": "在状态栏显示剩余请求配额",
+	"settings.warnWhenQuotaLow.description": "当剩余请求少于此数量时显示警告",
+	"settings.apiEndpoint.description": "飞码 API 服务端点（仅供调试）",
+	
+	"error.auth.failed": "认证失败",
+	"error.auth.unauthorized": "未授权：请重新登录",
+	"error.auth.tokenExpired": "登录令牌已过期，请重新登录",
+	"error.apiConnection.failed": "API 连接失败",
+	"error.apiConnection.timeout": "API 请求超时",
+	"error.invalidConfig": "配置无效",
+	
+	"message.loggedIn": "已登录为 {0}",
+	"message.loggedOut": "已注销",
+	"message.completionReady": "代码补全已就绪",
+	"message.selectModelProvider": "请选择模型提供商",
+	
+	"status.authenticating": "正在认证...",
+	"status.authenticated": "已认证",
+	"status.notAuthenticated": "未认证",
+	"status.connecting": "正在连接到服务器...",
+	"status.connected": "已连接",
+	"status.disconnected": "连接已断开"
+}

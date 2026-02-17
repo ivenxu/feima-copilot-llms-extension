@@ -8,7 +8,7 @@ import * as vscode from 'vscode';
 import { ILogService } from '../platform/log/common/logService';
 import { FeimaAuthenticationService } from '../platform/authentication/vscode/feimaAuthenticationService';
 import { countTokens } from '../platform/tokenizer/tikTokenizer';
-import { FEIMA_CONFIG } from '../config';
+import { getResolvedConfig } from '../../config/configService';
 
 /**
  * Callback invoked as stream progresses with deltas.
@@ -27,15 +27,22 @@ export interface StreamDelta {
 		name: string;
 		arguments: string;
 	}>;
+	// P2 #26: Thinking block content
+	thinking?: string;
+	// P2 #27: Stateful marker content
+	stateful_marker?: string;
 }
 
 /**
- * Chat response result.
- * Simplified from feima-code ChatResponse.
+ * Chat response result with error type differentiation.
+ * Follows feima-code pattern: success/blocked/quotaExceeded/rateLimited/error.
  */
 export type ChatResponse =
 	| { type: 'success'; requestId?: string }
-	| { type: 'error'; reason: string; requestId?: string };
+	| { type: 'error'; reason: string; requestId?: string }
+	| { type: 'blocked'; reason: string; requestId?: string }
+	| { type: 'quotaExceeded'; reason: string; requestId?: string }
+	| { type: 'rateLimited'; reason: string; requestId?: string };
 
 /**
  * Model information from catalog
@@ -172,7 +179,8 @@ export class FeimaChatEndpoint {
 	 * Get API endpoint URL
 	 */
 	get apiUrl(): string {
-		return `${FEIMA_CONFIG.apiBaseUrl}/v1/chat/completions`;
+		const apiBase = getResolvedConfig().apiBaseUrl || '';
+		return `${apiBase}/chat/completions`;
 	}
 
 	/**
@@ -330,18 +338,28 @@ export class FeimaChatEndpoint {
 
 		// Add tools if provided and supported
 		if (options.tools && options.tools.length > 0 && this.supportsToolCalls) {
-			requestBody.tools = options.tools.map(tool => ({
-				type: 'function',
-				function: {
-					name: tool.name,
-					description: tool.description,
-					// Only include parameters if inputSchema has keys (pattern from feima-code)
-					// Empty objects can confuse models or trigger API errors
-					parameters: tool.inputSchema && Object.keys(tool.inputSchema).length > 0
-						? tool.inputSchema
-						: undefined
+			requestBody.tools = options.tools.map(tool => {
+				// P2 #15: Validate JSON schema format
+				let parameters: object | undefined;
+				if (tool.inputSchema && Object.keys(tool.inputSchema).length > 0) {
+					// Validate schema by checking it has properties
+					if (tool.inputSchema && typeof tool.inputSchema === 'object') {
+						parameters = tool.inputSchema;
+					} else {
+						this.log.warn(`[FeimaChatEndpoint] Invalid schema for tool ${tool.name}: expected object`);
+						parameters = undefined;
+					}
 				}
-			}));
+				
+				return {
+					type: 'function',
+					function: {
+						name: tool.name,
+						description: tool.description,
+						parameters
+					}
+				};
+			});
 
 			// Set tool_choice based on toolMode
 			// Only set when Required mode AND exactly 1 tool (match feima-code behavior)
@@ -374,45 +392,105 @@ export class FeimaChatEndpoint {
 
 		// Validate tool configuration
 		if (options.tools) {
-			// Check tool names
-			for (const tool of options.tools) {
-				if (!tool.name.match(/^[\w-]+$/)) {
-					throw new Error(`Invalid tool name "${tool.name}": only alphanumeric characters, hyphens, and underscores are allowed.`);
-				}
-			}
-
-			// Check tool count
-			if (options.tools.length > 128) {
-				throw new Error('Cannot have more than 128 tools per request.');
-			}
-
-			// Validate toolMode (match feima-code behavior)
-			if (options.toolMode === vscode.LanguageModelChatToolMode.Required && options.tools.length > 1) {
-				throw new Error('LanguageModelChatToolMode.Required is not supported with more than one tool');
-			}
-
-			// Warn if tools provided but not supported
-			if (!this.supportsToolCalls) {
-				this.log.warn(`[FeimaChatEndpoint] Tools provided but model ${this.model} does not support tool calls`);
-			}
+			this._validateTools(options.tools, options.toolMode);
 		}
 
-		// Validate tool call/result pairing in message history
+		// P2 #29: Validate tool call/result pairing in message history
+		// Every tool call must have exactly one matching result
+		// Issue #1 & #2: Use strict instanceof validation like feima-code
 		messages.forEach((message, i) => {
 			if (message.role === vscode.LanguageModelChatMessageRole.Assistant) {
 				const content = Array.isArray(message.content) ? message.content : [message.content];
-				const toolCallParts = content.filter(part => 
-					typeof part === 'object' && 'callId' in part && 'name' in part
+				
+				// Issue #1: Explicitly filter out DataPart before tool validation
+				// Filter out any data parts (they don't have toolCallPart semantics)
+				const filteredContent = content.filter(part => 
+					!(part instanceof vscode.LanguageModelDataPart)
 				);
 
-				if (toolCallParts.length > 0) {
-					const nextMessage = messages.at(i + 1);
-					if (!nextMessage || nextMessage.role !== vscode.LanguageModelChatMessageRole.User) {
-						throw new Error('Tool call must be followed by User message with tool results');
+				// Get tool call IDs using strict instanceof checks
+				const toolCallIds = new Set<string>(filteredContent
+					.filter(part => part instanceof vscode.LanguageModelToolCallPart)
+					.map(part => (part as ToolCallPart).callId) // Tool calls present in message
+				);
+
+				if (toolCallIds.size > 0) {
+					let nextIdx = i + 1;
+					const errMsg = 'Invalid request: Tool call must be followed by User message with LanguageModelToolResultPart with matching callId.';
+					
+					// Issue #2: Strict validation - ALL parts in User message must be result parts
+					while (toolCallIds.size > 0) {
+						const nextMessage = messages.at(nextIdx++);
+						if (!nextMessage || nextMessage.role !== vscode.LanguageModelChatMessageRole.User) {
+							throw new Error(errMsg);
+						}
+
+						// Issue #2: Validate that ALL parts in User message are result or data parts
+						const nextContent = Array.isArray(nextMessage.content) ? nextMessage.content : [nextMessage.content];
+						let foundAnyResult = false;
+						
+						for (const part of nextContent) {
+							// Only allow ToolResultPart or DataPart in message after tool call
+							const isToolResult = (part instanceof vscode.LanguageModelToolResultPart) || 
+								(part.constructor.name === 'LanguageModelToolResultPart2');
+							const isDataPart = part instanceof vscode.LanguageModelDataPart;
+							
+							if (!isToolResult && !isDataPart) {
+								this.log.error(`[FeimaChatEndpoint] Invalid part in User message after tool call: ${part.constructor.name}`);
+								throw new Error(errMsg);
+							}
+							
+							if (isToolResult) {
+								foundAnyResult = true;
+								toolCallIds.delete((part as ToolResultPart).callId);
+							}
+						}
+						
+						if (!foundAnyResult) {
+							throw new Error(errMsg);
+						}
+					}
+
+					if (toolCallIds.size > 0) {
+						const unmatched = Array.from(toolCallIds).join(', ');
+						throw new Error(`Tool calls not matched with results: ${unmatched}`);
 					}
 				}
 			}
 		});
+	}
+
+	/**
+	 * Validate tools configuration
+	 * Issue #1: Separated validation for clarity
+	 */
+	private _validateTools(
+		tools: readonly vscode.LanguageModelChatTool[],
+		toolMode?: vscode.LanguageModelChatToolMode
+	): void {
+		// Check tool names
+		for (const tool of tools) {
+			if (!tool.name.match(/^[\w-]+$/)) {
+				throw new Error(`Invalid tool name "${tool.name}": only alphanumeric characters, hyphens, and underscores are allowed.`);
+			}
+		}
+
+		// Check tool count
+		if (tools.length > 128) {
+			throw new Error('Cannot have more than 128 tools per request.');
+		}
+
+		// Validate toolMode
+		if (toolMode === vscode.LanguageModelChatToolMode.Required && tools.length > 1) {
+			throw new Error(vscode.l10n.t('error.toolModeNotSupported'));
+		}
+
+		// Warn if tools provided but not supported
+		if (!this.supportsToolCalls) {
+			this.log.warn(`[FeimaChatEndpoint] Tools provided but model ${this.model} does not support tool calls`);
+		}
+
+		this.log.debug(`[FeimaChatEndpoint] Validated ${tools.length} tools`);
 	}
 
 	/**
@@ -444,7 +522,7 @@ export class FeimaChatEndpoint {
 	 * @param token Cancellation token
 	 * @param tools Optional tools to provide
 	 * @param toolMode Optional tool mode
-	 * @returns Chat response result
+	 * @returns Chat response result with error type differentiation
 	 */
 	async makeChatRequest(
 		messages: vscode.LanguageModelChatMessage[],
@@ -469,24 +547,70 @@ export class FeimaChatEndpoint {
 			// Get headers (need to await since it's async)
 			const baseHeaders = await this.getHeaders();
 			
-			// Make HTTP request
-			const response = await fetch(this.apiUrl, {
-				method: 'POST',
-				headers: {
-					...baseHeaders,
-					'Authorization': `Bearer ${authToken}`,
-				},
-				body: JSON.stringify(requestBody),
-			});
+			// P2 #11: Add 30-second timeout to fetch request
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+			
+			let response: Response;
+			try {
+				response = await fetch(this.apiUrl, {
+					method: 'POST',
+					headers: {
+						...baseHeaders,
+						'Authorization': `Bearer ${authToken}`,
+					},
+					body: JSON.stringify(requestBody),
+					signal: controller.signal
+				});
+			} finally {
+				clearTimeout(timeoutId);
+			}
 
 			if (!response.ok) {
 				const errorText = await response.text();
 				this.log.error(`[FeimaChatEndpoint] Request failed: HTTP ${response.status}: ${errorText}`);
-				return { type: 'error', reason: `HTTP ${response.status}: ${errorText}` };
+				
+				// P2 #17: Validate error response JSON if present
+				if (errorText && errorText.startsWith('{')) {
+					try {
+						const errorJson = JSON.parse(errorText);
+						if (errorJson.code || errorJson.message) {
+							this.log.debug(`[FeimaChatEndpoint] Error details: ${errorJson.code || errorJson.message}`);
+						}
+					} catch (_) {
+						// Not valid JSON, continue
+					}
+				}
+				
+				// P2 #23: Error type differentiation
+				if (response.status === 403) {
+					// P2 #24 & Issue #6: Track/log blocked request for analytics
+					const retryAfter = response.headers.get('Retry-After');
+					this.log.warn(
+						`[FeimaChatEndpoint] Extension BLOCKED (HTTP 403) for model ${this.modelInfo.id}. ` +
+						`Retry-After: ${retryAfter || 'not specified'}, ` +
+						`Timestamp: ${new Date().toISOString()}`
+					);
+					return { type: 'blocked', reason: vscode.l10n.t('error.extensionBlocked', 'The extension has been temporarily blocked due to too many requests') };
+				} else if (response.status === 429) {
+					// Try to detect quota vs rate limit from headers or body
+					const isQuota = errorText.includes('quota') || response.headers.get('x-error-type') === 'quota_exceeded';
+					const retryAfter = response.headers.get('Retry-After');
+					// Issue #6: Log rate limit events with context
+					if (isQuota) {
+						this.log.info(`[FeimaChatEndpoint] Quota exceeded for model ${this.modelInfo.id}, retry after: ${retryAfter || 'unspecified'}`);
+						return { type: 'quotaExceeded', reason: vscode.l10n.t('error.quotaExceeded', 'Request quota exceeded') };
+					} else {
+						this.log.info(`[FeimaChatEndpoint] Rate limited for model ${this.modelInfo.id}, retry after: ${retryAfter || 'unspecified'}`);
+						return { type: 'rateLimited', reason: vscode.l10n.t('error.rateLimited', 'Too many requests, please retry later') };
+					}
+				} else {
+					return { type: 'error', reason: vscode.l10n.t('error.httpRequest', response.status.toString(), errorText) };
+				}
 			}
 
 			if (!response.body) {
-				return { type: 'error', reason: 'No response body received' };
+				return { type: 'error', reason: vscode.l10n.t('error.noResponseBody') };
 			}
 
 			// Parse SSE stream
@@ -515,7 +639,8 @@ export class FeimaChatEndpoint {
 		let buffer = '';
 		let fullText = '';
 		const toolCallsMap = new Map<number, { id: string; name: string; arguments: string }>();
-		const emittedToolCallIds = new Set<string>(); // Track emitted tool call IDs to prevent duplicates
+		// P1 #28: Remove duplicate deduplication tracking here
+		// Only the wrapper tracks emitted IDs (single source of truth)
 
 		try {
 			let done = false;
@@ -548,14 +673,11 @@ export class FeimaChatEndpoint {
 							// Emit accumulated tool calls when stream is done
 							if (toolCallsMap.size > 0) {
 								const completedCalls = Array.from(toolCallsMap.values()).filter(
-									call => call.id && call.name && !emittedToolCallIds.has(call.id)
+									call => call.id && call.name
 								);
 								if (completedCalls.length > 0) {
 									this.log.debug(`[FeimaChatEndpoint] Emitting ${completedCalls.length} tool calls at [DONE]`);
-									// Mark as emitted
-									completedCalls.forEach(call => emittedToolCallIds.add(call.id));
 									await callback(fullText, { toolCalls: completedCalls });
-									toolCallsMap.clear(); // Clear after emitting to prevent duplicate
 								}
 							}
 							continue;
@@ -575,6 +697,16 @@ export class FeimaChatEndpoint {
 							if (delta.content) {
 								fullText += delta.content;
 								streamDelta.text = delta.content;
+							}
+
+							// P2 #26: Handle thinking blocks - emit immediately
+							if (delta.thinking) {
+								streamDelta.thinking = delta.thinking;
+							}
+
+							// P2 #27: Handle stateful markers - emit immediately
+							if (delta.stateful_marker) {
+								streamDelta.stateful_marker = delta.stateful_marker;
 							}
 
 							// Accumulate tool calls silently (don't emit on every chunk)
@@ -603,17 +735,13 @@ export class FeimaChatEndpoint {
 
 							// Check for finish_reason - indicates this choice is complete
 							if (choice.finish_reason && toolCallsMap.size > 0) {
-								// Emit tool calls when finish_reason present (skip already emitted)
+								// Emit tool calls when finish_reason present
 								const completedCalls = Array.from(toolCallsMap.values()).filter(
-									call => call.id && call.name && !emittedToolCallIds.has(call.id)
+									call => call.id && call.name
 								);
 								if (completedCalls.length > 0) {
-								this.log.debug(`[FeimaChatEndpoint] Emitting ${completedCalls.length} tool calls at finish_reason: ${choice.finish_reason}`);
-									// Mark as emitted
-									completedCalls.forEach(call => emittedToolCallIds.add(call.id));
+									this.log.debug(`[FeimaChatEndpoint] Emitting ${completedCalls.length} tool calls at finish_reason: ${choice.finish_reason}`);
 									streamDelta.toolCalls = completedCalls;
-									// Clear map after emitting to prevent duplicate
-									toolCallsMap.clear();
 								}
 							}
 
@@ -633,12 +761,10 @@ export class FeimaChatEndpoint {
 			// Safety: emit any remaining tool calls if stream ended without [DONE]
 			if (toolCallsMap.size > 0) {
 				const completedCalls = Array.from(toolCallsMap.values()).filter(
-					call => call.id && call.name && !emittedToolCallIds.has(call.id)
+					call => call.id && call.name
 				);
 				if (completedCalls.length > 0) {
 					this.log.debug(`[FeimaChatEndpoint] Emitting ${completedCalls.length} tool calls at stream end`);
-					// Mark as emitted
-					completedCalls.forEach(call => emittedToolCallIds.add(call.id));
 					await callback(fullText, { toolCalls: completedCalls });
 				}
 			}

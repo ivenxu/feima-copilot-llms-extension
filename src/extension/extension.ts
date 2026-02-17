@@ -8,6 +8,7 @@ import { ModelCatalogService } from './models/modelCatalog';
 import { LogServiceImpl } from './platform/log/common/logService';
 import { VSCodeLogTarget, ConsoleLogTarget } from './platform/log/vscode/logService';
 import { LogLevel } from './platform/log/common/logService';
+import { FeimaConfigService } from '../config/configService';
 
 // Context key for tracking Feima auth sign-in state
 const FEIMA_AUTH_SIGNED_IN_KEY = 'github.copilot.feimaAuth.signedIn';
@@ -27,13 +28,22 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 		new ConsoleLogTarget('[Feima] ', LogLevel.Error)
 	]);
 	
-	logService.info('飞码扣 (Feima) extension is activating...');
+	logService.info('Feima extension is activating...');
 	
 	// Initialize context key to false immediately (before checking sessions)
 	// This ensures the menu item is visible from the start
 	await vscode.commands.executeCommand('setContext', FEIMA_AUTH_SIGNED_IN_KEY, false);
 
 	try {
+		// 0. Initialize configuration service with VS Code settings integration
+		const configService = FeimaConfigService.getInstance();
+		context.subscriptions.push(configService);
+		const config = configService.getConfig();
+		logService.info('[Init] ✅ Configuration service initialized');
+		logService.info(`   Auth Base URL: ${config.authBaseUrl}`);
+		logService.info(`   API Base URL: ${config.apiBaseUrl}`);
+		logService.info(`   Client ID: ${config.clientId}`);
+
 		// 1. Register authentication service and provider
 		const authLog = logService.createSubLogger('Auth');
 		
@@ -72,13 +82,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 		logService.info('[Init] ✅ Model catalog service created');
 
 		// 5. Register language model provider (Phase 0 - Week 1-2)
-	logService.info('');
-	logService.info('=== LANGUAGE MODEL PROVIDER REGISTRATION ===');
+		logService.info('');
+		logService.info('=== LANGUAGE MODEL PROVIDER REGISTRATION ===');
 	
 	if (!vscode.lm) {
 		logService.warn('❌ Language Model API (vscode.lm) not available!');
 		logService.warn('⚠️  This requires VS Code 1.85.0 or later with Copilot Chat installed.');
-		vscode.window.showWarningMessage('Language Model API not available. Please ensure GitHub Copilot Chat is installed.');
+			vscode.window.showWarningMessage(vscode.l10n.t('error.languageModelNotAvailable'));
 	} else {
 		logService.info('✅ Language Model API available');
 		logService.info(`   vscode.lm methods: ${Object.keys(vscode.lm).join(', ')}`);
@@ -132,16 +142,16 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 		}
 
 		logService.info('');
-		logService.info('✅ 飞码扣 (Feima) extension activated successfully!');
+		logService.info('✅ Feima extension activated successfully!');
 		logService.info('📊 Status: Phase 0 - Feature 1 (Authentication) COMPLETE, Feature 2 (Models) COMPLETE, Feature 3 (Inline Completion) COMPLETE');
 		logService.info('🎯 Next: Test model integration with Copilot Chat AND inline completions');
 		logService.info('');
-		logService.info('💡 Try: Ctrl+Shift+P → "Feima: 登录" then:');
+		logService.info('💡 Try: Ctrl+Shift+P → "Feima: Sign in" then:');
 		logService.info('   - Open GitHub Copilot Chat (test chat models)');
 		logService.info('   - Start coding in any file (test inline completions)');
 	} catch (error) {
 		logService.error(error as Error, 'Failed to activate extension');
-		vscode.window.showErrorMessage(`飞码扣启动失败: ${error}`);
+		vscode.window.showErrorMessage(vscode.l10n.t('error.activationFailed', String(error)));
 		throw error;
 	}
 }
@@ -170,6 +180,10 @@ function setupAuthenticationMenu(
 	};
 
 	// Update context key when sessions change
+	// The menu item automatically appears/disappears based on getSessions() result:
+	// - Has sessions (signed in) → menu hidden
+	// - No sessions (signed out) → menu shown
+	// We only need to update the context key; VS Code manages the menu.
 	context.subscriptions.push(
 		authService.onDidChangeSessions(async (_e: vscode.AuthenticationProviderAuthenticationSessionsChangeEvent) => {
 			logService.debug('[Auth] Session changed');
@@ -177,13 +191,7 @@ function setupAuthenticationMenu(
 			// Check if user is signed in
 			const isSignedIn = await authService.isAuthenticated();
 			await vscode.commands.executeCommand('setContext', FEIMA_AUTH_SIGNED_IN_KEY, isSignedIn);
-
-			// If no session exists (sign-out), request session access again
-			// to re-add the sign-in menu item to Accounts menu
-			if (!isSignedIn) {
-				logService.info('[Auth] User signed out, re-adding sign-in menu item');
-				requestSessionAccess();
-			}
+			logService.debug(`[Auth] Sign-in state updated: ${isSignedIn}`);
 		})
 	);
 
