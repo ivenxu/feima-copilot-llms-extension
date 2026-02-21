@@ -46,6 +46,7 @@ export interface FeimaModelAPIResponse {
 			parallel_tool_calls?: boolean;
 			vision?: boolean;
 			structured_outputs?: boolean;
+			thinking?: boolean;
 		};
 	};
 	billing?: {

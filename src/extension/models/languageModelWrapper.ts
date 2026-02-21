@@ -30,7 +30,7 @@ export class FeimaLanguageModelWrapper {
 			tools?: readonly vscode.LanguageModelChatTool[];
 			toolMode?: vscode.LanguageModelChatToolMode;
 		},
-		progress: vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart>,
+		progress: vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart>,
 		token: vscode.CancellationToken
 	): Promise<void> {
 		this.log.info(`[Wrapper] provideLanguageModelResponse called for model: ${endpoint.model}`);
@@ -46,21 +46,18 @@ export class FeimaLanguageModelWrapper {
 				progress.report(new vscode.LanguageModelTextPart(delta.text));
 			}
 
-			// P2 #26: Report thinking blocks
-			if (delta.thinking && vscode.LanguageModelThinkingPart) {
+			// Report reasoning/thinking content (proposed languageModelThinkingPart API)
+			if (delta.reasoningContent) {
+				this.log.debug(`[Wrapper] Emitting reasoning content of length: ${delta.reasoningContent.length}`);
 				try {
-					progress.report(new vscode.LanguageModelThinkingPart(delta.thinking));
+					const thinkingId = `thinking-${Date.now()}`;
+					progress.report(new vscode.LanguageModelThinkingPart(
+						delta.reasoningContent,
+						thinkingId,
+						{}
+					));
 				} catch (e) {
 					this.log.warn(`[Wrapper] Failed to report thinking part: ${e instanceof Error ? e.message : String(e)}`);
-				}
-			}
-
-			// P2 #27: Report stateful markers
-			if (delta.stateful_marker && vscode.LanguageModelDataPart) {
-				try {
-					progress.report(new vscode.LanguageModelDataPart(delta.stateful_marker));
-				} catch (e) {
-					this.log.warn(`[Wrapper] Failed to report data part: ${e instanceof Error ? e.message : String(e)}`);
 				}
 			}
 
@@ -77,7 +74,7 @@ export class FeimaLanguageModelWrapper {
 
 						// Check for duplicate tool call ID
 						if (reportedToolCallIds.has(call.id)) {
-							this.log.error(`[Wrapper] ⚠️  DUPLICATE TOOL CALL DETECTED! Already reported ${call.name} (${call.id})`);
+							this.log.info(`[Wrapper] ⚠️  DUPLICATE TOOL CALL DETECTED! Already reported ${call.name} (${call.id})`);
 							continue; // Skip duplicates
 						}
 

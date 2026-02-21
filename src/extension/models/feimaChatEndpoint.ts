@@ -27,8 +27,8 @@ export interface StreamDelta {
 		name: string;
 		arguments: string;
 	}>;
-	// P2 #26: Thinking block content
-	thinking?: string;
+	// Thinking/reasoning content from models that support thinking
+	reasoningContent?: string;
 	// P2 #27: Stateful marker content
 	stateful_marker?: string;
 }
@@ -65,20 +65,20 @@ export interface ChatCompletionRequest {
 	stream: boolean;
 	temperature?: number;
 	max_tokens?: number;
+	enable_thinking?: boolean;
 	tools?: Array<{
 		type: 'function';
 		function: {
 			name: string;
-			description: string;
+			description?: string;
 			parameters?: object;
 		};
 	}>;
-	tool_choice?: { type: 'function'; function: { name: string } };
+	tool_choice?: string | { type: 'function'; function: { name: string } };
 }
 
 /**
- * Minimal interface for LanguageModelToolResultPart 
- * (actual type from VS Code API)
+ * Minimal interface for LanguageModelToolResultPart
  */
 interface ToolResultPart {
 	callId: string;
@@ -103,6 +103,7 @@ export interface ModelInfo {
 	maxOutputTokens: number;
 	supportsToolCalls: boolean;
 	supportsVision: boolean;
+	supportsThinking: boolean;
 }
 
 /**
@@ -173,6 +174,13 @@ export class FeimaChatEndpoint {
 	 */
 	get supportsVision(): boolean {
 		return this.modelInfo.supportsVision;
+	}
+
+	/**
+	 * Check if model supports thinking/reasoning
+	 */
+	get supportsThinking(): boolean {
+		return this.modelInfo.supportsThinking;
 	}
 
 	/**
@@ -335,7 +343,11 @@ export class FeimaChatEndpoint {
 			temperature: 0.7,
 			max_tokens: this.maxOutputTokens
 		};
-
+		// Add thinking configuration if model supports it
+		if (this.supportsThinking) {
+			requestBody.enable_thinking = true;
+			this.log.debug(`[FeimaChatEndpoint] Enabled thinking for model: ${this.model}`);
+		}
 		// Add tools if provided and supported
 		if (options.tools && options.tools.length > 0 && this.supportsToolCalls) {
 			requestBody.tools = options.tools.map(tool => {
@@ -509,7 +521,7 @@ export class FeimaChatEndpoint {
 				}).join(''));
 
 		const tokenCount = countTokens(this.model, textContent);
-		this.log.debug(`[FeimaChatEndpoint] provideTokenCount: model=${this.model}, textLength=${textContent.length}, tokenCount=${tokenCount}`);
+		this.log.trace(`[FeimaChatEndpoint] provideTokenCount: model=${this.model}, textLength=${textContent.length}, tokenCount=${tokenCount}`);
 		return tokenCount;
 	}
 
@@ -669,6 +681,8 @@ export class FeimaChatEndpoint {
 					if (line.startsWith('data: ')) {
 						const data = line.slice(6).trim();
 
+						this.log.trace(`[FeimaChatEndpoint] SSE data: ${data}`);
+
 						if (data === '[DONE]') {
 							// Emit accumulated tool calls when stream is done
 							if (toolCallsMap.size > 0) {
@@ -699,14 +713,9 @@ export class FeimaChatEndpoint {
 								streamDelta.text = delta.content;
 							}
 
-							// P2 #26: Handle thinking blocks - emit immediately
-							if (delta.thinking) {
-								streamDelta.thinking = delta.thinking;
-							}
-
-							// P2 #27: Handle stateful markers - emit immediately
-							if (delta.stateful_marker) {
-								streamDelta.stateful_marker = delta.stateful_marker;
+							// Handle reasoning/thinking content - emit immediately
+							if (delta.reasoning_content) {
+								streamDelta.reasoningContent = delta.reasoning_content;
 							}
 
 							// Accumulate tool calls silently (don't emit on every chunk)
@@ -745,8 +754,8 @@ export class FeimaChatEndpoint {
 								}
 							}
 
-							// Invoke callback with delta (text only, or text + completed tool calls)
-							if (streamDelta.text || streamDelta.toolCalls) {
+							// Invoke callback with delta (text, reasoning, or completed tool calls)
+							if (streamDelta.text || streamDelta.toolCalls || streamDelta.reasoningContent) {
 								await callback(fullText, streamDelta);
 							}
 

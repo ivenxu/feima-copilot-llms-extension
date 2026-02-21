@@ -160,7 +160,8 @@ export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvi
 				maxInputTokens: catalogModel.capabilities.limits.max_prompt_tokens,
 				maxOutputTokens: catalogModel.capabilities.limits.max_output_tokens,
 				supportsToolCalls: catalogModel.capabilities.supports.tool_calls || false,
-				supportsVision: catalogModel.capabilities.supports.vision || false
+				supportsVision: catalogModel.capabilities.supports.vision || false,
+				supportsThinking: catalogModel.capabilities.supports.thinking || false
 			};
 
 			// Create and cache endpoint

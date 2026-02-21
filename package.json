@@ -41,7 +41,8 @@
   },
   "enabledApiProposals": [
     "chatProvider",
-    "inlineCompletionsAdditions"
+    "inlineCompletionsAdditions",
+    "languageModelThinkingPart"
   ],
   "extensionDependencies": [
     "github.copilot-chat"

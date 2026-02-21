@@ -8,7 +8,6 @@ import { IFeimaAuthenticationService } from '../common/feimaAuthentication';
 import { OAuth2Service, ITokenResponse, IAuthorizationUrl, IOAuth2Config } from '../../../auth/oauth2Service';
 import { FeimaUriEventHandler, ICallbackData } from '../common/feimaUriEventHandler';
 import { ILogService } from '../../log/common/logService';
-import { activeRegionConfig } from '../../../../config/regions';
 import { FeimaConfigService } from '../../../../config/configService';
 
 /**
@@ -68,9 +67,11 @@ export class FeimaAuthenticationService implements IFeimaAuthenticationService {
 		this._oauth2Service = new OAuth2Service();
 		this._uriHandler = new FeimaUriEventHandler(_logService);
 		
-		// Construct redirect URI dynamically based on region-specific extension ID
-		// Format: vscode://feima.<extensionId>/oauth/callback
-		this._redirectUri = `${vscode.env.uriScheme}://feima.${activeRegionConfig.extensionId}/oauth/callback`;
+		// Construct redirect URI using the actual runtime extension ID from VS Code context.
+		// Using context.extension.id (publisher.name) is more reliable than deriving it from
+		// activeRegionConfig.extensionId, which depends on FEIMA_REGION being set at build time.
+		// Format: vscode://<publisher>.<extensionName>/oauth/callback
+		this._redirectUri = `${vscode.env.uriScheme}://${this._context.extension.id}/oauth/callback`;
 		
 		this._logService.debug('[FeimaAuthenticationService] Initialized with multi-request support');
 		this._logService.debug(`[FeimaAuthenticationService] Redirect URI: ${this._redirectUri}`);
