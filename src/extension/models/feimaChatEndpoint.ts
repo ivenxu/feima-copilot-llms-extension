@@ -336,6 +336,33 @@ export class FeimaChatEndpoint {
 			}
 		}
 
+		// Log all system messages before merging
+		const systemMsgsBefore = requestMessages.filter(m => m.role === 'system');
+		this.log.debug(`[FeimaChatEndpoint] createRequestBody: total=${requestMessages.length} messages, system=${systemMsgsBefore.length}`);
+		systemMsgsBefore.forEach((m, idx) => {
+			const content = typeof m.content === 'string' ? m.content : JSON.stringify(m.content);
+			this.log.debug(`[FeimaChatEndpoint] system[${idx}] (${content.length} chars): ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}`);
+		});
+
+		// Collapse consecutive system messages — some providers (e.g. MiniMax) only accept
+		// a single system message per request. Pattern from copilot-chat promptRenderer.ts.
+		for (let i = 1; i < requestMessages.length; i++) {
+			const current = requestMessages[i];
+			const prev = requestMessages[i - 1];
+			if (current.role === 'system' && prev.role === 'system') {
+				const prevContent = typeof prev.content === 'string' ? prev.content : '';
+				const currContent = typeof current.content === 'string' ? current.content : '';
+				prev.content = prevContent.trimEnd() + '\n' + currContent;
+				requestMessages.splice(i, 1);
+				i--;
+			}
+		}
+
+		const systemMsgsAfter = requestMessages.filter(m => m.role === 'system');
+		if (systemMsgsBefore.length !== systemMsgsAfter.length) {
+			this.log.debug(`[FeimaChatEndpoint] Merged ${systemMsgsBefore.length} system messages → ${systemMsgsAfter.length}`);
+		}
+
 		const requestBody: ChatCompletionRequest = {
 			model: this.model,
 			messages: requestMessages,
@@ -350,19 +377,20 @@ export class FeimaChatEndpoint {
 		}
 		// Add tools if provided and supported
 		if (options.tools && options.tools.length > 0 && this.supportsToolCalls) {
+			this.log.debug(`[FeimaChatEndpoint] Sending ${options.tools.length} tools: ${options.tools.map(t => t.name).join(', ')}`);
 			requestBody.tools = options.tools.map(tool => {
-				// P2 #15: Validate JSON schema format
-				let parameters: object | undefined;
-				if (tool.inputSchema && Object.keys(tool.inputSchema).length > 0) {
-					// Validate schema by checking it has properties
-					if (tool.inputSchema && typeof tool.inputSchema === 'object') {
-						parameters = tool.inputSchema;
-					} else {
-						this.log.warn(`[FeimaChatEndpoint] Invalid schema for tool ${tool.name}: expected object`);
-						parameters = undefined;
-					}
+				// Always provide a valid parameters object — MiniMax rejects undefined/missing parameters
+				// with error 2013 "function name or parameters is empty"
+				let parameters: object;
+				if (tool.inputSchema && typeof tool.inputSchema === 'object' && Object.keys(tool.inputSchema).length > 0) {
+					parameters = tool.inputSchema;
+				} else {
+					// Default empty schema — required by MiniMax and other strict providers
+					parameters = { type: 'object', properties: {} };
 				}
-				
+
+				this.log.debug(`[FeimaChatEndpoint] Tool: name="${tool.name}", hasSchema=${Object.keys(tool.inputSchema ?? {}).length > 0}`);
+
 				return {
 					type: 'function',
 					function: {
@@ -521,7 +549,6 @@ export class FeimaChatEndpoint {
 				}).join(''));
 
 		const tokenCount = countTokens(this.model, textContent);
-		this.log.trace(`[FeimaChatEndpoint] provideTokenCount: model=${this.model}, textLength=${textContent.length}, tokenCount=${tokenCount}`);
 		return tokenCount;
 	}
 
@@ -543,17 +570,21 @@ export class FeimaChatEndpoint {
 		tools?: readonly vscode.LanguageModelChatTool[],
 		toolMode?: vscode.LanguageModelChatToolMode
 	): Promise<ChatResponse> {
+		this.log.debug(`[FeimaChatEndpoint] makeChatRequest called: model=${this.model}, messages=${messages.length}`);
+		
 		// Validate request
 		this.validateRequest(messages, { tools, toolMode });
 
 		// Get auth token
 		const authToken = await this.getAuthToken();
 		if (!authToken) {
+			this.log.error(`[FeimaChatEndpoint] No auth token available`);
 			return { type: 'error', reason: 'Authentication failed: no token available' };
 		}
 
 		// Create request body
 		const requestBody = this.createRequestBody(messages, { tools, toolMode });
+		this.log.debug(`[FeimaChatEndpoint] Request body created: model=${requestBody.model}, stream=${requestBody.stream}, headers will be added`);
 
 		try {
 			// Get headers (need to await since it's async)
@@ -562,6 +593,8 @@ export class FeimaChatEndpoint {
 			// P2 #11: Add 30-second timeout to fetch request
 			const controller = new AbortController();
 			const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+			
+			this.log.debug(`[FeimaChatEndpoint] Sending POST to ${this.apiUrl}`);
 			
 			let response: Response;
 			try {
@@ -577,6 +610,8 @@ export class FeimaChatEndpoint {
 			} finally {
 				clearTimeout(timeoutId);
 			}
+
+			this.log.debug(`[FeimaChatEndpoint] Response received: status=${response.status}, hasBody=${!!response.body}, contentLength=${response.headers.get('content-length')}`);
 
 			if (!response.ok) {
 				const errorText = await response.text();
@@ -622,11 +657,14 @@ export class FeimaChatEndpoint {
 			}
 
 			if (!response.body) {
+				this.log.error(`[FeimaChatEndpoint] Response has no body`);
 				return { type: 'error', reason: vscode.l10n.t('error.noResponseBody') };
 			}
 
+			this.log.debug(`[FeimaChatEndpoint] Starting SSE stream parsing`);
 			// Parse SSE stream
 			await this._parseSSEStream(response.body, callback, token);
+			this.log.debug(`[FeimaChatEndpoint] SSE stream parsing completed successfully`);
 
 			return { type: 'success' };
 
@@ -650,9 +688,13 @@ export class FeimaChatEndpoint {
 		const decoder = new TextDecoder('utf-8');
 		let buffer = '';
 		let fullText = '';
+		let chunkCount = 0;
+		let emitCount = 0;
 		const toolCallsMap = new Map<number, { id: string; name: string; arguments: string }>();
 		// P1 #28: Remove duplicate deduplication tracking here
 		// Only the wrapper tracks emitted IDs (single source of truth)
+
+		this.log.debug(`[FeimaChatEndpoint] Starting SSE stream parsing`);
 
 		try {
 			let done = false;
@@ -661,10 +703,13 @@ export class FeimaChatEndpoint {
 				done = result.done;
 				
 				if (done || !result.value) {
+					this.log.debug(`[FeimaChatEndpoint] Stream ended: done=${done}, value=${!result.value ? 'empty' : 'has-data'}`);
 					break;
 				}
 				
 				const value = result.value;
+				const rawChunk = new TextDecoder('utf-8').decode(value);
+				this.log.trace(`[FeimaChatEndpoint] Received raw stream chunk: ${rawChunk.length} bytes`);
 
 				// Decode chunk and add to buffer
 				buffer += decoder.decode(value, { stream: true });
@@ -680,10 +725,10 @@ export class FeimaChatEndpoint {
 
 					if (line.startsWith('data: ')) {
 						const data = line.slice(6).trim();
-
-						this.log.trace(`[FeimaChatEndpoint] SSE data: ${data}`);
+						chunkCount++;
 
 						if (data === '[DONE]') {
+							this.log.debug(`[FeimaChatEndpoint] Received [DONE] marker after ${chunkCount} chunks`);
 							// Emit accumulated tool calls when stream is done
 							if (toolCallsMap.size > 0) {
 								const completedCalls = Array.from(toolCallsMap.values()).filter(
@@ -691,6 +736,7 @@ export class FeimaChatEndpoint {
 								);
 								if (completedCalls.length > 0) {
 									this.log.debug(`[FeimaChatEndpoint] Emitting ${completedCalls.length} tool calls at [DONE]`);
+									emitCount++;
 									await callback(fullText, { toolCalls: completedCalls });
 								}
 							}
@@ -699,8 +745,18 @@ export class FeimaChatEndpoint {
 
 						try {
 							const parsed = JSON.parse(data);
+							
+							// Check if this is an error response (not a normal choice response)
+							if (parsed.error) {
+								const errorMsg = parsed.error.message || 'Unknown error';
+								const errorCode = parsed.error.code || parsed.error.http_code || 'unknown';
+								this.log.error(`[FeimaChatEndpoint] API Error from provider: ${errorCode} - ${errorMsg}`);
+								throw new Error(`Provider error: ${errorMsg}`);
+							}
+							
 							const choice = parsed.choices?.[0];
 							if (!choice) {
+								this.log.debug(`[FeimaChatEndpoint] Chunk #${chunkCount}: No choice[0] in choices array. Full chunk: ${JSON.stringify(parsed).substring(0, 300)}`);
 								continue;
 							}
 
@@ -756,6 +812,8 @@ export class FeimaChatEndpoint {
 
 							// Invoke callback with delta (text, reasoning, or completed tool calls)
 							if (streamDelta.text || streamDelta.toolCalls || streamDelta.reasoningContent) {
+								emitCount++;
+								this.log.trace(`[FeimaChatEndpoint] Callback #${emitCount}: text=${streamDelta.text ? streamDelta.text.length + 'c' : '-'} reason=${streamDelta.reasoningContent ? streamDelta.reasoningContent.length + 'c' : '-'} calls=${streamDelta.toolCalls?.length ?? 0}`);
 								await callback(fullText, streamDelta);
 							}
 
@@ -766,6 +824,8 @@ export class FeimaChatEndpoint {
 					}
 				}
 			}
+
+			this.log.debug(`[FeimaChatEndpoint] Stream parsing complete: ${chunkCount} chunks processed, ${emitCount} callbacks invoked, fullText=${fullText.length} chars`);
 
 			// Safety: emit any remaining tool calls if stream ended without [DONE]
 			if (toolCallsMap.size > 0) {

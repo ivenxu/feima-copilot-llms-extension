@@ -38,9 +38,12 @@ export class FeimaLanguageModelWrapper {
 
 		// Track reported tool call IDs to detect duplicates
 		const reportedToolCallIds = new Set<string>();
+		let callbackInvokeCount = 0;
 
 		// Create callback that converts deltas to VS Code progress reports
 		const finishCallback: FinishedCallback = async (_fullText: string, delta: StreamDelta): Promise<undefined> => {
+			callbackInvokeCount++;
+			
 			// Report text content
 			if (delta.text) {
 				progress.report(new vscode.LanguageModelTextPart(delta.text));
@@ -48,7 +51,7 @@ export class FeimaLanguageModelWrapper {
 
 			// Report reasoning/thinking content (proposed languageModelThinkingPart API)
 			if (delta.reasoningContent) {
-				this.log.debug(`[Wrapper] Emitting reasoning content of length: ${delta.reasoningContent.length}`);
+				this.log.debug(`[Wrapper] Emitting reasoning: ${delta.reasoningContent.length} chars`);
 				try {
 					const thinkingId = `thinking-${Date.now()}`;
 					progress.report(new vscode.LanguageModelThinkingPart(
@@ -79,7 +82,7 @@ export class FeimaLanguageModelWrapper {
 						}
 
 						const argsStr = call.arguments || '{}';
-						this.log.debug(`[Wrapper] Tool call ${call.name} (${call.id}) arguments length: ${argsStr.length}`);
+						this.log.debug(`[Wrapper] Tool call ${call.name} (${call.id})`);
 
 						// P1 #25: Fail-hard on invalid JSON (pattern from feima-code)
 						// Validate JSON format first
@@ -121,6 +124,7 @@ export class FeimaLanguageModelWrapper {
 		};
 
 		// Delegate to endpoint (pattern from feima-code)
+		this.log.debug(`[Wrapper] Calling endpoint.makeChatRequest`);
 		const result = await endpoint.makeChatRequest(
 			messages,
 			finishCallback,
@@ -128,6 +132,8 @@ export class FeimaLanguageModelWrapper {
 			options.tools,
 			options.toolMode
 		);
+
+		this.log.debug(`[Wrapper] makeChatRequest returned: type=${result.type}${result.type !== 'success' ? `, reason=${result.reason}` : ''}, total callbacks=${callbackInvokeCount}`);
 
 		// Handle error result
 		// P1 #23: Handle structured error types (blocked, quotaExceeded, rateLimited)
