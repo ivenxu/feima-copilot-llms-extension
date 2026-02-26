@@ -1,0 +1,96 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'README.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'docs/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./docs
+        run: npm ci
+
+      - name: Build website
+        working-directory: ./docs
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs-dist
+
+  deploy-github-pages:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  deploy-oss:
+    if: github.ref == 'refs/heads/main'
+    needs: [build, deploy-github-pages]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ossutil
+        run: |
+          wget https://gosspublic.alicdn.com/ossutil/1.7.16/ossutil64
+          chmod 755 ossutil64
+
+      - name: Configure ossutil
+        env:
+          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          ./ossutil64 config -e oss-${{ secrets.ALIYUN_OSS_REGION }}.aliyuncs.com \
+            -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
+            -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
+            -L CH -c /tmp/ossutil.conf
+
+      - name: Deploy to Alibaba OSS
+        run: |
+          ./ossutil64 -c /tmp/ossutil.conf cp -r -f ./docs-dist oss://${{ secrets.ALIYUN_OSS_BUCKET }}/docs/
+
+      - name: Configure ossutil for CDN
+        env:
+          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          ./ossutil64 config -e cdn.${{ secrets.ALIYUN_OSS_REGION }}.aliyuncs.com \
+            -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
+            -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
+            -L CH -c /tmp/ossutil-cdn.conf
+
+      - name: Refresh CDN
+        run: |
+          ./ossutil64 -c /tmp/ossutil-cdn.conf refresh -r oss://${{ secrets.ALIYUN_OSS_BUCKET }}/docs/

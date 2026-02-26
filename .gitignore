@@ -165,5 +165,13 @@ tmp/
 temp/
 *.tmp
 
+# Documentation build artifacts
+docs-dist/
+docs/node_modules/
+docs/.astro/
+
+# Git worktree for docs
+.feima-docs/
+
 # Debug logs
 debug.log
