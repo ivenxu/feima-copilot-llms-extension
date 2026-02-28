@@ -167,6 +167,7 @@ temp/
 
 # Documentation build artifacts
 docs-dist/
+docs/dist/
 docs/node_modules/
 docs/.astro/
 
