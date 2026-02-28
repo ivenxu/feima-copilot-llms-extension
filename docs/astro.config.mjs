@@ -74,6 +74,6 @@ export default defineConfig({
     }),
   ],
 
-  site: 'https://feima.tech',
-  base: '/docs',
+  site: 'https://ivenxu.github.io',
+  base: '/feima-copilot-llms-extension',
 });
