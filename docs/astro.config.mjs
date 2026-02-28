@@ -74,6 +74,6 @@ export default defineConfig({
     }),
   ],
 
-  site: 'https://ivenxu.github.io',
-  base: '/feima-copilot-llms-extension',
+  site: process.env.SITE_URL ?? 'https://ivenxu.github.io',
+  base: process.env.BASE_PATH ?? '/feima-copilot-llms-extension',
 });

@@ -14,34 +14,45 @@ feima-copilot-llms-extension/              # Main project
 ├── docs/                                  # Documentation site (this directory)
 │   ├── src/
 │   │   ├── content/docs/                  # Markdown documentation
-│   │   │   ├── index.md                  # English landing page
-│   │   │   ├── guides/                   # User guides
-│   │   │   ├── reference/                # API/reference docs
-│   │   │   ├── dev/                      # Developer docs
-│   │   │   └── zh-cn/                    # Chinese translations
-│   │   ├── i18n/ui.ts                    # UI translations (EN/ZH)
-│   │   └── content.config.ts             # Content schema
+│   │   │   ├── index.md                  # Chinese landing page (root locale)
+│   │   │   ├── guides/                   # User guides (Chinese)
+│   │   │   ├── reference/                # API/reference docs (Chinese)
+│   │   │   ├── dev/                      # Developer docs (Chinese)
+│   │   │   └── en/                       # English locale
+│   │   └── content/config.ts             # Content collection schema
 │   ├── astro.config.mjs                  # Astro + Starlight config
 │   ├── package.json                      # Docs dependencies
 │   └── public/                           # Static assets
-├── docs-dist/                            # Built documentation (not committed)
+├── docs/dist/                            # Built documentation (not committed)
 └── dist/                                 # Extension build (esbuild)
 ```
 
 ## Key Design Decisions
 
-### Build Conflict Avoidance
+### Build Output Location
 
-The extension uses esbuild (outputs to `dist/`) and Astro defaults to `./dist`. To avoid conflicts, the docs are configured to build to `../docs-dist/`:
+The docs build to `docs/dist/` (inside the `docs/` directory). This keeps the output alongside `docs/node_modules/` so Node.js can resolve SSR-externalized packages during the build.
 
 ```javascript
 // astro.config.mjs
 export default defineConfig({
   output: 'static',
-  outDir: '../docs-dist',  // Points to parent directory
-  base: '/docs',           // URL prefix
+  outDir: './dist',           // Inside docs/ — keeps module resolution working
+  site: process.env.SITE_URL ?? 'https://ivenxu.github.io',
+  base: process.env.BASE_PATH ?? '/feima-copilot-llms-extension',
 });
 ```
+
+### Multi-Deployment Configuration
+
+The `site` and `base` values differ per deployment target and are controlled via environment variables at build time:
+
+| Target | `SITE_URL` | `BASE_PATH` | Final URL |
+|--------|-----------|------------|-----------|
+| GitHub Pages (default) | `https://ivenxu.github.io` | `/feima-copilot-llms-extension` | https://ivenxu.github.io/feima-copilot-llms-extension/ |
+| Alibaba OSS/CDN | `https://feima.tech` | `/docs` | https://feima.tech/docs/ |
+
+The CI builds the site **twice** — once per target — using different env vars, ensuring correct asset paths for each deployment.
 
 ### Separate Package Management
 
@@ -65,7 +76,10 @@ cd docs
 npm run dev
 ```
 
-Visit http://localhost:4321/docs to view the site. Changes auto-reload.
+Visit http://localhost:4321/feima-copilot-llms-extension to view the site. Changes auto-reload.
+
+> **Note:** The local dev server uses the default `BASE_PATH` (`/feima-copilot-llms-extension`).
+> To use a different base locally, set the env var: `BASE_PATH=/docs npm run dev`
 
 ### Build for Production
 
@@ -73,7 +87,7 @@ Visit http://localhost:4321/docs to view the site. Changes auto-reload.
 npm run docs:build
 ```
 
-Output is written to `../docs-dist/` (at project root).
+Output is written to `docs/dist/` (inside the `docs/` directory).
 
 ### Preview Production Build
 
@@ -81,7 +95,7 @@ Output is written to `../docs-dist/` (at project root).
 npm run docs:preview
 ```
 
-Serves the built `docs-dist/` locally for final verification.
+Serves the built `docs/dist/` locally for final verification.
 
 ## Content Structure
 
@@ -136,40 +150,46 @@ description: Page description
 
 ### Bilingual Support
 
-Chinese translations go in `src/content/docs/zh-cn/`:
+Chinese is the **root locale** and English lives under `en/`:
 
 ```
 src/content/docs/
-├── index.md              # English
-├── guides/quickstart.md  # English
-└── zh-cn/
-    ├── index.md          # Chinese translation
+├── index.md              # Chinese (root locale)
+├── guides/quickstart.md  # Chinese
+└── en/
+    ├── index.md          # English
     └── guides/
-        └── quickstart.md # Chinese translation
+        └── quickstart.md # English
 ```
 
-Pages without Chinese translations fallback to English automatically.
+Pages without an English translation fall back to the Chinese version automatically.
+
+The language switcher is shown in the sidebar. Both languages are served from the same build.
 
 ## Deployment
 
 ### Dual Deployment Strategy
 
-The documentation is deployed to both GitHub Pages (global) and Alibaba OSS + CDN (China):
+The documentation is deployed to both GitHub Pages (global) and Alibaba OSS + CDN (China) from the same source. The CI builds the site **twice** with different environment variables:
 
-| Target | URL | Use Case |
-|--------|-----|----------|
-| GitHub Pages | https://feima.tech/docs | Global users |
-| Alibaba OSS | https://docs.feima.cn | China users |
+| Target | `SITE_URL` | `BASE_PATH` | URL |
+|--------|-----------|------------|-----|
+| GitHub Pages | `https://ivenxu.github.io` | `/feima-copilot-llms-extension` | https://ivenxu.github.io/feima-copilot-llms-extension/ |
+| Alibaba OSS | `https://feima.tech` | `/docs` | https://feima.tech/docs/ |
+
+Both deployments serve the full bilingual site (CN + EN) — users switch language via the sidebar picker.
 
 ### CI/CD Pipeline
 
 Deployment is automated via `.github/workflows/deploy-docs.yml`:
 
 1. Triggers on push to `main` branch (changes to `docs/**` or `README.md`)
-2. Runs `npm run docs:build`
-3. Uploads artifact
-4. Deploys to GitHub Pages
-5. Deploys to Alibaba OSS and refreshes CDN
+2. `build` job:
+   - Installs dependencies once
+   - Builds with GitHub Pages config → uploads as `upload-pages-artifact`
+   - Builds with OSS config → uploads as `docs-oss` artifact
+3. `deploy-github-pages` job: deploys to GitHub Pages
+4. `deploy-oss` job: downloads `docs-oss` artifact, deploys to Alibaba OSS, refreshes CDN
 
 ### Required GitHub Secrets (China Deployment)
 
