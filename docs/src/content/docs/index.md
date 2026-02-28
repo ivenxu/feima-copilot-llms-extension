@@ -1,93 +1,91 @@
 ---
-title: 欢迎使用飞码扣
-description: 为 GitHub Copilot 提供中国 AI 模型支持的 VS Code 扩展
+title: Feima Copilot Documentation
+description: VS Code extension for GitHub Copilot with Chinese AI model support
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+# Welcome to Feima Copilot
 
-# 欢迎使用飞码扣
+Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with Chinese AI model support and accelerated access to international models.
 
-飞码扣是一个 VS Code 扩展，为 GitHub Copilot Chat 增强中国 AI 模型支持，并提供加速访问国际模型的功能。
+## What is Feima Copilot?
 
-## 什么是飞码扣？
+**Feima Copilot (飞码扣)** is a VS Code extension that provides:
 
-**飞码扣 (Feima Copilot)** 是一个 VS Code 扩展，提供以下功能：
+- 🇨🇳 **Chinese AI Models**: Direct access to DeepSeek Coder V2, Tongyi Qianwen Coder, Tencent Hunyuan, and other Chinese models
+- 🚀 **Accelerated International Models**: Stable access to GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro via Feima acceleration
+- 💬 **Seamless Integration**: Works directly within GitHub Copilot Chat without switching interfaces
+- 💰 **Pay-Per-Use**: Pay only for requests you make, not monthly subscriptions
+- 🔒 **Secure**: OAuth2 authentication with code that never leaves VS Code
 
-- 🇨🇳 **中国 AI 模型**：直接访问 DeepSeek Coder V2、通义千问 Coder、腾讯混元等中国模型
-- 🚀 **国际模型加速**：通过飞码加速稳定访问 GPT-4o、Claude 3.5 Sonnet、Gemini 1.5 Pro
-- 💬 **无缝集成**：直接在 GitHub Copilot Chat 中使用，无需切换界面
-- 💰 **按次计费**：只为使用的请求付费，无需月付订阅
-- 🔒 **安全可靠**：OAuth2 认证，代码不离开 VS Code
-
-## 快速开始
+## Quick Start
 
 <CardGrid stagger>
-  <Card title="安装" icon="lucide:download">
-    从 VS Code 应用商店安装扩展和 GitHub Copilot Chat
+  <Card title="Install" icon="lucide:download">
+    Install the extension from VS Code Marketplace and GitHub Copilot Chat
   </Card>
-  <Card title="认证" icon="lucide:user">
-    使用 OAuth2 登录您的飞码账号
+  <Card title="Authenticate" icon="lucide:user">
+    Sign in with your Feima account via OAuth2
   </Card>
-  <Card title="选择模型" icon="lucide:bot">
-    在 Copilot Chat 中选择您偏好的模型
+  <Card title="Select Model" icon="lucide:bot">
+    Choose your preferred model in Copilot Chat
   </Card>
-  <Card title="开始编程" icon="lucide:code">
-    提问、获取代码建议、提升您的效率
+  <Card title="Start Coding" icon="lucide:code">
+    Ask questions, get code suggestions, and boost your productivity
   </Card>
 </CardGrid>
 
-## 支持的模型
+## Supported Models
 
-### 中国模型（直连）
+### Chinese Models (Direct Connection)
 
-| 模型 | 提供商 | 最适用于 |
-|------|--------|----------|
-| DeepSeek Coder V2 | DeepSeek | 代码生成、代码补全、技术问答 |
-| 通义千问 3 Coder | 阿里云 | 中文代码注释、文档生成 |
-| 腾讯混元 | 腾讯 | 通用问答、代码理解 |
+| Model | Provider | Best For |
+|-------|----------|----------|
+| DeepSeek Coder V2 | DeepSeek | Code generation, code completion, technical Q&A |
+| Tongyi Qianwen 3 Coder | Alibaba | Chinese code comments, documentation generation |
+| Tencent Hunyuan | Tencent | General Q&A, code understanding |
 
-### 国际模型（加速）
+### International Models (Accelerated)
 
-| 模型 | 提供商 | 最适用于 |
-|------|--------|----------|
-| GPT-4o | OpenAI | 复杂逻辑、架构设计 |
-| Claude 3.5 Sonnet | Anthropic | 代码审查、算法优化 |
-| Gemini 1.5 Pro | Google | 大型代码库理解 |
+| Model | Provider | Best For |
+|-------|----------|----------|
+| GPT-4o | OpenAI | Complex logic, architecture design |
+| Claude 3.5 Sonnet | Anthropic | Code review, algorithm optimization |
+| Gemini 1.5 Pro | Google | Large codebase understanding |
 
-## 为什么选择飞码扣？
+## Why Feima Copilot?
 
-| 功能 | GitHub Copilot 原生 | 飞码扣增强版 |
-|------|-------------------|-------------|
-| 中文理解 | ✅ 良好 | 🔥 **优秀**（中国模型） |
-| 国际模型访问 | ⚠️ 不稳定（GFW） | ✅ **稳定加速** |
-| 模型选择 | 3-4 个 | 🎉 **6+ 个模型** |
-| 付费方式 | 按月订阅 | 💡 **按次付费** |
+| Feature | GitHub Copilot Native | Feima Copilot Enhanced |
+|---------|----------------------|----------------------|
+| Chinese Understanding | ✅ Good | 🔥 **Excellent** (Chinese models) |
+| International Model Access | ⚠️ Unstable (GFW) | ✅ **Stable & Accelerated** |
+| Model Selection | 3-4 models | 🎉 **6+ models** |
+| Pricing | Monthly subscription | 💡 **Pay-per-use** |
 
-## 开发状态
+## Development Status
 
-**当前版本**：v0.1.0-alpha（开发中）
+**Current Version**: v0.1.0-alpha (In Development)
 
-我们正在实现核心功能：
-- ✅ OAuth2 认证系统
-- ✅ 语言模型提供器
-- 🚧 GitHub Copilot Chat 集成测试
-- ⏸️ 配额管理（待验证后实现）
+We're implementing core features:
+- ✅ OAuth2 authentication system
+- ✅ Language model providers
+- 🚧 GitHub Copilot Chat integration testing
+- ⏸️ Quota management (pending verification)
 
-## 相关资源
+## Resources
 
-- [快速入门指南](./guides/quickstart.md) - 几分钟内开始使用
-- [安装指南](./guides/installation.md) - 详细的安装说明
-- [认证指南](./guides/authentication.md) - 设置 OAuth2 认证
-- [开发设置](./dev/setup.md) - 参与项目开发
+- [Quick Start Guide](./guides/quickstart.md) - Get up and running in minutes
+- [Installation Guide](./guides/installation.md) - Detailed installation instructions
+- [Authentication Guide](./guides/authentication.md) - Set up OAuth2 authentication
+- [Development Setup](./dev/setup.md) - Contribute to the project
 
-## 参与贡献
+## Get Involved
 
-我们欢迎社区贡献！请查看[开发指南](./dev/setup.md)了解如何参与。
+We welcome community contributions! See our [Development Guide](./dev/setup.md) to learn how to participate.
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [功能建议](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
-- 📧 [邮件支持](mailto:support@feima.tech)
+- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
+- 💬 [Feature Requests](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 📧 [Email Support](mailto:support@feima.tech)
 
 ---
 
-由 [飞码团队](https://feima.tech) 用 ❤️ 制作
+Made with ❤️ by [Feima Team](https://feima.tech)

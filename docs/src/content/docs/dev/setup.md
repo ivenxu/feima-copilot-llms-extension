@@ -1,209 +1,209 @@
 ---
-title: 开发设置
-description: 为飞码扣贡献设置开发环境
+title: Development Setup
+description: Set up your development environment for contributing to Feima Copilot
 ---
 
-# 开发设置
+# Development Setup
 
-本指南帮助您设置用于为飞码扣做出贡献的开发环境。
+This guide helps you set up a development environment for contributing to Feima Copilot.
 
-## 前置要求
+## Prerequisites
 
-### 必需软件
+### Required Software
 
 - **Node.js** >= 18.x
 - **npm** >= 9.x
 - **Git**
 - **VS Code** >= 1.85.0
 
-### VS Code 扩展
+### VS Code Extensions
 
-安装这些 VS Code 扩展用于开发：
+Install these VS Code extensions for development:
 
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [TypeScript](https://marketplace.visualstudio.com/items?itemName=vscode.vscode-typescript-next)
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)（可选）
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) (optional)
 
-## 获取源代码
+## Getting the Source Code
 
-### 克隆仓库
+### Clone the Repository
 
 ```bash
-# 克隆仓库
+# Clone the repository
 git clone https://github.com/feima-tech/feima-copilot-llms-extension.git
 cd feima-copilot-llms-extension
 ```
 
-### 验证分支
+### Verify Branch
 
 ```bash
-# 检查当前分支（应该是 main）
+# Check current branch (should be main)
 git branch
 
-# 对于功能开发，创建新分支
+# For feature development, create a new branch
 git checkout -b feature/your-feature-name
 ```
 
-## 安装依赖
+## Install Dependencies
 
 ```bash
-# 安装所有依赖
+# Install all dependencies
 npm install
 
-# 验证安装
+# Verify installation
 npm list --depth=0
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 feima-copilot-llms-extension/
-├── src/                      # 源代码
-│   ├── extension.ts          # 扩展入口点
-│   ├── auth/                 # 认证服务
-│   ├── models/               # 语言模型提供器
-│   ├── services/             # API 客户端
-│   └── commands/             # VS Code 命令
-├── docs/                     # 文档（Astro Starlight）
-├── build/                    # 构建脚本
-├── test/                     # 测试文件
-├── dist/                     # 编译输出（不在 git 中）
-├── docs-dist/                # 文档构建（不在 git 中）
-├── package.json              # 扩展清单
-├── tsconfig.json             # TypeScript 配置
-├── .eslintrc.js              # ESLint 配置
-└── .vscode/                  # VS Code 设置
+├── src/                      # Source code
+│   ├── extension.ts          # Extension entry point
+│   ├── auth/                 # Authentication services
+│   ├── models/               # Language model providers
+│   ├── services/             # API clients
+│   └── commands/             # VS Code commands
+├── docs/                     # Documentation (Astro Starlight)
+├── build/                    # Build scripts
+├── test/                     # Test files
+├── dist/                     # Compiled output (not in git)
+├── docs-dist/                # Documentation build (not in git)
+├── package.json              # Extension manifest
+├── tsconfig.json             # TypeScript config
+├── .eslintrc.js              # ESLint config
+└── .vscode/                  # VS Code settings
 ```
 
-## 构建扩展
+## Build the Extension
 
-### 编译 TypeScript
+### Compile TypeScript
 
 ```bash
-# 编译 TypeScript
+# Compile TypeScript
 npm run compile
 
-# 或使用监视模式进行开发
+# Or use watch mode for development
 npm run watch
 ```
 
-编译输出将在 `dist/` 目录中。
+The compiled output will be in the `dist/` directory.
 
-### 验证构建
+### Verify Build
 
 ```bash
-# 检查 dist/ 目录是否存在
+# Check that dist/ directory exists
 ls -la dist/
 
-# 应该看到：
+# Should see:
 # extension.js
 # extension.js.map
 ```
 
-## 运行测试
+## Running Tests
 
 ```bash
-# 运行所有测试
+# Run all tests
 npm test
 
-# 运行测试并生成覆盖率报告
+# Run tests with coverage
 npm run test:coverage
 
-# 运行特定测试文件
+# Run specific test file
 npm test -- src/auth/__tests__/oauthService.test.ts
 ```
 
-## 在开发中运行扩展
+## Running the Extension in Development
 
-### 启动扩展开发主机
+### Launch Extension Development Host
 
-1. 在 VS Code 中打开项目
-2. 按 `F5` 或转到 运行 → 开始调试
-3. 将打开一个新的 VS Code 窗口（扩展开发主机）
+1. Open the project in VS Code
+2. Press `F5` or go to Run → Start Debugging
+3. A new VS Code window (Extension Development Host) will open
 
-### 调试
+### Debugging
 
-扩展可以在扩展开发主机中调试：
+The extension can be debugged in the Extension Development Host:
 
-1. 在 TypeScript 代码中设置断点
-2. 按 `F5` 开始调试
-3. 在新窗口中调试扩展
+1. Set breakpoints in your TypeScript code
+2. Press `F5` to start debugging
+3. Debug the extension in the new window
 
-### 查看日志
+### View Logs
 
-1. 在扩展开发主机中，转到 查看 → 输出
-2. 从下拉列表中选择 "飞码"
-3. 查看扩展日志
+1. In the Extension Development Host, go to View → Output
+2. Select "Feima" from the dropdown
+3. View extension logs
 
-## 代码风格和检查
+## Code Style and Linting
 
 ### ESLint
 
 ```bash
-# 运行 ESLint
+# Run ESLint
 npm run lint
 
-# 自动修复检查问题
+# Auto-fix linting issues
 npm run lint:fix
 ```
 
 ### Prettier
 
 ```bash
-# 格式化所有文件
+# Format all files
 npm run format
 
-# 检查格式
+# Check formatting
 npm run format:check
 ```
 
-### 提交前钩子
+### Pre-commit Hooks
 
-项目使用提交前钩子：
+The project uses pre-commit hooks:
 
 ```bash
-# 安装 husky（如果尚未安装）
+# Install husky (if not installed)
 npm install --save-dev husky
 npx husky install
 
-# 添加提交前钩子
+# Add pre-commit hook
 npx husky add .husky/pre-commit "npm run lint && npm run test"
 ```
 
-## 配置
+## Configuration
 
-### 环境变量
+### Environment Variables
 
-创建 `.env` 文件用于本地开发（不提交）：
+Create a `.env` file for local development (not committed):
 
 ```env
-# Feima API 配置
+# Feima API configuration
 FEIMA_API_ENDPOINT=https://api.feima.tech
 FEIMA_IDP_ENDPOINT=https://idp.feima.tech
 
-# OAuth 配置
+# OAuth configuration
 OAUTH_CLIENT_ID=vscode-feima-client
 OAUTH_REDIRECT_URI=vscode://feima.cn-model-for-copilot/oauth/callback
 
-# 调试设置
+# Debug settings
 DEBUG=feima:*
 LOG_LEVEL=debug
 ```
 
-### TypeScript 配置
+### TypeScript Config
 
-`tsconfig.json` 配置了：
+The `tsconfig.json` is configured with:
 
-- **严格模式**已启用
-- **目标**：ES2022
-- **模块**：CommonJS
-- **源映射**已启用
+- **Strict mode** enabled
+- **Target**: ES2022
+- **Module**: CommonJS
+- **Source maps** enabled
 
-## 常见开发任务
+## Common Development Tasks
 
-### 添加新命令
+### Adding a New Command
 
-1. 在 `src/commands/` 中创建命令：
+1. Create command in `src/commands/`:
 
 ```typescript
 // src/commands/myCommand.ts
@@ -211,26 +211,26 @@ import * as vscode from 'vscode';
 
 export function registerMyCommand(context: vscode.ExtensionContext) {
   const command = vscode.commands.registerCommand('feima.myCommand', async () => {
-    // 您的命令逻辑
-    vscode.window.showInformationMessage('来自我的命令的问候！');
+    // Your command logic here
+    vscode.window.showInformationMessage('Hello from my command!');
   });
 
   context.subscriptions.push(command);
 }
 ```
 
-2. 在 `src/extension.ts` 中注册命令：
+2. Register command in `src/extension.ts`:
 
 ```typescript
 import { registerMyCommand } from './commands/myCommand';
 
 export function activate(context: vscode.ExtensionContext) {
-  // ... 其他代码
+  // ... other code
   registerMyCommand(context);
 }
 ```
 
-3. 添加到 `package.json`：
+3. Add to `package.json`:
 
 ```json
 {
@@ -238,7 +238,7 @@ export function activate(context: vscode.ExtensionContext) {
     "commands": [
       {
         "command": "feima.myCommand",
-        "title": "我的命令",
+        "title": "My Command",
         "category": "Feima"
       }
     ]
@@ -246,9 +246,9 @@ export function activate(context: vscode.ExtensionContext) {
 }
 ```
 
-### 添加新语言模型
+### Adding a New Language Model
 
-1. 将模型添加到 `src/models/`：
+1. Add model to `src/models/`:
 
 ```typescript
 // src/models/newModel.ts
@@ -256,9 +256,9 @@ import { LanguageModel } from './types';
 
 export const newModel: LanguageModel = {
   id: 'new-model-id',
-  name: '新模型',
-  description: '新模型的描述',
-  provider: '提供商名称',
+  name: 'New Model',
+  description: 'Description of the new model',
+  provider: 'ProviderName',
   contextLength: 32000,
   maxOutputTokens: 4000,
   capabilities: {
@@ -269,153 +269,153 @@ export const newModel: LanguageModel = {
 };
 ```
 
-2. 在 `src/models/languageModelProvider.ts` 中注册模型：
+2. Register model in `src/models/languageModelProvider.ts`:
 
 ```typescript
 import { newModel } from './newModel';
 
-// 添加到模型列表
+// Add to models list
 private models: LanguageModel[] = [
-  // ... 现有模型
+  // ... existing models
   newModel
 ];
 ```
 
-### 添加测试
+### Adding Tests
 
-1. 在 `src/**/__tests__/` 中创建测试文件：
+1. Create test file in `src/**/__tests__/`:
 
 ```typescript
 // src/auth/__tests__/myFeature.test.ts
 import { myFunction } from '../myFeature';
 
 describe('myFunction', () => {
-  it('应该返回预期值', () => {
+  it('should return expected value', () => {
     const result = myFunction('input');
-    expect(result).toBe('预期输出');
+    expect(result).toBe('expected output');
   });
 });
 ```
 
-2. 运行测试：
+2. Run tests:
 
 ```bash
 npm test
 ```
 
-## 文档开发
+## Documentation Development
 
-文档使用 Astro Starlight 构建：
+The documentation is built with Astro Starlight:
 
-### 安装文档依赖
+### Install Documentation Dependencies
 
 ```bash
 cd docs
 npm install
 ```
 
-### 运行文档开发服务器
+### Run Documentation Dev Server
 
 ```bash
 cd docs
 npm run dev
 ```
 
-访问 http://localhost:4321 查看文档。
+Visit http://localhost:4321 to view the documentation.
 
-### 构建文档
+### Build Documentation
 
 ```bash
 cd docs
 npm run build
 ```
 
-输出将在 `docs-dist/` 中。
+The output will be in `docs-dist/`.
 
-## Git 工作流程
+## Git Workflow
 
-### 分支命名
+### Branch Naming
 
-- `feature/feature-name` - 新功能
-- `fix/bug-description` - 错误修复
-- `docs/documentation-update` - 文档更新
-- `refactor/refactor-description` - 重构
+- `feature/feature-name` - New features
+- `fix/bug-description` - Bug fixes
+- `docs/documentation-update` - Documentation updates
+- `refactor/refactor-description` - Refactoring
 
-### 提交消息
+### Commit Messages
 
-使用约定式提交：
+Use conventional commits:
 
 ```
-feat: 添加新功能
-fix: 解决认证错误
-docs: 更新安装指南
-test: 为认证服务添加测试
-refactor: 简化令牌刷新逻辑
+feat: add new feature
+fix: resolve authentication bug
+docs: update installation guide
+test: add tests for auth service
+refactor: simplify token refresh logic
 ```
 
-### 拉取请求流程
+### Pull Request Process
 
-1. Fork 仓库
-2. 创建功能分支
-3. 进行更改
-4. 运行测试和检查
-5. 提交您的更改
-6. 推送到您的 fork
-7. 创建拉取请求
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Commit your changes
+6. Push to your fork
+7. Create a pull request
 
-## 故障排除
+## Troubleshooting
 
-### 构建错误
+### Build Errors
 
-**问题**：TypeScript 编译失败
+**Problem**: TypeScript compilation fails
 
-**解决方案**：
+**Solution**:
 ```bash
-# 清理构建产物
+# Clean build artifacts
 npm run clean
 rm -rf dist/
 
-# 重新安装依赖
+# Reinstall dependencies
 rm -rf node_modules package-lock.json
 npm install
 
-# 重新构建
+# Rebuild
 npm run compile
 ```
 
-### 扩展未激活
+### Extension Not Activating
 
-**问题**：扩展在扩展开发主机中未激活
+**Problem**: Extension doesn't activate in Extension Development Host
 
-**解决方案**：
-1. 检查输出面板 → "扩展主机" 中的错误
-2. 验证 `package.json` `activationEvents` 正确
-3. 检查 `src/extension.ts` 是否有正确的 `activate()` 函数
+**Solution**:
+1. Check Output panel → "Extension Host" for errors
+2. Verify `package.json` `activationEvents` are correct
+3. Check `src/extension.ts` has proper `activate()` function
 
-### 认证问题
+### Authentication Issues
 
-**问题**：无法在开发中认证
+**Problem**: Can't authenticate in development
 
-**解决方案**：
-1. 验证 `.env` 文件已配置
-2. 检查 feima-idp 是否可访问
-3. 查看输出面板 → "飞码" 获取详细日志
+**Solution**:
+1. Verify `.env` file is configured
+2. Check feima-idp is accessible
+3. View Output panel → "Feima" for detailed logs
 
-## 资源
+## Resources
 
-- [VS Code 扩展 API](https://code.visualstudio.com/api)
-- [TypeScript 文档](https://www.typescriptlang.org/docs/)
-- [Astro Starlight 文档](https://starlight.astro.build/)
-- [项目仓库](https://github.com/feima-tech/feima-copilot-llms-extension)
+- [VS Code Extension API](https://code.visualstudio.com/api)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+- [Astro Starlight Docs](https://starlight.astro.build/)
+- [Project Repository](https://github.com/feima-tech/feima-copilot-llms-extension)
 
-## 下一步
+## Next Steps
 
-- [测试指南](./testing.md) - 如何编写测试
-- [构建指南](./building.md) - 构建和打包扩展
-- [API 参考](../reference/api.md) - 扩展 API
+- [Testing Guide](./testing.md) - How to write tests
+- [Building Guide](./building.md) - Build and package the extension
+- [API Reference](../reference/api.md) - Extension API
 
-## 需要帮助？
+## Need Help?
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [讨论](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
-- 📧 [邮件支持](mailto:support@feima.tech)
+- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
+- 💬 [Discussions](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 📧 [Email Support](mailto:support@feima.tech)

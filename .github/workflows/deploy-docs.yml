@@ -18,7 +18,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  # ── English build → GitHub Pages (runs on every push to main) ──────────────
+  build-en:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,10 +35,13 @@ jobs:
         working-directory: ./docs
         run: npm ci
 
-      - name: Build for GitHub Pages
+      - name: Build (English / GitHub Pages)
         working-directory: ./docs
-        run: npm run build
+        run: |
+          npm run build
+          rm -rf dist/zh   # remove any non-root locale pages from the EN artifact
         env:
+          BUILD_LOCALE: en
           SITE_URL: https://ivenxu.github.io
           BASE_PATH: /feima-copilot-llms-extension
 
@@ -46,22 +50,9 @@ jobs:
         with:
           path: ./docs/dist
 
-      - name: Build for Alibaba OSS
-        working-directory: ./docs
-        run: npm run build
-        env:
-          SITE_URL: https://feima.tech
-          BASE_PATH: /docs
-
-      - name: Upload OSS artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: docs-oss
-          path: ./docs/dist
-
   deploy-github-pages:
     if: github.ref == 'refs/heads/main'
-    needs: build
+    needs: build-en
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -71,9 +62,41 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
+  # ── Chinese build → Alibaba OSS (manual trigger only) ─────────────────────
+  build-zh:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'docs/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./docs
+        run: npm ci
+
+      - name: Build (Chinese / Alibaba OSS)
+        working-directory: ./docs
+        run: npm run build
+        env:
+          BUILD_LOCALE: zh
+          SITE_URL: https://feima.tech
+          BASE_PATH: /docs
+
+      - name: Upload OSS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-oss
+          path: ./docs/dist
+
   deploy-oss:
-    if: github.ref == 'refs/heads/main'
-    needs: [build, deploy-github-pages]
+    if: github.event_name == 'workflow_dispatch'
+    needs: build-zh
     runs-on: ubuntu-latest
     steps:
       - name: Download OSS artifact

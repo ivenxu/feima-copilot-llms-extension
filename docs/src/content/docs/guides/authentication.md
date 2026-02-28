@@ -1,210 +1,210 @@
 ---
-title: 认证
-description: 为飞码扣设置 OAuth2 认证
+title: Authentication
+description: Set up OAuth2 authentication for Feima Copilot
 ---
 
-# 认证指南
+# Authentication Guide
 
-飞码扣使用 OAuth2 认证来保护您的账号并管理 API 访问。
+Feima Copilot uses OAuth2 authentication to secure your account and manage API access.
 
-## OAuth2 认证如何工作
+## How OAuth2 Authentication Works
 
-飞码扣使用 **OAuth2 + PKCE**（Proof Key for Code Exchange）流程，这是一种专为客户端应用程序设计的安全认证方法。
+Feima Copilot uses the **OAuth2 + PKCE** (Proof Key for Code Exchange) flow, which is a secure authentication method designed for client-side applications.
 
-### 认证流程
+### Authentication Flow
 
 ```
-┌─────────────┐     1. 请求认证          ┌──────────────┐
+┌─────────────┐     1. Request Auth          ┌──────────────┐
 │   VS Code   │ ──────────────────────────► │   feima-idp  │
-│  扩展       │                              │   (认证)     │
+│  Extension  │                              │   (Auth)     │
 └─────────────┘                              └──────────────┘
       │                                             │
-      │ 2. 浏览器打开登录页面                         │
+      │ 2. Browser opens login page                 │
       │ ◄───────────────────────────────────────── │
       │                                             │
-      │ 3. 用户登录（微信/微博）                     │
+      │ 3. User logs in (WeChat/Weibo)             │
       │ ──────────────────────────────────────────►│
       │                                             │
-      │ 4. 重定向到 VS Code 并带回代码              │
+      │ 4. Redirect to VS Code with code           │
       │ ◄───────────────────────────────────────── │
       │                                             │
-      │ 5. 交换代码获取令牌                         │
+      │ 5. Exchange code for token                 │
       │ ──────────────────────────────────────────►│
       │                                             │
-      │ 6. 接收访问令牌                             │
+      │ 6. Receive access token                    │
       │ ◄───────────────────────────────────────── │
       └─────────────┘
 ```
 
-## 登录
+## Signing In
 
-### 首次设置
+### First Time Setup
 
-1. **打开命令面板**
-   - 按 `Ctrl+Shift+P`（或 Mac 上的 `Cmd+Shift+P`）
-   - 输入 "Feima: 登录"
+1. **Open Command Palette**
+   - Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac)
+   - Type "Feima: 登录" (Sign In)
 
-2. **在浏览器中授权**
-   - 浏览器窗口将在 `https://idp.feima.tech/oauth/authorize` 打开
-   - 选择您的登录方式：微信或微博
-   - 扫描二维码或输入您的凭据
+2. **Authorize in Browser**
+   - A browser window will open at `https://idp.feima.tech/oauth/authorize`
+   - Choose your login method: WeChat or Weibo
+   - Scan the QR code or enter your credentials
 
-3. **授予权限**
-   - 查看请求的权限
-   - 点击 "授权" 以授予访问权限
+3. **Grant Permissions**
+   - Review the requested permissions
+   - Click "Authorize" to grant access
 
-4. **完成登录**
-   - 您将被重定向回 VS Code
-   - 成功消息："✅ 已登录为: [your-email]"
+4. **Complete Sign In**
+   - You'll be redirected back to VS Code
+   - Success message: "✅ 已登录为: [your-email]"
 
-### 令牌存储
+### Token Storage
 
-您的令牌安全地存储在 VS Code 的加密密钥存储中：
-- **访问令牌**：用于 API 请求（1 小时后过期）
-- **刷新令牌**：用于获取新的访问令牌（30 天后过期）
-- 令牌在需要时自动刷新
-- 无需重复登录
+Your tokens are securely stored in VS Code's encrypted secrets storage:
+- **Access Token**: Used for API requests (expires in 1 hour)
+- **Refresh Token**: Used to get new access tokens (expires in 30 days)
+- Tokens are automatically refreshed when needed
+- No need to sign in repeatedly
 
-## 查看您的账号
+## Viewing Your Account
 
-### 检查账号状态
+### Check Account Status
 
-1. 按 `Ctrl+Shift+P`
-2. 输入 "Feima: 查看账号"
-3. 查看您的账号信息：
-   - 邮箱地址
-   - 账号 ID（微信_[openid] 或 微博_[uid]）
+1. Press `Ctrl+Shift+P`
+2. Type "Feima: 查看账号" (Show Account)
+3. View your account information:
+   - Email address
+   - Account ID (WeChat_[openid] or Weibo_[uid])
 
-### 检查输出日志
+### Check Output Logs
 
-1. 转到 查看 → 输出
-2. 从下拉列表中选择 "飞码"
-3. 查看详细的认证日志
+1. Go to View → Output
+2. Select "Feima" from the dropdown
+3. View detailed authentication logs
 
-## 登出
+## Signing Out
 
-### 手动登出
+### Manual Sign Out
 
-1. 按 `Ctrl+Shift+P`
-2. 输入 "Feima: 登出"
-3. 确认操作
-4. 成功消息："✅ 已登出飞码账号"
+1. Press `Ctrl+Shift+P`
+2. Type "Feima: 登出" (Sign Out)
+3. Confirm the action
+4. Success message: "✅ 已登出 Feima 账号"
 
-**注意**：登出将删除所有存储的令牌。您需要重新登录才能使用飞码扣。
+**Note**: Sign out removes all stored tokens. You'll need to sign in again to use Feima Copilot.
 
-## OAuth 客户端详情
+## OAuth Client Details
 
-飞码扣使用没有密钥的公共 OAuth 客户端：
+Feima Copilot uses a public OAuth client with no secret:
 
-| 属性 | 值 |
-|------|-------|
+| Property | Value |
+|----------|-------|
 | **client_id** | `vscode-feima-client` |
-| **client_secret** | 无（公共客户端） |
+| **client_secret** | None (public client) |
 | **redirect_uri** | `vscode://feima.cn-model-for-copilot/oauth/callback` |
-| **grant_types** | `authorization_code`、`refresh_token` |
-| **scopes** | `openid`、`profile`、`email` |
-| **auth method** | PKCE（Proof Key for Code Exchange） |
+| **grant_types** | `authorization_code`, `refresh_token` |
+| **scopes** | `openid`, `profile`, `email` |
+| **auth method** | PKCE (Proof Key for Code Exchange) |
 
-### 共享客户端
+### Shared Client
 
-`vscode-feima-client` 在以下扩展之间共享：
-- **feima-code**：飞码的主要 VS Code 扩展
-- **feima-copilot**：本扩展
+The `vscode-feima-client` is shared between:
+- **feima-code**: Feima's main VS Code extension
+- **feima-copilot**: This extension
 
-两个扩展可以使用相同的 OAuth 令牌，提供无缝体验。
+Both extensions can use the same OAuth tokens, providing a seamless experience.
 
-## 安全功能
+## Security Features
 
-### PKCE 保护
+### PKCE Protection
 
-- 使用代码挑战和验证器进行安全代码交换
-- 防止授权代码拦截攻击
-- 公共客户端的标准做法
+- Uses code challenge and verifier for secure code exchange
+- Prevents authorization code interception attacks
+- Standard for public clients
 
-### 安全令牌存储
+### Secure Token Storage
 
-- 令牌存储在 VS Code 的加密密钥中
-- 永远不会以明文形式写入磁盘
-- 与其他扩展隔离
+- Tokens stored in VS Code's encrypted secrets
+- Never written to disk in plaintext
+- Isolated from other extensions
 
-### 权限限制
+### Scope Limitations
 
-- 仅请求最小必需的权限范围
-- 无权访问用户密码
-- 令牌可以随时撤销
+- Minimum required scopes only
+- No access to user password
+- Tokens can be revoked at any time
 
-## 故障排除
+## Troubleshooting
 
-### 浏览器没有打开
+### Browser doesn't open
 
-**可能原因**：
-- VS Code 没有打开浏览器的权限
-- 没有配置默认浏览器
+**Possible causes**:
+- VS Code doesn't have permission to open browser
+- No default browser configured
 
-**解决方案**：
-1. 在操作系统设置中检查 VS Code 权限
-2. 在系统中设置默认浏览器
-3. 尝试以管理员身份运行 VS Code
+**Solutions**:
+1. Check VS Code permissions in your OS settings
+2. Set a default browser in your system
+3. Try running VS Code as administrator
 
-### "无待处理回调" 错误
+### "No pending callback" error
 
-**可能原因**：
-- 回调已过期（5 分钟超时）
-- 安全设置阻止了重定向 URI
-- OAuth 状态不匹配
+**Possible causes**:
+- Callback expired (5-minute timeout)
+- Redirect URI blocked by security settings
+- OAuth state mismatch
 
-**解决方案**：
-1. 快速重新登录（5 分钟内）
-2. 检查浏览器安全设置
-3. 为重定向禁用弹出窗口阻止程序
-4. 查看扩展主机日志获取详细信息
+**Solutions**:
+1. Sign in again quickly (within 5 minutes)
+2. Check browser security settings
+3. Disable popup blockers for the redirect
+4. Check Extension Host logs for details
 
-### "令牌交换失败"
+### "Token exchange failed"
 
-**可能原因**：
-- 网络连接问题
-- 授权代码已被使用
-- PKCE 验证失败
+**Possible causes**:
+- Network connectivity issues
+- Authorization code already used
+- PKCE verification failed
 
-**解决方案**：
-1. 检查网络连接
-2. 验证 feima-idp 是否可访问：`curl https://idp.feima.tech/.well-known/openid-configuration`
-3. 重新登录以获取新代码
+**Solutions**:
+1. Check network connectivity
+2. Verify feima-idp is accessible: `curl https://idp.feima.tech/.well-known/openid-configuration`
+3. Sign in again to get a new code
 
-### 令牌没有自动刷新
+### Token not refreshing automatically
 
-**可能原因**：
-- 刷新令牌已过期（30 天）
-- 刷新期间出现网络问题
+**Possible causes**:
+- Refresh token expired (30 days)
+- Network issues during refresh
 
-**解决方案**：
-1. 登出并重新登录
-2. 检查网络连接
-3. 如果问题持续，请联系支持
+**Solutions**:
+1. Sign out and sign in again
+2. Check network connectivity
+3. Contact support if issue persists
 
-## 最佳实践
+## Best Practices
 
-### 安全提示
+### Security Tips
 
-1. **绝不共享您的令牌** - 它们被安全存储，永远不会暴露
-2. **在共享计算机上登出** - 完成后使用 "Feima: 登出"
-3. **保持 VS Code 更新** - 更新中包含安全改进
-4. **使用安全网络** - 登录时避免使用公共 Wi-Fi
+1. **Never share your tokens** - They are stored securely and never exposed
+2. **Sign out on shared computers** - Use "Feima: 登出" when done
+3. **Keep VS Code updated** - Security improvements are included in updates
+4. **Use secure networks** - Avoid public Wi-Fi when signing in
 
-### 账号管理
+### Account Management
 
-1. **每用户一个账号** - 每个用户应该有自己的飞码账号
-2. **使用您的主要邮箱** - 用于重要通知
-3. **如果可用，启用 2FA** - 以获得额外的安全性
+1. **One account per user** - Each user should have their own Feima account
+2. **Use your primary email** - For important notifications
+3. **Enable 2FA if available** - For additional security
 
-## 下一步
+## Next Steps
 
-- [快速入门](./quickstart.md) - 开始使用飞码扣
-- [使用模型](./using-models.md) - 了解可用的模型
-- [配置](./configuration.md) - 自定义您的设置
+- [Quick Start](./quickstart.md) - Start using Feima Copilot
+- [Using Models](./using-models.md) - Learn about available models
+- [Configuration](./configuration.md) - Customize your settings
 
-## 需要帮助？
+## Need Help?
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [讨论](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
-- 📧 [邮件支持](mailto:support@feima.tech)
+- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
+- 💬 [Discussions](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 📧 [Email Support](mailto:support@feima.tech)

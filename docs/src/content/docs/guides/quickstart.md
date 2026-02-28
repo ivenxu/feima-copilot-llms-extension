@@ -1,110 +1,110 @@
 ---
-title: 快速入门
-description: 几分钟内开始使用飞码扣
+title: Quick Start
+description: Get up and running with Feima Copilot in minutes
 ---
 
-# 快速入门指南
+# Quick Start Guide
 
-本指南将帮助您在几分钟内开始使用飞码扣。
+This guide will help you get Feima Copilot running in just a few minutes.
 
-## 前置要求
+## Prerequisites
 
-在开始之前，请确保您拥有：
+Before you begin, make sure you have:
 
 - ✅ **VS Code** >= 1.85.0
-- ✅ **GitHub Copilot Chat** 扩展已安装（必需）
-- ✅ **飞码账号**（在 [feima.tech](https://feima.tech) 注册）
+- ✅ **GitHub Copilot Chat** extension installed (required)
+- ✅ **Feima Account** (sign up at [feima.tech](https://feima.tech))
 
-## 安装
+## Installation
 
-### 第一步：安装飞码扣
+### Step 1: Install Feima Copilot
 
-1. 打开 VS Code
-2. 按 `Ctrl+Shift+X`（或 Mac 上的 `Cmd+Shift+X`）打开扩展面板
-3. 搜索 "Feima Copilot"
-4. 点击 "安装"
+1. Open VS Code
+2. Press `Ctrl+Shift+X` (or `Cmd+Shift+X` on Mac) to open Extensions
+3. Search for "Feima Copilot"
+4. Click "Install"
 
-### 第二步：验证 GitHub Copilot Chat
+### Step 2: Verify GitHub Copilot Chat
 
-确保您已安装 **GitHub Copilot Chat** 扩展。飞码扣需要它才能正常工作。
+Make sure you have the **GitHub Copilot Chat** extension installed. Feima Copilot requires it to function.
 
-1. 打开扩展面板
-2. 搜索 "GitHub Copilot Chat"
-3. 如果未安装，点击 "安装"
+1. Open Extensions view
+2. Search for "GitHub Copilot Chat"
+3. If not installed, click "Install"
 
-## 认证
+## Authentication
 
-### 第三步：登录飞码
+### Step 3: Sign In to Feima
 
-1. 按 `Ctrl+Shift+P`（或 Mac 上的 `Cmd+Shift+P`）打开命令面板
-2. 输入 "Feima: 登录"
-3. 选择该命令
-4. 浏览器窗口将打开
-5. 使用您的飞码账号登录（微信或微博）
-6. 授予请求的权限
-7. 您将被重定向回 VS Code
+1. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac) to open the Command Palette
+2. Type "Feima: 登录" (Sign In)
+3. Select the command
+4. A browser window will open
+5. Sign in with your Feima account (WeChat or Weibo)
+6. Grant the requested permissions
+7. You'll be redirected back to VS Code
 
-**成功消息**："✅ 已登录为: [your-email]"
+**Success message**: "✅ 已登录为: [your-email]"
 
-## 使用飞码扣
+## Using Feima Copilot
 
-### 第四步：选择飞码模型
+### Step 4: Select a Feima Model
 
-1. 打开 Copilot Chat 面板（点击侧边栏的聊天图标或按 `Ctrl+Alt+I`）
-2. 点击面板顶部的模型选择器
-3. 从列表中选择一个飞码模型：
-   - **DeepSeek Coder V2** - 最适合代码生成
-   - **通义千问 3 Coder** - 最适合中文代码注释
-   - **腾讯混元** - 通用问答
-   - **GPT-4o** - 复杂逻辑和架构设计
-   - **Claude 3.5 Sonnet** - 代码审查和优化
-   - **Gemini 1.5 Pro** - 大型代码库理解
+1. Open the Copilot Chat panel (click the chat icon in the sidebar or press `Ctrl+Alt+I`)
+2. Click the model selector at the top of the panel
+3. Choose a Feima model from the list:
+   - **DeepSeek Coder V2** - Best for code generation
+   - **Tongyi Qianwen 3 Coder** - Best for Chinese code comments
+   - **Tencent Hunyuan** - General purpose Q&A
+   - **GPT-4o** - Complex logic and architecture
+   - **Claude 3.5 Sonnet** - Code review and optimization
+   - **Gemini 1.5 Pro** - Large codebase understanding
 
-### 第五步：开始聊天
+### Step 5: Start Chatting
 
-1. 在聊天输入框中输入您的问题或编码请求
-2. AI 将使用所选模型进行回复
-3. 您可以在会话中随时切换模型
+1. Type your question or coding request in the chat input
+2. The AI will respond using the selected model
+3. You can switch models anytime during your session
 
-## 第一个示例
+## First Example
 
-尝试这个简单示例来验证一切正常：
+Try this simple example to verify everything is working:
 
-1. 在 Copilot Chat 中选择 "DeepSeek Coder V2"
-2. 提问："如何使用 Express 在 Node.js 中创建 REST API 端点？"
-3. AI 应该会提供代码和说明
+1. Select "DeepSeek Coder V2" in Copilot Chat
+2. Ask: "How do I create a REST API endpoint in Node.js with Express?"
+3. The AI should provide code and explanation
 
-## 故障排除
+## Troubleshooting
 
-### 浏览器没有打开
+### Browser doesn't open
 
-- 检查 VS Code 是否有打开默认浏览器的权限
-- 确保您的默认浏览器已正确配置
+- Check VS Code has permission to open your default browser
+- Ensure your default browser is properly configured
 
-### "无待处理回调" 错误
+### "No pending callback" error
 
-- 回调在 5 分钟后过期 - 请快速重新登录
-- 检查浏览器安全设置是否阻止重定向
+- The callback expires after 5 minutes - try signing in again quickly
+- Check your browser security settings aren't blocking redirects
 
-### 在选择器中找不到飞码模型
+### Can't find Feima models in selector
 
-- 确保您已登录：按 `Ctrl+Shift+P` → "Feima: 查看账号"
-- 检查输出面板（查看 → 输出）是否有任何错误消息
+- Make sure you're signed in: Press `Ctrl+Shift+P` → "Feima: 查看账号"
+- Check the Output panel (View → Output) for any error messages
 
-### 令牌交换失败
+### Token exchange failed
 
-- 验证 feima-idp 是否可访问：`curl https://idp.feima.tech/.well-known/openid-configuration`
-- 检查您的网络连接
+- Verify feima-idp is accessible: `curl https://idp.feima.tech/.well-known/openid-configuration`
+- Check your network connectivity
 
-## 下一步
+## What's Next?
 
-- [安装指南](./installation.md) - 更多详细的安装选项
-- [认证指南](./authentication.md) - 了解 OAuth2 流程
-- [配置指南](./configuration.md) - 自定义您的体验
-- [开发指南](../dev/setup.md) - 为项目做出贡献
+- [Installation Guide](./installation.md) - More detailed installation options
+- [Authentication Guide](./authentication.md) - Learn about OAuth2 flow
+- [Configuration Guide](./configuration.md) - Customize your experience
+- [Development Guide](../dev/setup.md) - Contribute to the project
 
-## 需要帮助？
+## Need Help?
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [讨论](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
-- 📧 [邮件支持](mailto:support@feima.tech)
+- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
+- 💬 [Discussions](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 📧 [Email Support](mailto:support@feima.tech)
