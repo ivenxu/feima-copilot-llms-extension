@@ -89,7 +89,7 @@ jobs:
         env:
           BUILD_LOCALE: zh
           SITE_URL: https://docs-dev.feimacode.cn
-          BASE_PATH: /docs
+          BASE_PATH: /
 
       - name: Upload OSS dev artifact
         uses: actions/upload-artifact@v4
@@ -183,7 +183,7 @@ jobs:
         env:
           BUILD_LOCALE: zh
           SITE_URL: https://docs.feimacode.cn
-          BASE_PATH: /docs
+          BASE_PATH: /
 
       - name: Upload OSS prod artifact
         uses: actions/upload-artifact@v4
