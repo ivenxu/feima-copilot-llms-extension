@@ -30,7 +30,7 @@ Install these VS Code extensions for development:
 
 ```bash
 # Clone the repository
-git clone https://github.com/feima-tech/feima-copilot-llms-extension.git
+git clone https://github.com/feimacode/feima-copilot-llms-extension.git
 cd feima-copilot-llms-extension
 ```
 
@@ -406,7 +406,7 @@ npm run compile
 - [VS Code Extension API](https://code.visualstudio.com/api)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 - [Astro Starlight Docs](https://starlight.astro.build/)
-- [Project Repository](https://github.com/feima-tech/feima-copilot-llms-extension)
+- [Project Repository](https://github.com/feimacode/feima-copilot-llms-extension)
 
 ## Next Steps
 
@@ -416,6 +416,6 @@ npm run compile
 
 ## Need Help?
 
-- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [Discussions](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [Email Support](mailto:support@feima.tech)

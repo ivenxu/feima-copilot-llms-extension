@@ -82,10 +82,10 @@ We're implementing core features:
 
 We welcome community contributions! See our [Development Guide](./dev/setup.md) to learn how to participate.
 
-- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [Feature Requests](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [Feature Requests](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [Email Support](mailto:support@feima.tech)
 
 ---
 
-Made with ❤️ by [Feima Team](https://feima.tech)
+Made with ❤️ by [Feima Team](https://feimacode.cn)

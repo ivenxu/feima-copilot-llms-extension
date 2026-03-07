@@ -13,7 +13,7 @@ description: 几分钟内开始使用飞码扣
 
 - ✅ **VS Code** >= 1.85.0
 - ✅ **GitHub Copilot Chat** 扩展已安装（必需）
-- ✅ **飞码账号**（在 [feima.tech](https://feima.tech) 注册）
+- ✅ **飞码账号**（在 [feima.tech](https://feimacode.cn) 注册）
 
 ## 安装
 
@@ -105,6 +105,6 @@ description: 几分钟内开始使用飞码扣
 
 ## 需要帮助？
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [讨论](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [报告问题](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [讨论](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [邮件支持](mailto:support@feima.tech)

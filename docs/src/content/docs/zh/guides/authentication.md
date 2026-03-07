@@ -205,6 +205,6 @@ description: 为飞码扣设置 OAuth2 认证
 
 ## 需要帮助？
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [讨论](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [报告问题](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [讨论](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [邮件支持](mailto:support@feima.tech)

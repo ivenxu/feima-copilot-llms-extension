@@ -499,6 +499,6 @@ To reset all settings to defaults:
 
 ## Need Help?
 
-- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [Discussions](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [Email Support](mailto:support@feima.tech)

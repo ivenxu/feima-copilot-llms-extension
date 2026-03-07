@@ -12,12 +12,12 @@
   "icon": "assets/feima-icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/feima-tech/cn-model-for-copilot"
+    "url": "https://github.com/feimacode/cn-model-for-copilot"
   },
   "bugs": {
-    "url": "https://github.com/feima-tech/cn-model-for-copilot/issues"
+    "url": "https://github.com/feimacode/cn-model-for-copilot/issues"
   },
-  "homepage": "https://github.com/feima-tech/cn-model-for-copilot#readme",
+  "homepage": "https://github.com/feimacode/cn-model-for-copilot#readme",
   "keywords": [
     "Copilot",
     "飞码扣",

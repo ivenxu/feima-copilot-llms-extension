@@ -117,11 +117,11 @@ export default defineConfig({
           icon: 'github',
           label: 'GitHub',
           ariaLabel: 'GitHub Repository',
-          href: 'https://github.com/feima-tech/feima-copilot-llms-extension',
+          href: 'https://github.com/feimacode/feima-copilot-llms-extension',
         },
       ],
       editLink: {
-        baseUrl: 'https://github.com/feima-tech/feima-copilot-llms-extension/edit/main',
+        baseUrl: 'https://github.com/feimacode/feima-copilot-llms-extension/edit/main',
       },
       lastUpdated: true,
     }),

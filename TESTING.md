@@ -31,7 +31,7 @@ The current feima-idp implementation (MVP) accepts **any redirect URI** for the 
 - ✅ cn-model-for-copilot uses: `vscode://feima.cn-model-for-copilot/oauth/callback`
 - ✅ Both work without configuration changes
 
-See [oauth_service.py#L52-L68](https://github.com/feima-tech/feima-idp/blob/main/idp/services/oauth_service.py#L52-L68):
+See [oauth_service.py#L52-L68](https://github.com/feimacode/feima-idp/blob/main/idp/services/oauth_service.py#L52-L68):
 ```python
 def validate_redirect_uri(self, client_id: str, redirect_uri: str) -> bool:
     # For MVP, allow any redirect URI for VS Code client

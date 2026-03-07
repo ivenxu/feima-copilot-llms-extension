@@ -30,7 +30,7 @@ description: 为飞码扣贡献设置开发环境
 
 ```bash
 # 克隆仓库
-git clone https://github.com/feima-tech/feima-copilot-llms-extension.git
+git clone https://github.com/feimacode/feima-copilot-llms-extension.git
 cd feima-copilot-llms-extension
 ```
 
@@ -406,7 +406,7 @@ npm run compile
 - [VS Code 扩展 API](https://code.visualstudio.com/api)
 - [TypeScript 文档](https://www.typescriptlang.org/docs/)
 - [Astro Starlight 文档](https://starlight.astro.build/)
-- [项目仓库](https://github.com/feima-tech/feima-copilot-llms-extension)
+- [项目仓库](https://github.com/feimacode/feima-copilot-llms-extension)
 
 ## 下一步
 
@@ -416,6 +416,6 @@ npm run compile
 
 ## 需要帮助？
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [讨论](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [报告问题](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [讨论](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [邮件支持](mailto:support@feima.tech)

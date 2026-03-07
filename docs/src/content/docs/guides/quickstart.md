@@ -13,7 +13,7 @@ Before you begin, make sure you have:
 
 - ✅ **VS Code** >= 1.85.0
 - ✅ **GitHub Copilot Chat** extension installed (required)
-- ✅ **Feima Account** (sign up at [feima.tech](https://feima.tech))
+- ✅ **Feima Account** (sign up at [feima.tech](https://feimacode.cn))
 
 ## Installation
 
@@ -105,6 +105,6 @@ Try this simple example to verify everything is working:
 
 ## Need Help?
 
-- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [Discussions](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [Email Support](mailto:support@feima.tech)

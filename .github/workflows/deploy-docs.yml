@@ -17,8 +17,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ENGLISH → GitHub Pages (unchanged; runs on every qualifying push to main)
+# ─────────────────────────────────────────────────────────────────────────────
 jobs:
-  # ── English build → GitHub Pages (runs on every push to main) ──────────────
   build-en:
     runs-on: ubuntu-latest
     steps:
@@ -39,7 +41,7 @@ jobs:
         working-directory: ./docs
         run: |
           npm run build
-          rm -rf dist/zh   # remove any non-root locale pages from the EN artifact
+          rm -rf dist/zh
         env:
           BUILD_LOCALE: en
           SITE_URL: https://ivenxu.github.io
@@ -62,9 +64,10 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  # ── Chinese build → Alibaba OSS (manual trigger only) ─────────────────────
-  build-zh:
-    if: github.event_name == 'workflow_dispatch'
+# ─────────────────────────────────────────────────────────────────────────────
+# CHINESE DEV → Alibaba Cloud OSS (auto on push to main)
+# ─────────────────────────────────────────────────────────────────────────────
+  build-zh-dev:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -80,60 +83,171 @@ jobs:
         working-directory: ./docs
         run: npm ci
 
-      - name: Build (Chinese / Alibaba OSS)
+      - name: Build (Chinese / dev OSS)
         working-directory: ./docs
         run: npm run build
         env:
           BUILD_LOCALE: zh
-          SITE_URL: https://feima.tech
+          SITE_URL: https://docs-dev.feimacode.cn
           BASE_PATH: /docs
 
-      - name: Upload OSS artifact
+      - name: Upload OSS dev artifact
         uses: actions/upload-artifact@v4
         with:
-          name: docs-oss
+          name: docs-oss-dev
           path: ./docs/dist
+          retention-days: 3
 
-  deploy-oss:
-    if: github.event_name == 'workflow_dispatch'
-    needs: build-zh
+  deploy-oss-dev:
+    needs: build-zh-dev
     runs-on: ubuntu-latest
+    environment:
+      name: dev
+      url: https://docs-dev.feimacode.cn/docs/
     steps:
-      - name: Download OSS artifact
+      - name: Download OSS dev artifact
         uses: actions/download-artifact@v4
         with:
-          name: docs-oss
+          name: docs-oss-dev
           path: ./docs-dist
 
       - name: Install ossutil
         run: |
-          wget https://gosspublic.alicdn.com/ossutil/1.7.16/ossutil64
+          wget -q https://gosspublic.alicdn.com/ossutil/1.7.16/ossutil64
           chmod 755 ossutil64
 
-      - name: Configure ossutil
-        env:
-          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+      - name: Install Alibaba Cloud CLI
         run: |
-          ./ossutil64 config -e oss-${{ secrets.ALIYUN_OSS_REGION }}.aliyuncs.com \
+          curl -s https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz | tar xzf -
+          mv aliyun /usr/local/bin/aliyun
+
+      - name: Configure ossutil
+        run: |
+          ./ossutil64 config \
+            -e oss-${{ secrets.ALIYUN_OSS_REGION }}.aliyuncs.com \
             -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
             -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
             -L CH -c /tmp/ossutil.conf
 
-      - name: Deploy to Alibaba OSS
+      - name: Sync to OSS dev bucket
         run: |
-          ./ossutil64 -c /tmp/ossutil.conf cp -r -f ./docs-dist oss://${{ secrets.ALIYUN_OSS_BUCKET }}/docs/
+          ./ossutil64 -c /tmp/ossutil.conf sync -f ./docs-dist \
+            oss://${{ secrets.ALIYUN_OSS_BUCKET }}${{ secrets.ALIYUN_OSS_PATH }}/
 
-      - name: Configure ossutil for CDN
+      - name: Refresh CDN dev cache
         env:
-          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         run: |
-          ./ossutil64 config -e cdn.${{ secrets.ALIYUN_OSS_REGION }}.aliyuncs.com \
+          aliyun cdn RefreshObjectCaches \
+            --ObjectPath "https://${{ secrets.ALIYUN_CDN_DOMAIN }}${{ secrets.ALIYUN_OSS_PATH }}/" \
+            --ObjectType Directory \
+            --region cn-hangzhou || echo "::warning::CDN refresh failed (non-fatal — content is in OSS)"
+
+      - name: Deployment summary
+        run: |
+          echo "### CN Docs Dev Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Environment | dev |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bucket | ${{ secrets.ALIYUN_OSS_BUCKET }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| CDN Domain | ${{ secrets.ALIYUN_CDN_DOMAIN }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | ${{ github.sha }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Triggered By | ${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Time | $(date -u '+%Y-%m-%d %H:%M:%S UTC') |" >> $GITHUB_STEP_SUMMARY
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CHINESE PROD → Alibaba Cloud OSS (manual trigger only, main branch only)
+# ─────────────────────────────────────────────────────────────────────────────
+  build-zh-prod:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'docs/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./docs
+        run: npm ci
+
+      - name: Build (Chinese / prod OSS)
+        working-directory: ./docs
+        run: npm run build
+        env:
+          BUILD_LOCALE: zh
+          SITE_URL: https://docs.feimacode.cn
+          BASE_PATH: /docs
+
+      - name: Upload OSS prod artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-oss-prod
+          path: ./docs/dist
+          retention-days: 7
+
+  deploy-oss-prod:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: build-zh-prod
+    runs-on: ubuntu-latest
+    environment:
+      name: prod
+      url: https://docs.feimacode.cn/docs/
+    steps:
+      - name: Download OSS prod artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-oss-prod
+          path: ./docs-dist
+
+      - name: Install ossutil
+        run: |
+          wget -q https://gosspublic.alicdn.com/ossutil/1.7.16/ossutil64
+          chmod 755 ossutil64
+
+      - name: Install Alibaba Cloud CLI
+        run: |
+          curl -s https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz | tar xzf -
+          mv aliyun /usr/local/bin/aliyun
+
+      - name: Configure ossutil
+        run: |
+          ./ossutil64 config \
+            -e oss-${{ secrets.ALIYUN_OSS_REGION }}.aliyuncs.com \
             -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
             -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
-            -L CH -c /tmp/ossutil-cdn.conf
+            -L CH -c /tmp/ossutil.conf
 
-      - name: Refresh CDN
+      - name: Sync to OSS prod bucket
         run: |
-          ./ossutil64 -c /tmp/ossutil-cdn.conf refresh -r oss://${{ secrets.ALIYUN_OSS_BUCKET }}/docs/
+          ./ossutil64 -c /tmp/ossutil.conf sync -f ./docs-dist \
+            oss://${{ secrets.ALIYUN_OSS_BUCKET }}${{ secrets.ALIYUN_OSS_PATH }}/
+
+      - name: Refresh CDN prod cache
+        env:
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          aliyun cdn RefreshObjectCaches \
+            --ObjectPath "https://${{ secrets.ALIYUN_CDN_DOMAIN }}${{ secrets.ALIYUN_OSS_PATH }}/" \
+            --ObjectType Directory \
+            --region cn-hangzhou || echo "::warning::CDN refresh failed (non-fatal — content is in OSS)"
+
+      - name: Deployment summary
+        run: |
+          echo "### CN Docs PROD Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Environment | prod |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bucket | ${{ secrets.ALIYUN_OSS_BUCKET }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| CDN Domain | ${{ secrets.ALIYUN_CDN_DOMAIN }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | ${{ github.sha }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Triggered By | ${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Time | $(date -u '+%Y-%m-%d %H:%M:%S UTC') |" >> $GITHUB_STEP_SUMMARY

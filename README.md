@@ -3,15 +3,15 @@
 > 为 GitHub Copilot 提供中国 AI 模型支持的 VS Code 扩展
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![GitHub Stars](https://img.shields.io/github/stars/feima-tech/feima-copilot-llms-extension?style=flat-square)](https://github.com/feima-tech/feima-copilot-llms-extension)
+[![GitHub Stars](https://img.shields.io/github/stars/feima-tech/feima-copilot-llms-extension?style=flat-square)](https://github.com/feimacode/feima-copilot-llms-extension)
 
 ## 快速链接
 
-- 📖 [文档](https://feima.tech/docs/) | [中文文档](https://docs.feima.cn/)
-- 🚀 [快速入门](https://feima.tech/docs/guides/quickstart/) | [快速入门（中文）](https://docs.feima.cn/guides/quickstart/)
-- 📦 [安装指南](https://feima.tech/docs/guides/installation/) | [安装指南（中文）](https://docs.feima.cn/guides/installation/)
-- 🔧 [配置选项](https://feima.tech/docs/guides/configuration/) | [配置选项（中文）](https://docs.feima.cn/guides/configuration/)
-- 💻 [开发指南](https://feima.tech/docs/dev/setup/) | [开发指南（中文）](https://docs.feima.cn/dev/setup/)
+- 📖 [文档](https://feimacode.cn/docs/) | [中文文档](https://docs.feima.cn/)
+- 🚀 [快速入门](https://feimacode.cn/docs/guides/quickstart/) | [快速入门（中文）](https://docs.feima.cn/guides/quickstart/)
+- 📦 [安装指南](https://feimacode.cn/docs/guides/installation/) | [安装指南（中文）](https://docs.feima.cn/guides/installation/)
+- 🔧 [配置选项](https://feimacode.cn/docs/guides/configuration/) | [配置选项（中文）](https://docs.feima.cn/guides/configuration/)
+- 💻 [开发指南](https://feimacode.cn/docs/dev/setup/) | [开发指南（中文）](https://docs.feima.cn/dev/setup/)
 
 ## 简介
 
@@ -55,11 +55,11 @@ code --install-extension feima-tech.feima-copilot
 
 ## 贡献
 
-我们欢迎社区贡献！请查看[完整文档](https://feima.tech/docs/dev/setup/)了解如何参与开发。
+我们欢迎社区贡献！请查看[完整文档](https://feimacode.cn/docs/dev/setup/)了解如何参与开发。
 
 ```bash
 # 克隆仓库
-git clone https://github.com/feima-tech/feima-copilot-llms-extension.git
+git clone https://github.com/feimacode/feima-copilot-llms-extension.git
 cd feima-copilot-llms-extension
 
 # 安装依赖
@@ -78,12 +78,12 @@ code .
 
 完整的文档请访问：
 - [中文文档](https://docs.feima.cn/)
-- [英文文档](https://feima.tech/docs/)
+- [英文文档](https://feimacode.cn/docs/)
 
 ## 支持与联系
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [功能建议](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [报告问题](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [功能建议](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [邮件支持](mailto:support@feima.tech)
 
 ## 开源协议
@@ -94,5 +94,5 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 <p align="center">
   <strong>更懂中文，连接更稳</strong><br>
-  Made with ❤️ by <a href="https://feima.tech">Feima Team</a>
+  Made with ❤️ by <a href="https://feimacode.cn">Feima Team</a>
 </p>

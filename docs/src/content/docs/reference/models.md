@@ -293,7 +293,7 @@ Understanding token limits helps you optimize your requests:
 
 1. Look at the status bar
 2. Command: "Feima: 查看账号" (Show Account)
-3. Visit [feima.tech/dashboard](https://feima.tech/dashboard)
+3. Visit [feima.tech/dashboard](https://feimacode.cn/dashboard)
 
 ## Future Models
 
@@ -305,7 +305,7 @@ Feima Copilot will continue to add new models as they become available.
 - New Chinese models from other providers
 - Specialized models for specific tasks
 
-Stay updated by following our [GitHub repository](https://github.com/feima-tech/feima-copilot-llms-extension).
+Stay updated by following our [GitHub repository](https://github.com/feimacode/feima-copilot-llms-extension).
 
 ## Next Steps
 
@@ -315,6 +315,6 @@ Stay updated by following our [GitHub repository](https://github.com/feima-tech/
 
 ## Need Help?
 
-- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [Discussions](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [Email Support](mailto:support@feima.tech)

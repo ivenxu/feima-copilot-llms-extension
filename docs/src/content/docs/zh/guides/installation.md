@@ -17,7 +17,7 @@ This guide covers all the installation options for Feima Copilot.
 
 ### Account Requirements
 
-- Feima account ([sign up](https://feima.tech/register))
+- Feima account ([sign up](https://feimacode.cn/register))
 - Feima account supports WeChat or Weibo authentication
 
 ## Installation Methods
@@ -34,7 +34,7 @@ This guide covers all the installation options for Feima Copilot.
 
 ### Method 2: Manual Installation
 
-1. Download the latest `.vsix` file from the [Releases page](https://github.com/feima-tech/feima-copilot-llms-extension/releases)
+1. Download the latest `.vsix` file from the [Releases page](https://github.com/feimacode/feima-copilot-llms-extension/releases)
 2. In VS Code, press `Ctrl+Shift+P`
 3. Type "Install from VSIX..."
 4. Select the downloaded `.vsix` file
@@ -98,7 +98,7 @@ If you want to contribute to Feima Copilot or run from source:
 
 ```bash
 # Clone the repository
-git clone https://github.com/feima-tech/feima-copilot-llms-extension.git
+git clone https://github.com/feimacode/feima-copilot-llms-extension.git
 cd feima-copilot-llms-extension
 
 # Install dependencies
@@ -176,6 +176,6 @@ Some corporate networks may block OAuth redirects. If you encounter authenticati
 
 ## Need Help?
 
-- 🐛 [Report Issues](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [Discussions](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [Email Support](mailto:support@feima.tech)

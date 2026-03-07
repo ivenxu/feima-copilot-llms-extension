@@ -3,8 +3,6 @@ title: 欢迎使用飞码扣
 description: 为 GitHub Copilot 提供中国 AI 模型支持的 VS Code 扩展
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
-
 # 欢迎使用飞码扣
 
 飞码扣是一个 VS Code 扩展，为 GitHub Copilot Chat 增强中国 AI 模型支持，并提供加速访问国际模型的功能。
@@ -14,7 +12,6 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 **飞码扣 (Feima Copilot)** 是一个 VS Code 扩展，提供以下功能：
 
 - 🇨🇳 **中国 AI 模型**：直接访问 DeepSeek Coder V2、通义千问 Coder、腾讯混元等中国模型
-- 🚀 **国际模型加速**：通过飞码加速稳定访问 GPT-4o、Claude 3.5 Sonnet、Gemini 1.5 Pro
 - 💬 **无缝集成**：直接在 GitHub Copilot Chat 中使用，无需切换界面
 - 💰 **按次计费**：只为使用的请求付费，无需月付订阅
 - 🔒 **安全可靠**：OAuth2 认证，代码不离开 VS Code
@@ -46,21 +43,12 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 | 通义千问 3 Coder | 阿里云 | 中文代码注释、文档生成 |
 | 腾讯混元 | 腾讯 | 通用问答、代码理解 |
 
-### 国际模型（加速）
-
-| 模型 | 提供商 | 最适用于 |
-|------|--------|----------|
-| GPT-4o | OpenAI | 复杂逻辑、架构设计 |
-| Claude 3.5 Sonnet | Anthropic | 代码审查、算法优化 |
-| Gemini 1.5 Pro | Google | 大型代码库理解 |
 
 ## 为什么选择飞码扣？
 
 | 功能 | GitHub Copilot 原生 | 飞码扣增强版 |
 |------|-------------------|-------------|
 | 中文理解 | ✅ 良好 | 🔥 **优秀**（中国模型） |
-| 国际模型访问 | ⚠️ 不稳定（GFW） | ✅ **稳定加速** |
-| 模型选择 | 3-4 个 | 🎉 **6+ 个模型** |
 | 付费方式 | 按月订阅 | 💡 **按次付费** |
 
 ## 开发状态
@@ -84,10 +72,10 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 我们欢迎社区贡献！请查看[开发指南](./dev/setup.md)了解如何参与。
 
-- 🐛 [报告问题](https://github.com/feima-tech/feima-copilot-llms-extension/issues)
-- 💬 [功能建议](https://github.com/feima-tech/feima-copilot-llms-extension/discussions)
+- 🐛 [报告问题](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [功能建议](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
 - 📧 [邮件支持](mailto:support@feima.tech)
 
 ---
 
-由 [飞码团队](https://feima.tech) 用 ❤️ 制作
+由 [飞码团队](https://feimacode.cn) 用 ❤️ 制作
