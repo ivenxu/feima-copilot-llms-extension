@@ -97,6 +97,10 @@ export default defineConfig({
   output: 'static',
   outDir: './dist',
   srcDir,
+  trailingSlash: 'never',
+  build: {
+    format: 'file',   // output guides/quickstart.html instead of guides/quickstart/index.html
+  },
 
   integrations: [
     starlight({
