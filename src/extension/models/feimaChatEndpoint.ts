@@ -42,7 +42,8 @@ export type ChatResponse =
 	| { type: 'error'; reason: string; requestId?: string }
 	| { type: 'blocked'; reason: string; requestId?: string }
 	| { type: 'quotaExceeded'; reason: string; requestId?: string }
-	| { type: 'rateLimited'; reason: string; requestId?: string };
+	| { type: 'rateLimited'; reason: string; requestId?: string }
+	| { type: 'insufficientBalance'; reason: string; requestId?: string };
 
 /**
  * Model information from catalog
@@ -639,6 +640,11 @@ export class FeimaChatEndpoint {
 						`Timestamp: ${new Date().toISOString()}`
 					);
 					return { type: 'blocked', reason: vscode.l10n.t('error.extensionBlocked', 'The extension has been temporarily blocked due to too many requests') };
+				} else if (response.status === 402) {
+					this.log.warn(
+						`[FeimaChatEndpoint] Insufficient balance (HTTP 402) for model ${this.modelInfo.id}`
+					);
+					return { type: 'insufficientBalance', reason: 'Insufficient balance' };
 				} else if (response.status === 429) {
 					// Try to detect quota vs rate limit from headers or body
 					const isQuota = errorText.includes('quota') || response.headers.get('x-error-type') === 'quota_exceeded';

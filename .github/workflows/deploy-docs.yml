@@ -7,6 +7,12 @@ on:
       - 'docs/**'
       - 'README.md'
   workflow_dispatch:
+    inputs:
+      deploy_to_prod:
+        description: 'Deploy to production (CN OSS prod bucket)'
+        type: boolean
+        default: false
+        required: false
 
 permissions:
   contents: read
@@ -161,7 +167,7 @@ jobs:
 # CHINESE PROD → Alibaba Cloud OSS (manual trigger only, main branch only)
 # ─────────────────────────────────────────────────────────────────────────────
   build-zh-prod:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.event.inputs.deploy_to_prod == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -193,7 +199,7 @@ jobs:
           retention-days: 7
 
   deploy-oss-prod:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.event.inputs.deploy_to_prod == 'true'
     needs: build-zh-prod
     runs-on: ubuntu-latest
     environment:

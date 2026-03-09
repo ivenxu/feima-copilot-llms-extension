@@ -9,9 +9,7 @@ import { LogServiceImpl } from './platform/log/common/logService';
 import { VSCodeLogTarget, ConsoleLogTarget } from './platform/log/vscode/logService';
 import { LogLevel } from './platform/log/common/logService';
 import { FeimaConfigService } from '../config/configService';
-
-// Context key for tracking Feima auth sign-in state
-const FEIMA_AUTH_SIGNED_IN_KEY = 'github.copilot.feimaAuth.signedIn';
+import { FEIMA_AUTH_SIGNED_IN_KEY } from './contextKeys';
 
 // Store auth service for disposal
 let authService: FeimaAuthenticationService | undefined;

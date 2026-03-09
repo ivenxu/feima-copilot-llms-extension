@@ -17,3 +17,6 @@ src/i18n/**
 **/.github/**
 **/test/**
 **/.git/**
+.claude/**
+docs/**
+docs-dist/**

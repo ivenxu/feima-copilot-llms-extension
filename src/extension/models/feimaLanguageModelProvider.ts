@@ -202,6 +202,8 @@ export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvi
 		const endpoint = await this._getEndpoint(model.id);
 		
 		// Delegate to wrapper
+		// Cast progress: the wrapper only ever reports TextPart | ToolCallPart | ThinkingPart,
+		// all of which are valid LanguageModelResponsePart subtypes, so this is safe.
 		return this._wrapper.provideLanguageModelResponse(
 			endpoint,
 			messages,
@@ -209,7 +211,7 @@ export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvi
 				tools: options.tools,
 				toolMode: options.toolMode
 			},
-			progress,
+			progress as unknown as vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart>,
 			token
 		);
 	}
