@@ -33,11 +33,41 @@ const extensionBuildOptions = {
 	platform: 'node',
 	mainFields: ["module", "main"],
 	format: 'cjs', // CommonJS format for VS Code extensions
+	// Bake the region into the bundle so activeRegionConfig resolves correctly at runtime.
+	// FEIMA_REGION must be set in the environment before building (defaults to 'cn').
+	define: {
+		'process.env.FEIMA_REGION': JSON.stringify(process.env.FEIMA_REGION || 'cn'),
+	},
 } satisfies esbuild.BuildOptions;
 
 /**
- * Process package.json to substitute region-specific values
- * Replaces %extension.name% and default setting values based on FEIMA_REGION
+ * Recursively substitute all `%key%` placeholder strings in a JSON value
+ * using the provided NLS map. Non-matching placeholders are left as-is.
+ */
+function resolveNlsPlaceholders(value: unknown, nls: Record<string, string>): unknown {
+	if (typeof value === 'string') {
+		return value.replace(/%([^%]+)%/g, (_match, key) => nls[key] ?? _match);
+	}
+	if (Array.isArray(value)) {
+		return value.map(item => resolveNlsPlaceholders(item, nls));
+	}
+	if (value !== null && typeof value === 'object') {
+		const result: Record<string, unknown> = {};
+		for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+			result[k] = resolveNlsPlaceholders(v, nls);
+		}
+		return result;
+	}
+	return value;
+}
+
+/**
+ * Process package.json to substitute region-specific values.
+ *
+ * For production builds (`!isDev`) this also writes the resolved manifest back to
+ * the root `package.json` so that `vsce package` bundles fully-resolved strings
+ * (no `%placeholder%` tokens) and VS Code shows the correct display name /
+ * description regardless of the user's UI locale.
  */
 function processPackageJson() {
 	const region = (process.env.FEIMA_REGION || 'cn') as 'cn' | 'global';
@@ -50,50 +80,29 @@ function processPackageJson() {
 	// Read localization file based on region
 	const nlsFile = region === 'cn' ? 'package.nls.zh-cn.json' : 'package.nls.json';
 	const nlsPath = path.join(REPO_ROOT, nlsFile);
-	const nls = JSON.parse(fs.readFileSync(nlsPath, 'utf-8'));
+	const nls: Record<string, string> = JSON.parse(fs.readFileSync(nlsPath, 'utf-8'));
 	
-	// Read region configuration to get default endpoints
-	const regionConfigPath = path.join(REPO_ROOT, 'src', 'config', 'regions.ts');
-	const regionConfigContent = fs.readFileSync(regionConfigPath, 'utf-8');
-	
-	// Extract region-specific defaults (simple regex parsing)
-	const regionDefaults = region === 'cn' ? {
-		authBaseUrl: 'https://auth.feima.ai/cn',
-		apiBaseUrl: 'https://api.feima.ai/cn'
-	} : {
-		authBaseUrl: 'https://auth.feima.ai/global',
-		apiBaseUrl: 'https://api.feima.ai'
-	};
-	
-	// Substitute localized values
-	const processedPackage = JSON.parse(JSON.stringify(packageJson));
-	
-	// Extension name is now fixed to 'copilot-llms-extension'
-	// (No longer using %placeholder% notation)
-	
-	// Update default configuration values based on region
-	if (processedPackage.contributes?.configuration?.properties) {
-		const props = processedPackage.contributes.configuration.properties;
-		if (props['feima.auth.baseUrl']) {
-			props['feima.auth.baseUrl'].default = regionDefaults.authBaseUrl;
-			console.log(`[build] Set auth.baseUrl default: ${regionDefaults.authBaseUrl}`);
-		}
-		if (props['feima.api.baseUrl']) {
-			props['feima.api.baseUrl'].default = regionDefaults.apiBaseUrl;
-			console.log(`[build] Set api.baseUrl default: ${regionDefaults.apiBaseUrl}`);
-		}
+	// Resolve all %key% placeholders in the whole manifest using the region NLS.
+	// This handles display strings (%extension.displayName%) AND default config
+	// values (%default.auth.baseUrl%, %default.api.baseUrl%, etc.) in one pass.
+	let processedPackage = resolveNlsPlaceholders(
+		JSON.parse(JSON.stringify(packageJson)),
+		nls
+	) as Record<string, unknown>;
+
+	// Update `name` from the NLS file (e.g. "copilot-cn-models" vs "copilot-more-models")
+	if (nls['extension.name']) {
+		processedPackage['name'] = nls['extension.name'];
+		console.log(`[build] Set name: ${nls['extension.name']}`);
 	}
-	
-	// Write processed package.json to dist/
-	const distPath = path.join(REPO_ROOT, 'dist', 'package.json');
-	fs.mkdirSync(path.dirname(distPath), { recursive: true });
-	fs.writeFileSync(distPath, JSON.stringify(processedPackage, null, 2), 'utf-8');
-	console.log(`[build] Wrote processed package.json to dist/`);
-	
-	// Copy appropriate localization file to dist/
-	const distNlsPath = path.join(REPO_ROOT, 'dist', 'package.nls.json');
-	fs.copyFileSync(nlsPath, distNlsPath);
-	console.log(`[build] Copied ${nlsFile} to dist/package.nls.json`);
+
+	// For production builds, write the resolved manifest back to the root package.json.
+	// vsce reads the root package.json when creating the VSIX, so this ensures the
+	// bundled manifest contains fully-resolved strings instead of %placeholder% tokens.
+	if (!isDev) {
+		fs.writeFileSync(packageJsonPath, JSON.stringify(processedPackage, null, '\t') + '\n', 'utf-8');
+		console.log(`[build] Wrote resolved package.json to root (production build)`);
+	}
 }
 
 async function main() {

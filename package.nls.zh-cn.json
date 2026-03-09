@@ -32,6 +32,16 @@
 	"command.generateTest.title": "生成测试",
 	"command.generateTest.description": "使用飞码扣 AI 为选中的代码生成测试",
 	
+	"settings.auth.baseUrl.description": "OAuth2 认证服务器基础 URL（覆盖区域默认值）",
+	"settings.api.baseUrl.description": "模型推理 API 服务器基础 URL（覆盖区域默认值）",
+	"settings.auth.clientId.description": "用于认证的 OAuth2 客户端 ID（覆盖区域默认值）",
+	"settings.auth.issuer.description": "OAuth2 发行者 URL（覆盖区域默认值）",
+	"settings.promotionUrl.description": "额度促销页面 URL（余额不足时显示）",
+	"default.auth.baseUrl": "https://auth.feimacode.cn",
+	"default.api.baseUrl": "https://api.feimacode.cn/v1",
+	"default.auth.issuer": "https://auth.feimacode.cn",
+	"default.promotionUrl": "https://feimacode.cn/promotion",
+
 	"command.signIn.title": "登录",
 	"command.signIn.category": "飞码扣",
 	
@@ -67,6 +77,8 @@
 	"settings.warnWhenQuotaLow.description": "当剩余请求少于此数量时显示警告",
 	"settings.apiEndpoint.description": "飞码 API 服务端点（仅供调试）",
 	
+	"error.insufficientBalance": "飞码扣额度已耗尽。公测期间可免费领取更多额度。",
+	"error.insufficientBalance.action": "领取额度",
 	"error.auth.failed": "认证失败",
 	"error.auth.unauthorized": "未授权：请重新登录",
 	"error.auth.tokenExpired": "登录令牌已过期，请重新登录",

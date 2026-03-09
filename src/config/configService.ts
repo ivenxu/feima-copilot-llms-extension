@@ -46,6 +46,12 @@ export interface ResolvedConfig {
 	 * Always from region config (cannot be overridden)
 	 */
 	scopes: string[];
+
+	/**
+	 * URL for the credits promotion page
+	 * Shown to users when they run out of credits (HTTP 402)
+	 */
+	promotionUrl: string;
 }
 
 /**
@@ -64,7 +70,8 @@ export class FeimaConfigService implements vscode.Disposable {
 					e.affectsConfiguration('feima.auth.baseUrl') ||
 					e.affectsConfiguration('feima.api.baseUrl') ||
 					e.affectsConfiguration('feima.auth.clientId') ||
-					e.affectsConfiguration('feima.auth.issuer')
+							e.affectsConfiguration('feima.auth.issuer') ||
+							e.affectsConfiguration('feima.promotionUrl')
 				) {
 					// Invalidate cache on relevant setting changes
 					this.cachedConfig = undefined;
@@ -106,8 +113,11 @@ export class FeimaConfigService implements vscode.Disposable {
 		// Get issuer: setting > default
 		const issuer = config.get<string>('auth.issuer') || activeRegionConfig.defaultIssuer;
 
-		// Scopes always from region config
-		const scopes = activeRegionConfig.scopes;
+		// Scopes are identical across all regions
+		const scopes = ['openid', 'profile', 'email'];
+
+		// Get promotion URL: setting > region default
+		const promotionUrl = config.get<string>('promotionUrl') || activeRegionConfig.promotionUrl;
 
 		this.cachedConfig = {
 			authBaseUrl,
@@ -115,6 +125,7 @@ export class FeimaConfigService implements vscode.Disposable {
 			clientId,
 			issuer,
 			scopes,
+			promotionUrl,
 		};
 
 		return this.cachedConfig;

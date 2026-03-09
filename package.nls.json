@@ -67,6 +67,18 @@
 	"settings.warnWhenQuotaLow.description": "Show warning when remaining requests drop below this number",
 	"settings.apiEndpoint.description": "Feima API service endpoint (debug only)",
 	
+	"settings.auth.baseUrl.description": "OAuth2 authentication server base URL (overrides region default)",
+	"settings.api.baseUrl.description": "Model inference API server base URL (overrides region default)",
+	"settings.auth.clientId.description": "OAuth2 client ID for authentication (overrides region default)",
+	"settings.auth.issuer.description": "OAuth2 issuer URL (overrides region default)",
+	"settings.promotionUrl.description": "URL for the credits promotion page (shown when balance runs out)",
+	"default.auth.baseUrl": "https://auth.feimacode.com",
+	"default.api.baseUrl": "https://api.feimacode.com/v1",
+	"default.auth.issuer": "https://auth.feimacode.com",
+	"default.promotionUrl": "https://feimacode.com/promotion",
+
+	"error.insufficientBalance": "You ran out of Feima credits. Get more credits for free during the public preview.",
+	"error.insufficientBalance.action": "Get Credits",
 	"error.auth.failed": "Authentication failed",
 	"error.auth.unauthorized": "Unauthorized: Please log in again",
 	"error.auth.tokenExpired": "Login token has expired, please log in again",

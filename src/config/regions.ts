@@ -17,17 +17,14 @@ export const cnRegionConfig: RegionConfig = {
 	region: 'cn',
 	extensionId: 'copilot-cn-models',
 	publisher: 'feima',
-	displayName: '飞码扣',
-	description: '中国优化版 VS Code 代码补全和编辑工具，集成本地推理模型。',
-	icon: 'packages/regional/cn/icon.png',
-	defaultAuthEndpoint: 'https://auth.feima.ai/cn',
-	defaultApiEndpoint: 'https://api.feima.ai/cn',
-	language: 'zh-CN',
+	defaultAuthEndpoint: 'https://auth.feimacode.cn',
+	defaultApiEndpoint: 'https://api.feimacode.cn/v1',
 	defaultClientId: 'vscode-feima-client',
-	defaultIssuer: 'https://auth.feima.ai',
+	defaultIssuer: 'https://auth.feimacode.cn',
 	scopes: ['openid', 'profile', 'email'],
 	marketplaceUrl: 'https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models',
-	repositoryUrl: 'https://github.com/feima-ai/feima-copilot-llms-extension',
+	repositoryUrl: 'https://github.com/feimacode/feima-copilot-llms-extension',
+	promotionUrl: 'https://feimacode.cn/promotion',
 };
 
 /**
@@ -41,17 +38,14 @@ export const globalRegionConfig: RegionConfig = {
 	region: 'global',
 	extensionId: 'copilot-more-models',
 	publisher: 'feima',
-	displayName: 'Feima Code Models',
-	description: 'VS Code code completion and editing extension with support for Claude, GPT-4, and more models.',
-	icon: 'packages/regional/global/icon.png',
-	defaultAuthEndpoint: 'https://auth.feima.ai/global',
-	defaultApiEndpoint: 'https://api.feima.ai',
-	language: 'en-US',
+	defaultAuthEndpoint: 'https://auth.feimacode.com',
+	defaultApiEndpoint: 'https://api.feimacode.com/v1',
 	defaultClientId: 'vscode-feima-client',
-	defaultIssuer: 'https://auth.feima.ai',
+	defaultIssuer: 'https://auth.feimacode.com',
 	scopes: ['openid', 'profile', 'email'],
 	marketplaceUrl: 'https://marketplace.visualstudio.com/items?itemName=feima.copilot-more-models',
-	repositoryUrl: 'https://github.com/feima-ai/feima-copilot-llms-extension',
+	repositoryUrl: 'https://github.com/feimacode/feima-copilot-llms-extension',
+	promotionUrl: 'https://feimacode.com/promotion',
 };
 
 /**
@@ -68,7 +62,7 @@ export const regionConfigs: Record<RegionType, RegionConfig> = {
 export function getRegionConfig(region: RegionType): RegionConfig {
 	const config = regionConfigs[region];
 	if (!config) {
-		throw new Error(vscode.l10n.t('error.unknownRegion', region));
+		throw new Error(vscode.l10n.t('Unknown region: {0}', region));
 	}
 	return config;
 }

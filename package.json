@@ -51,6 +51,7 @@
     "onStartupFinished",
     "onLanguageModelChatProvider:feima"
   ],
+  "l10n": "./l10n",
   "main": "./dist/extension.js",
   "contributes": {
     "languageModelChatProviders": [
@@ -81,13 +82,13 @@
       "properties": {
         "feima.auth.baseUrl": {
           "type": "string",
-          "default": "https://auth.feima.ai/cn",
+          "default": "%default.auth.baseUrl%",
           "markdownDescription": "%settings.auth.baseUrl.description%",
           "scope": "machine-overridable"
         },
         "feima.api.baseUrl": {
           "type": "string",
-          "default": "https://api.feima.ai/cn",
+          "default": "%default.api.baseUrl%",
           "markdownDescription": "%settings.api.baseUrl.description%",
           "scope": "machine-overridable"
         },
@@ -99,8 +100,14 @@
         },
         "feima.auth.issuer": {
           "type": "string",
-          "default": "https://auth.feima.ai",
+          "default": "%default.auth.issuer%",
           "markdownDescription": "%settings.auth.issuer.description%",
+          "scope": "machine-overridable"
+        },
+        "feima.promotionUrl": {
+          "type": "string",
+          "default": "%default.promotionUrl%",
+          "markdownDescription": "%settings.promotionUrl.description%",
           "scope": "machine-overridable"
         },
         "feima.showQuotaInStatusBar": {

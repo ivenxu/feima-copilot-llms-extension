@@ -28,31 +28,6 @@ export interface RegionConfig {
 	publisher: string;
 
 	/**
-	 * Display name shown in VS Code Marketplace and GUI
-	 * - CN: "飞码扣"
-	 * - Global: "Feima Code Models"
-	 */
-	displayName: string;
-
-	/**
-	 * Short description for marketplace
-	 */
-	description: string;
-
-	/**
-	 * Icon file path relative to workspace root
-	 * Used by marketplace and extensions view
-	 */
-	icon: string;
-
-	/**
-	 * Default language code for this region
-	 * - CN: 'zh-CN'
-	 * - Global: 'en-US'
-	 */
-	language: string;
-
-	/**
 	 * Default OAuth2 authorization endpoint URL (region-specific)
 	 * Can be overridden by VS Code setting: feima.auth.baseUrl
 	 * - CN default: https://auth.feima.ai/cn
@@ -94,4 +69,12 @@ export interface RegionConfig {
 	 * GitHub repository URL for the extension
 	 */
 	repositoryUrl: string;
+
+	/**
+	 * URL for the promotions / credits page.
+	 * Shown to users when they run out of credits (HTTP 402).
+	 * Points to the public-preview earning page; will be updated to a
+	 * purchase page once the product is generally available.
+	 */
+	promotionUrl: string;
 }

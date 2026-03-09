@@ -7,6 +7,8 @@
 import * as vscode from 'vscode';
 import { ILogService } from '../platform/log/common/logService';
 import { FeimaChatEndpoint, FinishedCallback, StreamDelta } from './feimaChatEndpoint';
+import { getConfigService } from '../../config/configService';
+import { FEIMA_INSUFFICIENT_BALANCE_KEY } from '../contextKeys';
 
 /**
  * Wrapper class that handles VS Code language model API integration.
@@ -136,7 +138,7 @@ export class FeimaLanguageModelWrapper {
 		this.log.debug(`[Wrapper] makeChatRequest returned: type=${result.type}${result.type !== 'success' ? `, reason=${result.reason}` : ''}, total callbacks=${callbackInvokeCount}`);
 
 		// Handle error result
-		// P1 #23: Handle structured error types (blocked, quotaExceeded, rateLimited)
+		// P1 #23: Handle structured error types (blocked, quotaExceeded, rateLimited, insufficientBalance)
 		if (result.type !== 'success') {
 			if (result.type === 'blocked') {
 				this.log.error(`[Wrapper] Chat request blocked: ${result.reason}`);
@@ -147,6 +149,10 @@ export class FeimaLanguageModelWrapper {
 			} else if (result.type === 'rateLimited') {
 				this.log.error(`[Wrapper] Chat request rate limited: ${result.reason}`);
 				throw new Error(result.reason);
+			} else if (result.type === 'insufficientBalance') {
+				this.log.error(`[Wrapper] Chat request failed - insufficient balance`);
+				await this._handleInsufficientBalance(progress);
+				return; // message rendered in chat, do not throw
 			} else {
 				this.log.error(`[Wrapper] Chat request failed: ${result.reason}`);
 				throw new Error(result.reason);
@@ -154,6 +160,28 @@ export class FeimaLanguageModelWrapper {
 		}
 
 		this.log.debug('[Wrapper] Chat request completed successfully');
+	}
+
+	/**
+	 * Handle an insufficient-balance (HTTP 402) response.
+	 *
+	 * - Sets the `feima.insufficientBalance` context key so the status bar can show
+	 *   a low-credit icon.
+	 * - Writes a markdown error message with an inline promotion link directly into
+	 *   the chat response, so the user sees it in context instead of a generic error panel.
+	 */
+	private async _handleInsufficientBalance(
+		progress: vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart>
+	): Promise<void> {
+		// Set context key so status-bar contributions can react
+		await vscode.commands.executeCommand('setContext', FEIMA_INSUFFICIENT_BALANCE_KEY, true);
+
+		const promotionUrl = getConfigService().getConfig().promotionUrl;
+		const title = vscode.l10n.t('You ran out of Feima credits');
+		const body = vscode.l10n.t('Get more credits for free during the public preview: [Get Credits]({0})', promotionUrl);
+		const markdown = `❌ **${title}**\n\n${body}`;
+
+		progress.report(new vscode.LanguageModelTextPart(markdown));
 	}
 
 	/**
