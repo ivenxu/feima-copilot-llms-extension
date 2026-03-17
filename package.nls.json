@@ -79,7 +79,10 @@
 	"error.auth.failed": "Authentication failed",
 	"error.auth.unauthorized": "Unauthorized: Please log in again",
 	"error.auth.tokenExpired": "Login token has expired, please log in again",
+	"error.auth.refreshFailed": "Token refresh failed: {0}",
 	"error.apiConnection.failed": "API connection failed",
+	"prompt.sessionExpired": "Your Feima session has expired. Would you like to sign in again?",
+	"prompt.reauthFailed": "Re-authentication failed. Please try signing in manually.",
 	"error.apiConnection.timeout": "API request timed out",
 	"error.invalidConfig": "Invalid configuration",
 	

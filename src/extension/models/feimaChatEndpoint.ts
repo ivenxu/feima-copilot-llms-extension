@@ -39,6 +39,7 @@ export interface StreamDelta {
  */
 export type ChatResponse =
 	| { type: 'success'; requestId?: string }
+	| { type: 'cancelled'; requestId?: string }
 	| { type: 'error'; reason: string; requestId?: string }
 	| { type: 'blocked'; reason: string; requestId?: string }
 	| { type: 'quotaExceeded'; reason: string; requestId?: string }
@@ -215,12 +216,14 @@ export class FeimaChatEndpoint {
 			const sessions = await this.authService.getSessions(undefined, {});
 			const session = sessions[0];
 			if (!session) {
-				throw new Error('Not authenticated');
+				// Provide actionable error message
+				throw new Error(vscode.l10n.t('error.auth.unauthorized'));
 			}
 			this._cachedToken = session.accessToken;
 			return session.accessToken;
 		} catch (error) {
-			this.log.error(error as Error, '[FeimaChatEndpoint] Failed to get auth token');
+			const errorMsg = error instanceof Error ? error.message : String(error);
+			this.log.error(error as Error, `[FeimaChatEndpoint] Failed to get auth token: ${errorMsg}`);
 			throw error;
 		}
 	}
@@ -658,6 +661,12 @@ export class FeimaChatEndpoint {
 						this.log.info(`[FeimaChatEndpoint] Rate limited for model ${this.modelInfo.id}, retry after: ${retryAfter || 'unspecified'}`);
 						return { type: 'rateLimited', reason: vscode.l10n.t('error.rateLimited', 'Too many requests, please retry later') };
 					}
+				} else if (response.status === 499) {
+					// 499 = proxy-level "client closed request" — benign when the
+					// cancellation token is already set (user cancelled), otherwise
+					// a transient upstream disconnect; treat as cancelled either way.
+					this.log.debug(`[FeimaChatEndpoint] Request cancelled (HTTP 499) for model ${this.modelInfo.id}, token cancelled: ${token.isCancellationRequested}`);
+					return { type: 'cancelled' };
 				} else {
 					return { type: 'error', reason: vscode.l10n.t('error.httpRequest', response.status.toString(), errorText) };
 				}

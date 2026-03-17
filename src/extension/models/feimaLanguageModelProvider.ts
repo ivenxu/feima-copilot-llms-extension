@@ -142,6 +142,12 @@ export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvi
 		}
 
 		try {
+			// Check authentication first to provide better error messages
+			const isAuthenticated = await this.authService.isAuthenticated();
+			if (!isAuthenticated) {
+				throw new Error(vscode.l10n.t('error.auth.unauthorized'));
+			}
+
 			// P2 #12: Add error handling for endpoint creation
 			// Fetch model metadata from catalog
 			const chatModels = await this.modelCatalog.getChatModels();
@@ -197,35 +203,94 @@ export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvi
 		if (options.tools) {
 			this._log.debug(`Tool names: ${options.tools.map(t => t.name).join(', ')}`);
 		}
-		
-		// Get endpoint for model
-		const endpoint = await this._getEndpoint(model.id);
-		
-		// Delegate to wrapper
-		// Cast progress: the wrapper only ever reports TextPart | ToolCallPart | ThinkingPart,
-		// all of which are valid LanguageModelResponsePart subtypes, so this is safe.
-		return this._wrapper.provideLanguageModelResponse(
-			endpoint,
-			messages,
-			{
-				tools: options.tools,
-				toolMode: options.toolMode
-			},
-			progress as unknown as vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart>,
-			token
-		);
+
+		try {
+			// Get endpoint for model
+			const endpoint = await this._getEndpoint(model.id);
+
+			// Delegate to wrapper
+			// Cast progress: the wrapper only ever reports TextPart | ToolCallPart | ThinkingPart,
+			// all of which are valid LanguageModelResponsePart subtypes, so this is safe.
+			return this._wrapper.provideLanguageModelResponse(
+				endpoint,
+				messages,
+				{
+					tools: options.tools,
+					toolMode: options.toolMode
+				},
+				progress as unknown as vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart>,
+				token
+			);
+		} catch (error) {
+			const errorMsg = error instanceof Error ? error.message : String(error);
+
+			// Check for authentication errors
+			if (this._isAuthError(errorMsg)) {
+				this._log.error(error as Error, `[Provider] Authentication error for model ${model.id}`);
+
+				// Trigger re-auth prompt (debounced - avoids multiple dialogs per session)
+				this._triggerReauthDebounced();
+
+				// Show user-friendly message inline in chat
+				const message = vscode.l10n.t('error.auth.tokenExpired');
+				progress.report(new vscode.LanguageModelTextPart(`⚠️ **${message}** ${vscode.l10n.t('prompt.sessionExpired')}`));
+				return;
+			}
+
+			throw error;
+		}
 	}
 
 	/**
 	 * Provide token count by delegating to FeimaLanguageModelWrapper.
+	 * Throws on authentication failure to break the agent loop immediately.
 	 */
 	async provideTokenCount(
 		model: vscode.LanguageModelChatInformation,
 		text: string | vscode.LanguageModelChatMessage,
 		_token: vscode.CancellationToken
 	): Promise<number> {
-		const endpoint = await this._getEndpoint(model.id);
-		return this._wrapper.provideTokenCount(endpoint, text);
+		try {
+			const endpoint = await this._getEndpoint(model.id);
+			return this._wrapper.provideTokenCount(endpoint, text);
+		} catch (error) {
+			const errorMsg = error instanceof Error ? error.message : String(error);
+
+			// Throw auth errors — do NOT return a fallback, as that lets the
+			// agent loop continue firing requests with an expired token.
+			if (this._isAuthError(errorMsg)) {
+				this._log.error(error as Error, `[Provider] Auth error during token count for model ${model.id}`);
+
+				// Trigger re-auth prompt (debounced - avoids multiple dialogs per session)
+				this._triggerReauthDebounced();
+
+				throw new Error(vscode.l10n.t('error.auth.tokenExpired'));
+			}
+
+			throw error;
+		}
+	}
+
+	/** Returns true for errors that indicate the session/token has expired. */
+	private _isAuthError(msg: string): boolean {
+		return msg.includes('authenticated') || msg.includes('Unauthorized') || msg.includes('auth');
+	}
+
+	// Debounce re-auth prompt so we show the dialog at most once per minute
+	// even when multiple calls fail in rapid succession.
+	private _reauthTriggered = false;
+	private _triggerReauthDebounced(): void {
+		if (this._reauthTriggered) {
+			return;
+		}
+		this._reauthTriggered = true;
+
+		// getSessions() is where the re-auth dialog lives (it calls createSession on failure)
+		this.authService.getSessions(undefined, {}).finally(() => {
+			setTimeout(() => {
+				this._reauthTriggered = false;
+			}, 60_000); // 1-minute cooldown before showing dialog again
+		});
 	}
 
 	/**

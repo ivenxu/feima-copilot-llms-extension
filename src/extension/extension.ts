@@ -83,41 +83,41 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 		logService.info('');
 		logService.info('=== LANGUAGE MODEL PROVIDER REGISTRATION ===');
 	
-	if (!vscode.lm) {
-		logService.warn('❌ Language Model API (vscode.lm) not available!');
-		logService.warn('⚠️  This requires VS Code 1.85.0 or later with Copilot Chat installed.');
+		if (!vscode.lm) {
+			logService.warn('❌ Language Model API (vscode.lm) not available!');
+			logService.warn('⚠️  This requires VS Code 1.85.0 or later with Copilot Chat installed.');
 			vscode.window.showWarningMessage(vscode.l10n.t('error.languageModelNotAvailable'));
-	} else {
-		logService.info('✅ Language Model API available');
-		logService.info(`   vscode.lm methods: ${Object.keys(vscode.lm).join(', ')}`);
-		
-		logService.info('');
-		logService.info('📦 Creating FeimaLanguageModelProvider...');
-		const providerLog = logService.createSubLogger('Provider');
-		const modelProvider = new FeimaLanguageModelProvider(authService, modelCatalog, providerLog);
-		
-		logService.info('📝 Registering provider with vendor ID "feima"...');
-		const providerDisposable = vscode.lm.registerLanguageModelChatProvider('feima', modelProvider);
-		context.subscriptions.push(providerDisposable);
-		context.subscriptions.push(modelProvider);
-		logService.info('✅ Language model provider registered successfully');
-		logService.info('   Vendor ID: feima');
-		logService.info('   Provider will be queried when Copilot Chat needs model list');
-		logService.info('===========================================');
-	}
+		} else {
+			logService.info('✅ Language Model API available');
+			logService.info(`   vscode.lm methods: ${Object.keys(vscode.lm).join(', ')}`);
+
+			logService.info('');
+			logService.info('📦 Creating FeimaLanguageModelProvider...');
+			const providerLog = logService.createSubLogger('Provider');
+			const modelProvider = new FeimaLanguageModelProvider(authService, modelCatalog, providerLog);
+
+			logService.info('📝 Registering provider with vendor ID "feima"...');
+			const providerDisposable = vscode.lm.registerLanguageModelChatProvider('feima', modelProvider);
+			context.subscriptions.push(providerDisposable);
+			context.subscriptions.push(modelProvider);
+			logService.info('✅ Language model provider registered successfully');
+			logService.info('   Vendor ID: feima');
+			logService.info('   Provider will be queried when Copilot Chat needs model list');
+			logService.info('===========================================');
+		}
 
 		// 6. Register inline completion provider
-		logService.info('');
-		logService.info('=== INLINE COMPLETION PROVIDER REGISTRATION ===');
-		logService.info('📦 Registering FeimaInlineCompletionProvider...');
-		const completionLog = logService.createSubLogger('Completion');
-		registerInlineCompletionProvider(context, authService, modelCatalog, completionLog);
-		logService.info('✅ Inline completion provider registered');
-		logService.info('   Pattern: ** (all files)');
-		logService.info('   Yields to: github.copilot (when available)');
-		logService.info('   Debounce: 50ms');
-		logService.info('   Model: deepseek-coder (fast, code-specialized)');
-		logService.info('===========================================');
+		// logService.info('');
+		// logService.info('=== INLINE COMPLETION PROVIDER REGISTRATION ===');
+		// logService.info('📦 Registering FeimaInlineCompletionProvider...');
+		// const completionLog = logService.createSubLogger('Completion');
+		// registerInlineCompletionProvider(context, authService, modelCatalog, completionLog);
+		// logService.info('✅ Inline completion provider registered');
+		// logService.info('   Pattern: ** (all files)');
+		// logService.info('   Yields to: github.copilot (when available)');
+		// logService.info('   Debounce: 50ms');
+		// logService.info('   Model: deepseek-coder (fast, code-specialized)');
+		// logService.info('===========================================');
 
 		// 7. TODO: Initialize quota service (deferred to post-validation)
 

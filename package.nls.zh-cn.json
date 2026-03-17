@@ -83,10 +83,13 @@
 	"error.auth.failed": "认证失败",
 	"error.auth.unauthorized": "未授权：请重新登录",
 	"error.auth.tokenExpired": "登录令牌已过期，请重新登录",
+	"error.auth.refreshFailed": "令牌刷新失败：{0}",
 	"error.apiConnection.failed": "API 连接失败",
 	"error.apiConnection.timeout": "API 请求超时",
 	"error.invalidConfig": "配置无效",
 	
+	"prompt.sessionExpired": "您的飞码扣会话已过期。是否重新登录？",
+	"prompt.reauthFailed": "重新认证失败，请手动登录。",
 	"message.loggedIn": "已登录为 {0}",
 	"message.loggedOut": "已注销",
 	"message.completionReady": "代码补全已就绪",

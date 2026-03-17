@@ -79,7 +79,7 @@ export class FeimaLanguageModelWrapper {
 
 						// Check for duplicate tool call ID
 						if (reportedToolCallIds.has(call.id)) {
-							this.log.info(`[Wrapper] ⚠️  DUPLICATE TOOL CALL DETECTED! Already reported ${call.name} (${call.id})`);
+							this.log.debug(`[Wrapper] ⚠️  DUPLICATE TOOL CALL DETECTED! Already reported ${call.name} (${call.id})`);
 							continue; // Skip duplicates
 						}
 
@@ -135,12 +135,16 @@ export class FeimaLanguageModelWrapper {
 			options.toolMode
 		);
 
-		this.log.debug(`[Wrapper] makeChatRequest returned: type=${result.type}${result.type !== 'success' ? `, reason=${result.reason}` : ''}, total callbacks=${callbackInvokeCount}`);
+		this.log.debug(`[Wrapper] makeChatRequest returned: type=${result.type}${'reason' in result ? `, reason=${result.reason}` : ''}, total callbacks=${callbackInvokeCount}`);
 
 		// Handle error result
 		// P1 #23: Handle structured error types (blocked, quotaExceeded, rateLimited, insufficientBalance)
 		if (result.type !== 'success') {
-			if (result.type === 'blocked') {
+			if (result.type === 'cancelled') {
+				// 499 from proxy or token already cancelled — not a user-facing error.
+				this.log.debug('[Wrapper] Chat request cancelled (HTTP 499 or client disconnect)');
+				return;
+			} else if (result.type === 'blocked') {
 				this.log.error(`[Wrapper] Chat request blocked: ${result.reason}`);
 				throw new Error(result.reason);
 			} else if (result.type === 'quotaExceeded') {

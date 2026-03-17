@@ -147,9 +147,27 @@ export class FeimaAuthenticationService implements IFeimaAuthenticationService {
 					scopes: []
 				}];
 			} catch (error) {
-				this._logService.error(error as Error, 'Token refresh failed');
+				const errorMsg = error instanceof Error ? error.message : String(error);
+				this._logService.error(error as Error, `Token refresh failed: ${errorMsg}`);
+
+				// Clear the invalid token
 				await this._clearStoredToken();
 				this._cachedSessions = [];
+
+				// Notify user and prompt re-authentication
+				const message = vscode.l10n.t('prompt.sessionExpired');
+				const signIn = vscode.l10n.t('command.signIn');
+				const result = await vscode.window.showWarningMessage(message, signIn);
+
+				if (result === signIn) {
+					// Trigger re-authentication
+					try {
+						await this.createSession([], {});
+					} catch (authError) {
+						this._logService.error(authError as Error, 'Re-authentication failed');
+					}
+				}
+
 				return [];
 			}
 		} else {
