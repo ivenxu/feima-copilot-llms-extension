@@ -344,9 +344,15 @@ class BuildSystem {
 		try {
 			console.log(`🔍 Validating VSIX...`);
 			
-			// Run vsce ls to validate (use --package-path with hyphens)
-			const cmd = `npx @vscode/vsce ls --package-path "${vsixPath}"`;
-			execSync(cmd, { cwd: PROJECT_ROOT, stdio: 'pipe' });
+			// Validate VSIX structure using unzip -l (VSIX is a ZIP file)
+			// Check that it contains required files: extension.vsixmanifest, package.json
+			const cmd = `unzip -l "${vsixPath}" | grep -E "extension.vsixmanifest|package.json"`;
+			const output = execSync(cmd, { cwd: PROJECT_ROOT, stdio: 'pipe' }).toString();
+			
+			if (!output.includes('extension.vsixmanifest') || !output.includes('package.json')) {
+				console.error('❌ VSIX is missing required files');
+				return false;
+			}
 			
 			console.log(`✅ VSIX validation passed`);
 			return true;

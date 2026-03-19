@@ -155,8 +155,13 @@ jobs:
             echo "✅ VSIX size: $SIZE bytes (under 5 MB limit)"
           fi
           
-          # Validate with vsce (use --package-path with hyphens)
-          npx @vscode/vsce ls --package-path "$VSIX"
+          # Validate VSIX structure (VSIX is a ZIP file)
+          echo "🔍 Validating VSIX structure..."
+          unzip -l "$VSIX" | grep -E "extension.vsixmanifest|package.json" || {
+            echo "❌ VSIX is missing required files"
+            exit 1
+          }
+          echo "✅ VSIX structure validated"
       
       - name: Upload artifact
         uses: actions/upload-artifact@v4
