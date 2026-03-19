@@ -44,6 +44,38 @@
 - 🚧 与 GitHub Copilot Chat 集成测试
 - ⏸️ 配额管理（待验证后实现）
 
+## 发布流程
+
+### 自动发布（GitHub Release）
+
+推送版本标签即可触发自动构建和发布：
+
+```bash
+# 更新 package.json 版本号
+npm version patch  # 或 minor / major
+
+# 推送标签
+git push --follow-tags
+```
+
+工作流会自动：
+1. 构建两个 VSIX 变体（CN + Global）
+2. 生成 SHA-256 校验和
+3. 创建 GitHub Release 并附带所有产物
+
+### 手动发布到 VS Code Marketplace
+
+1. 确保 GitHub Release 已创建
+2. 在 GitHub Actions 中触发 `publish-marketplace.yml` 工作流
+3. 输入版本号（不带 v 前缀）
+4. 输入 "PUBLISH" 确认发布
+5. 等待发布完成
+
+**前置条件**：
+- `VSCE_PAT` secret 已配置（Personal Access Token）
+- 版本号必须与 GitHub Release 匹配
+- 预发布版本（-alpha, -beta）无法发布到市场
+
 ## 安装
 
 ```bash

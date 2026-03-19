@@ -1,0 +1,241 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (without v prefix, e.g., 0.3.0)'
+        required: true
+        type: string
+      dry_run:
+        description: 'Build and validate without creating release'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Extract and validate version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/v}"
+          fi
+          
+          # Validate semver format
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-z]+\.[0-9]+)?$ ]]; then
+            echo "❌ Invalid version format: $VERSION"
+            exit 1
+          fi
+          
+          # Check for prerelease
+          IS_PRERELEASE="false"
+          if [[ "$VERSION" == *"-alpha"* ]] || [[ "$VERSION" == *"-beta"* ]]; then
+            IS_PRERELEASE="true"
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "is_prerelease=$IS_PRERELEASE" >> $GITHUB_OUTPUT
+          echo "✅ Version: $VERSION (prerelease: $IS_PRERELEASE)"
+      
+      - name: Validate version match
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          
+          if [ "$VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "❌ Version mismatch: tag=$VERSION, package.json=$PACKAGE_VERSION"
+            exit 1
+          fi
+          echo "✅ Version match confirmed: $VERSION"
+
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        region: [cn, global]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build extension
+        env:
+          FEIMA_REGION: ${{ matrix.region }}
+        run: |
+          npm run compile
+      
+      - name: Package VSIX
+        env:
+          FEIMA_REGION: ${{ matrix.region }}
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          REGION="${{ matrix.region }}"
+          
+          # Determine extension ID based on region
+          if [ "$REGION" == "cn" ]; then
+            EXT_ID="copilot-cn-models"
+          else
+            EXT_ID="copilot-more-models"
+          fi
+          
+          # Ensure dist directory exists
+          mkdir -p dist/$REGION
+          
+          # Package VSIX
+          npx @vscode/vsce package \
+            --allow-star-activation \
+            --no-dependencies \
+            --out dist/$REGION/feima-$EXT_ID-$VERSION.vsix
+          
+          echo "EXT_ID=$EXT_ID" >> $GITHUB_ENV
+      
+      - name: Generate SHA-256 checksum
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          REGION="${{ matrix.region }}"
+          VSIX="dist/$REGION/feima-${{ env.EXT_ID }}-$VERSION.vsix"
+          
+          sha256sum "$VSIX" > "${VSIX}.sha256"
+          
+          echo "Checksum: $(cat ${VSIX}.sha256)"
+      
+      - name: Validate VSIX
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          REGION="${{ matrix.region }}"
+          VSIX="dist/$REGION/feima-${{ env.EXT_ID }}-$VERSION.vsix"
+          
+          # Check file size
+          SIZE=$(stat -c%s "$VSIX")
+          MAX_SIZE=$((5 * 1024 * 1024))
+          if [ "$SIZE" -gt "$MAX_SIZE" ]; then
+            echo "⚠️ VSIX exceeds 5 MB: $SIZE bytes"
+          else
+            echo "✅ VSIX size: $SIZE bytes (under 5 MB limit)"
+          fi
+          
+          # Validate with vsce
+          npx @vscode/vsce ls --packagePath "$VSIX"
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix-${{ matrix.region }}
+          path: |
+            dist/${{ matrix.region }}/*.vsix
+            dist/${{ matrix.region }}/*.sha256
+
+  release:
+    needs: [validate, build]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.dry_run != 'true' }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Download CN artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: vsix-cn
+          path: dist/cn
+      
+      - name: Download Global artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: vsix-global
+          path: dist/global
+      
+      - name: Extract changelog
+        id: changelog
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          
+          # Extract changelog section for this version
+          # Assumes Keep a Changelog format
+          if [ -f "CHANGELOG.md" ]; then
+            # Extract from ## [VERSION] to the next ## [ or end of file
+            CHANGELOG=$(sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | head -n -1)
+            
+            if [ -z "$CHANGELOG" ]; then
+              CHANGELOG="## [${VERSION}]\n\nRelease notes will be added soon."
+            fi
+          else
+            CHANGELOG="## [${VERSION}]\n\nRelease notes will be added soon."
+          fi
+          
+          # Write to file for release body
+          echo "$CHANGELOG" > /tmp/release_body.md
+          echo "body_file=/tmp/release_body.md" >> $GITHUB_OUTPUT
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.validate.outputs.version }}
+          name: v${{ needs.validate.outputs.version }}
+          prerelease: ${{ needs.validate.outputs.is_prerelease == 'true' }}
+          body_path: ${{ steps.changelog.outputs.body_file }}
+          files: |
+            dist/cn/*.vsix
+            dist/cn/*.sha256
+            dist/global/*.vsix
+            dist/global/*.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Release Summary
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          IS_PRERELEASE="${{ needs.validate.outputs.is_prerelease }}"
+          
+          echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version**: v$VERSION" >> $GITHUB_STEP_SUMMARY
+          echo "**Pre-release**: $IS_PRERELEASE" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- \`feima-copilot-cn-models-$VERSION.vsix\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`feima-copilot-cn-models-$VERSION.vsix.sha256\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`feima-copilot-more-models-$VERSION.vsix\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`feima-copilot-more-models-$VERSION.vsix.sha256\`" >> $GITHUB_STEP_SUMMARY

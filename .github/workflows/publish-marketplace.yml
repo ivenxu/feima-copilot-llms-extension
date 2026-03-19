@@ -1,0 +1,261 @@
+name: Publish to Marketplace
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (without v prefix, e.g., 0.3.0)'
+        required: true
+        type: string
+      confirmation:
+        description: 'Type "PUBLISH" to confirm marketplace publication'
+        required: true
+        type: string
+      publish_cn:
+        description: 'Publish CN variant to marketplace'
+        required: false
+        type: boolean
+        default: true
+      publish_global:
+        description: 'Publish Global variant to marketplace'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.validate.outputs.version }}
+      is_prerelease: ${{ steps.validate.outputs.is_prerelease }}
+    
+    steps:
+      - name: Validate confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirmation }}" != "PUBLISH" ]; then
+            echo "❌ Confirmation failed. You must type 'PUBLISH' to proceed."
+            exit 1
+          fi
+          echo "✅ Confirmation accepted"
+      
+      - name: Validate version format
+        id: validate
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          
+          # Validate semver format
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Invalid version format: $VERSION (must be X.Y.Z)"
+            exit 1
+          fi
+          
+          # Check for prerelease (not allowed for marketplace)
+          if [[ "$VERSION" == *"-alpha"* ]] || [[ "$VERSION" == *"-beta"* ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+            echo "❌ Pre-release versions cannot be published to marketplace"
+            exit 1
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          echo "✅ Version validated: $VERSION"
+
+  check-release:
+    needs: validate
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check GitHub Release exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          REPO="${{ github.repository }}"
+          
+          # Check if release exists
+          RELEASE=$(gh release view "v$VERSION" --repo "$REPO" --json tagName 2>/dev/null || echo "")
+          
+          if [ -z "$RELEASE" ]; then
+            echo "❌ GitHub Release v$VERSION not found. Please create a release first."
+            exit 1
+          fi
+          
+          echo "✅ GitHub Release v$VERSION exists"
+      
+      - name: Check VSCE_PAT secret
+        run: |
+          if [ -z "${{ secrets.VSCE_PAT }}" ]; then
+            echo "❌ VSCE_PAT secret is not set"
+            exit 1
+          fi
+          echo "✅ VSCE_PAT secret is configured"
+
+  download-artifacts:
+    needs: [validate, check-release]
+    runs-on: ubuntu-latest
+    outputs:
+      cn_vsix: ${{ steps.cn.outputs.vsix }}
+      global_vsix: ${{ steps.global.outputs.vsix }}
+    
+    steps:
+      - name: Download CN VSIX
+        id: cn
+        if: ${{ github.event.inputs.publish_cn == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          REPO="${{ github.repository }}"
+          
+          mkdir -p dist/cn
+          cd dist/cn
+          
+          gh release download "v$VERSION" --repo "$REPO" --pattern "feima-copilot-cn-models-$VERSION.vsix" --pattern "feima-copilot-cn-models-$VERSION.vsix.sha256"
+          
+          VSIX="feima-copilot-cn-models-$VERSION.vsix"
+          echo "vsix=$VSIX" >> $GITHUB_OUTPUT
+          echo "✅ Downloaded: $VSIX"
+      
+      - name: Download Global VSIX
+        id: global
+        if: ${{ github.event.inputs.publish_global == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          REPO="${{ github.repository }}"
+          
+          mkdir -p dist/global
+          cd dist/global
+          
+          gh release download "v$VERSION" --repo "$REPO" --pattern "feima-copilot-more-models-$VERSION.vsix" --pattern "feima-copilot-more-models-$VERSION.vsix.sha256"
+          
+          VSIX="feima-copilot-more-models-$VERSION.vsix"
+          echo "vsix=$VSIX" >> $GITHUB_OUTPUT
+          echo "✅ Downloaded: $VSIX"
+      
+      - name: Verify checksums
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          
+          if [ "${{ github.event.inputs.publish_cn }}" == "true" ]; then
+            cd dist/cn
+            sha256sum -c "feima-copilot-cn-models-$VERSION.vsix.sha256"
+            echo "✅ CN VSIX checksum verified"
+            cd ../..
+          fi
+          
+          if [ "${{ github.event.inputs.publish_global }}" == "true" ]; then
+            cd dist/global
+            sha256sum -c "feima-copilot-more-models-$VERSION.vsix.sha256"
+            echo "✅ Global VSIX checksum verified"
+            cd ../..
+          fi
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix-artifacts
+          path: dist/
+
+  publish-cn:
+    needs: [validate, download-artifacts]
+    if: ${{ github.event.inputs.publish_cn == 'true' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: vsix-artifacts
+          path: dist/
+      
+      - name: Publish CN variant
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          VSIX="dist/cn/feima-copilot-cn-models-$VERSION.vsix"
+          
+          echo "📦 Publishing CN variant: $VSIX"
+          vsce publish --packagePath "$VSIX"
+          
+          echo "✅ CN variant published successfully"
+          echo "🔗 Marketplace: https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models"
+
+  publish-global:
+    needs: [validate, download-artifacts]
+    if: ${{ github.event.inputs.publish_global == 'true' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: vsix-artifacts
+          path: dist/
+      
+      - name: Publish Global variant
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          VSIX="dist/global/feima-copilot-more-models-$VERSION.vsix"
+          
+          echo "📦 Publishing Global variant: $VSIX"
+          vsce publish --packagePath "$VSIX"
+          
+          echo "✅ Global variant published successfully"
+          echo "🔗 Marketplace: https://marketplace.visualstudio.com/items?itemName=feima.copilot-more-models"
+
+  summary:
+    needs: [validate, publish-cn, publish-global]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Generate Summary
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          
+          echo "## 📦 Marketplace Publication Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version**: v$VERSION" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Published Variants" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ github.event.inputs.publish_cn }}" == "true" ] && [ "${{ needs.publish-cn.result }}" == "success" ]; then
+            echo "✅ **CN Variant**: [feima.copilot-cn-models](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ github.event.inputs.publish_cn }}" == "true" ]; then
+            echo "❌ **CN Variant**: Failed to publish" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ **CN Variant**: Skipped" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ github.event.inputs.publish_global }}" == "true" ] && [ "${{ needs.publish-global.result }}" == "success" ]; then
+            echo "✅ **Global Variant**: [feima.copilot-more-models](https://marketplace.visualstudio.com/items?itemName=feima.copilot-more-models)" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ github.event.inputs.publish_global }}" == "true" ]; then
+            echo "❌ **Global Variant**: Failed to publish" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ **Global Variant**: Skipped" >> $GITHUB_STEP_SUMMARY
+          fi
