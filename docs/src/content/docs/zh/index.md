@@ -1,20 +1,23 @@
 ---
 title: 欢迎使用飞码扣
-description: 为 GitHub Copilot 提供中国 AI 模型支持的 VS Code 扩展
+description: 加速创意落地 - GitHub Copilot Chat 的中国 AI 模型支持
 ---
 
 # 欢迎使用飞码扣
 
-飞码扣是一个 VS Code 扩展，为 GitHub Copilot Chat 增强中国 AI 模型支持，并提供加速访问国际模型的功能。
+**加速创意落地 - Accelerating intent into execution**
+
+飞码扣是一个 VS Code 扩展，为 GitHub Copilot Chat 提供中国 AI 模型支持。
 
 ## 什么是飞码扣？
 
 **飞码扣 (Feima Copilot)** 是一个 VS Code 扩展，提供以下功能：
 
-- 🇨🇳 **中国 AI 模型**：直接访问 DeepSeek Coder V2、通义千问 Coder、腾讯混元等中国模型
+- 🇨🇳 **中国顶级 AI 模型**：直接访问通义千问 Qwen3、DeepSeek V3.2、智谱GLM-5、MiniMax M2.5、Kimi K2.5 等国产大模型
 - 💬 **无缝集成**：直接在 GitHub Copilot Chat 中使用，无需切换界面
 - 💰 **按次计费**：只为使用的请求付费，无需月付订阅
 - 🔒 **安全可靠**：OAuth2 认证，代码不离开 VS Code
+- 🧠 **深度思考**：支持思维链推理，复杂问题迎刃而解
 
 ## 快速开始
 
@@ -35,13 +38,16 @@ description: 为 GitHub Copilot 提供中国 AI 模型支持的 VS Code 扩展
 
 ## 支持的模型
 
-### 中国模型（直连）
-
-| 模型 | 提供商 | 最适用于 |
-|------|--------|----------|
-| DeepSeek Coder V2 | DeepSeek | 代码生成、代码补全、技术问答 |
-| 通义千问 3 Coder | 阿里云 | 中文代码注释、文档生成 |
-| 腾讯混元 | 腾讯 | 通用问答、代码理解 |
+| 模型 | 提供商 | 上下文 | 特点 |
+|------|--------|--------|------|
+| Qwen3 Max | 阿里云 | 256K | 思维链推理，工具调用 |
+| Qwen3 Coder Plus | 阿里云 | 100万 | 代码专精，100万上下文 |
+| Qwen3.5 Plus | 阿里云 | 100万 | 80K 思维链 |
+| DeepSeek V3.2 | DeepSeek | 128K | 深度思考，稀疏注意力 |
+| GLM-5 | 智谱AI | 200K | 思维链推理，工具调用 |
+| GLM-4.7 | 智谱AI | 200K | 高级推理 |
+| MiniMax M2.5 | MiniMax | 200K | 思维链推理 |
+| Kimi K2.5 | Moonshot | 256K | 思维链推理 |
 
 
 ## 为什么选择飞码扣？

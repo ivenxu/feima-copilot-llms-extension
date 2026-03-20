@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "publisher": "feima",
   "author": {
-    "name": "Feima Technology",
+    "name": "Feima",
     "email": "support@feimacode.cn"
   },
   "license": "MIT",
@@ -21,12 +21,13 @@
   "keywords": [
     "Copilot",
     "飞码扣",
-    "Feima",
+    "Feimacode",
     "DeepSeek",
-    "GPT-4o",
-    "Claude",
+    "Qwen",
+    "GLM",
+    "MiniMax",
+    "Kimi",
     "中文",
-    "加速",
     "AI",
     "language-model",
     "authentication"

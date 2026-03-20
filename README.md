@@ -1,6 +1,8 @@
 # 飞码扣 (Feima Copilot)
 
-> 为 GitHub Copilot 提供中国 AI 模型支持的 VS Code 扩展
+> **加速创意落地** - Accelerating intent into execution
+
+为 GitHub Copilot 提供中国 AI 模型支持的 VS Code 扩展
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![GitHub Stars](https://img.shields.io/github/stars/feima-tech/feima-copilot-llms-extension?style=flat-square)](https://github.com/feimacode/feima-copilot-llms-extension)
@@ -15,24 +17,37 @@
 
 ## 简介
 
-飞码扣是 VS Code 的扩展插件，为 GitHub Copilot Chat 添加中国 AI 模型支持，让你在使用 Copilot 的同时，也能使用 DeepSeek、通义千问、混元等更懂中文的国产模型，以及通过飞码加速访问 GPT-4、Claude、Gemini 等海外顶级模型。
+飞码扣是 VS Code 的扩展插件，为 GitHub Copilot Chat 添加中国 AI 模型支持。使用 DeepSeek、通义千问、智谱GLM、MiniMax、Moonshot Kimi 等国产顶级大模型，更懂中文，更适合中国开发者。
 
 ### 核心特点
 
-- 🇨🇳 **国产模型支持**: DeepSeek Coder V2、通义千问3 Coder、腾讯混元
-- 🚀 **海外模型加速**: GPT-4o、Claude 3.5 Sonnet、Gemini 1.5 Pro（通过飞码加速）
+- 🇨🇳 **国产顶级模型**: Qwen3 系列、DeepSeek V3.2、GLM-5、MiniMax M2.5、Kimi K2.5
 - 💬 **无缝集成**: 直接在 GitHub Copilot Chat 中使用，无需切换界面
 - 💰 **按次计费**: 请求数付费，成本可控，告别按月订阅
 - 🔒 **安全可靠**: OAuth2 认证，代码不离开 VS Code
+- 🧠 **深度思考**: 支持思维链推理，复杂问题迎刃而解
 
 ### 为什么选择飞码扣？
 
 | 对比项 | GitHub Copilot 原生 | 飞码扣增强版 |
 |--------|-------------------|-------------|
 | 中文理解 | ✅ 良好 | 🔥 **优秀**（国产模型） |
-| 海外模型连接 | ⚠️ 不稳定（GFW） | ✅ **稳定加速** |
-| 模型选择 | 3-4 个 | 🎉 **6+ 个模型** |
+| 模型选择 | 3-4 个 | 🎉 **10+ 个模型** |
+| 思维链推理 | ⚠️ 有限 | ✅ **全面支持** |
 | 付费方式 | 按月订阅 | 💡 **按次付费** |
+
+### 支持的模型
+
+| 模型 | 提供商 | 特点 |
+|------|--------|------|
+| Qwen3 Max | 阿里云 | 256K 上下文，思维链推理 |
+| Qwen3 Coder Plus | 阿里云 | 100万 token 上下文，代码专精 |
+| Qwen3.5 Plus | 阿里云 | 100万 token 上下文，80K 思维链 |
+| DeepSeek V3.2 | DeepSeek | 深度思考，稀疏注意力 |
+| GLM-5 | 智谱AI | 200K 上下文，思维链推理 |
+| GLM-4.7 | 智谱AI | 200K 上下文，高级推理 |
+| MiniMax M2.5 | MiniMax | 200K 上下文，思维链推理 |
+| Kimi K2.5 | Moonshot | 256K 上下文，思维链推理 |
 
 ## 开发状态
 
@@ -125,6 +140,6 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 ---
 
 <p align="center">
-  <strong>更懂中文，连接更稳</strong><br>
-  Made with ❤️ by <a href="https://feimacode.cn">Feima Team</a>
+  <strong>加速创意落地 - Accelerating intent into execution</strong><br>
+  Made with ❤️ by <a href="https://feimacode.cn">Feimacode Team</a>
 </p>

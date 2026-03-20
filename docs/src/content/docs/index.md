@@ -1,21 +1,23 @@
 ---
 title: Feima Copilot Documentation
-description: VS Code extension for GitHub Copilot with Chinese AI model support
+description: Accelerating intent into execution - Chinese AI models for GitHub Copilot Chat
 ---
 
 # Welcome to Feima Copilot
 
-Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with Chinese AI model support and accelerated access to international models.
+**加速创意落地 - Accelerating intent into execution**
+
+Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with Chinese AI model support.
 
 ## What is Feima Copilot?
 
 **Feima Copilot (飞码扣)** is a VS Code extension that provides:
 
-- 🇨🇳 **Chinese AI Models**: Direct access to DeepSeek Coder V2, Tongyi Qianwen Coder, Tencent Hunyuan, and other Chinese models
-- 🚀 **Accelerated International Models**: Stable access to GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro via Feima acceleration
+- 🇨🇳 **Chinese AI Models**: Direct access to Qwen3, DeepSeek V3.2, GLM-5, MiniMax M2.5, Kimi K2.5 and other top Chinese models
 - 💬 **Seamless Integration**: Works directly within GitHub Copilot Chat without switching interfaces
 - 💰 **Pay-Per-Use**: Pay only for requests you make, not monthly subscriptions
 - 🔒 **Secure**: OAuth2 authentication with code that never leaves VS Code
+- 🧠 **Thinking Models**: Support for chain-of-thought reasoning for complex problems
 
 ## Quick Start
 
@@ -24,7 +26,7 @@ Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with Chin
     Install the extension from VS Code Marketplace and GitHub Copilot Chat
   </Card>
   <Card title="Authenticate" icon="lucide:user">
-    Sign in with your Feima account via OAuth2
+    Sign in with your Feimacode account via OAuth2
   </Card>
   <Card title="Select Model" icon="lucide:bot">
     Choose your preferred model in Copilot Chat
@@ -36,18 +38,16 @@ Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with Chin
 
 ## Supported Models
 
-### Chinese Models (Direct Connection)
-
-| Model | Provider | Best For |
-|-------|----------|----------|
-| DeepSeek Coder V2 | DeepSeek | Code generation, code completion, technical Q&A |
-| Tongyi Qianwen 3 Coder | Alibaba | Chinese code comments, documentation generation |
-| Tencent Hunyuan | Tencent | General Q&A, code understanding |
-
-### International Models (Accelerated)
-
-| Model | Provider | Best For |
-|-------|----------|----------|
+| Model | Provider | Context | Features |
+|-------|----------|---------|----------|
+| Qwen3 Max | Alibaba | 256K | Thinking chain, tool calls |
+| Qwen3 Coder Plus | Alibaba | 1M | Code specialized, 1M context |
+| Qwen3.5 Plus | Alibaba | 1M | 80K thinking chain |
+| DeepSeek V3.2 | DeepSeek | 128K | Thinking, sparse attention |
+| GLM-5 | Zhipu AI | 200K | Thinking chain, tool calls |
+| GLM-4.7 | Zhipu AI | 200K | Advanced reasoning |
+| MiniMax M2.5 | MiniMax | 200K | Thinking chain |
+| Kimi K2.5 | Moonshot | 256K | Thinking chain |
 | GPT-4o | OpenAI | Complex logic, architecture design |
 | Claude 3.5 Sonnet | Anthropic | Code review, algorithm optimization |
 | Gemini 1.5 Pro | Google | Large codebase understanding |

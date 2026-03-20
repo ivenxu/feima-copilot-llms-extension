@@ -5,98 +5,179 @@ description: Complete reference for all supported AI models
 
 # Model Reference
 
-Complete reference for all AI models available in Feima Copilot.
+Complete reference for all AI models available in Feimacode Copilot.
 
-## Chinese Models
+## Qwen Series (Alibaba Cloud)
 
-### DeepSeek Coder V2
-
-| Property | Value |
-|----------|-------|
-| **Provider** | DeepSeek |
-| **Model ID** | `deepseek-coder-v2` |
-| **Context Window** | 16K tokens |
-| **Output Limit** | 4K tokens |
-| **Status** | Stable |
-| **Latency** | Low (China direct) |
-| **Best For** | Code generation, debugging, technical Q&A |
-
-**Strengths**:
-- Excellent code understanding and generation
-- Strong debugging capabilities
-- Good at explaining technical concepts
-- Fast response times in China
-
-**Weaknesses**:
-- Limited context window compared to some international models
-- May struggle with very complex architectural questions
-
-**Example Usage**:
-```markdown
-Write a TypeScript function that implements a binary search algorithm
-with proper error handling and documentation.
-```
-
----
-
-### Tongyi Qianwen 3 Coder
+### Qwen3 Max
 
 | Property | Value |
 |----------|-------|
 | **Provider** | Alibaba Cloud |
-| **Model ID** | `tongyi-qianwen-3-coder` |
-| **Context Window** | 32K tokens |
-| **Output Limit** | 8K tokens |
-| **Status** | Stable |
-| **Latency** | Low (China direct) |
-| **Best For** | Chinese documentation, code comments |
+| **Model ID** | `qwen3-max` |
+| **Context Window** | 256K tokens |
+| **Output Limit** | 64K tokens |
+| **Thinking** | ✅ 32K thinking tokens |
+| **Best For** | Complex reasoning, large codebases |
 
 **Strengths**:
-- Superior Chinese language understanding
-- Excellent at writing Chinese documentation
-- Strong at generating Chinese code comments
-- Large context window
-
-**Weaknesses**:
-- May not be as strong on code optimization as DeepSeek
-- Response quality can vary on highly technical topics
-
-**Example Usage**:
-```markdown
-为这个React组件添加详细的中文注释，包括props说明、使用示例和注意事项。
-```
+- 256K context window for large codebases
+- Chain-of-thought reasoning for complex problems
+- Tool calls and parallel tool calls support
+- Structured outputs
 
 ---
 
-### Tencent Hunyuan
+### Qwen3 Coder Plus
 
 | Property | Value |
 |----------|-------|
-| **Provider** | Tencent Cloud |
-| **Model ID** | `tencent-hunyuan` |
-| **Context Window** | 128K tokens |
-| **Output Limit** | 4K tokens |
-| **Status** | Stable |
-| **Latency** | Low (China direct) |
-| **Best For** | General Q&A, code understanding |
+| **Provider** | Alibaba Cloud |
+| **Model ID** | `qwen3-coder-plus` |
+| **Context Window** | 1M tokens |
+| **Output Limit** | 64K tokens |
+| **Best For** | Code generation, large projects |
 
 **Strengths**:
-- Very large context window
-- Balanced performance across tasks
-- Good at natural language explanation
-- Stable and reliable
+- 1 million token context window
+- Specialized for code generation
+- Tool calls support
+- Ideal for large monorepos
 
-**Weaknesses**:
-- Not as specialized for code as DeepSeek
-- May be slower on complex code tasks
+---
 
-**Example Usage**:
-```markdown
-Explain how this authentication system works, including all the
-components and their interactions.
-```
+### Qwen3.5 Plus
 
-## International Models
+| Property | Value |
+|----------|-------|
+| **Provider** | Alibaba Cloud |
+| **Model ID** | `qwen3.5-plus` |
+| **Context Window** | 1M tokens |
+| **Output Limit** | 64K tokens |
+| **Thinking** | ✅ 80K thinking tokens |
+| **Best For** | Advanced reasoning, complex tasks |
+
+**Strengths**:
+- 1 million token context window
+- 80K thinking chain for deep reasoning
+- Latest Qwen architecture
+- Structured outputs
+
+---
+
+## DeepSeek
+
+### DeepSeek V3.2
+
+| Property | Value |
+|----------|-------|
+| **Provider** | Ali Cloud (routed) |
+| **Model ID** | `deepseek-v3.2` |
+| **Context Window** | 128K tokens |
+| **Output Limit** | 64K tokens |
+| **Thinking** | ✅ Supported |
+| **Best For** | Code generation, technical reasoning |
+
+**Strengths**:
+- Deep thinking with sparse attention
+- Excellent code understanding
+- Strong debugging capabilities
+- Tool calls support
+
+---
+
+## Zhipu AI (GLM)
+
+### GLM-5
+
+| Property | Value |
+|----------|-------|
+| **Provider** | Zhipu AI |
+| **Model ID** | `glm-5` |
+| **Context Window** | 200K tokens |
+| **Output Limit** | 16K tokens |
+| **Thinking** | ✅ Supported |
+| **Best For** | Advanced reasoning, Chinese NLP |
+
+**Strengths**:
+- 200K context window
+- Chain-of-thought reasoning
+- Excellent Chinese language understanding
+- Tool calls support
+
+---
+
+### GLM-4.7
+
+| Property | Value |
+|----------|-------|
+| **Provider** | Zhipu AI |
+| **Model ID** | `glm-4.7` |
+| **Context Window** | 200K tokens |
+| **Output Limit** | 128K tokens |
+| **Thinking** | ✅ Supported |
+| **Best For** | High-quality outputs, long-form content |
+
+**Strengths**:
+- 200K context window
+- Up to 128K output tokens
+- Advanced reasoning capabilities
+- Structured outputs
+
+---
+
+## MiniMax
+
+### MiniMax M2.5
+
+| Property | Value |
+|----------|-------|
+| **Provider** | MiniMax |
+| **Model ID** | `minimax-m2.5` |
+| **Context Window** | 200K tokens |
+| **Output Limit** | 32K tokens |
+| **Thinking** | ✅ 32K thinking tokens |
+| **Best For** | Complex reasoning, Chinese content |
+
+**Strengths**:
+- 200K context window
+- Chain-of-thought reasoning
+- Strong Chinese language support
+- Tool calls support
+
+---
+
+## Moonshot (Kimi)
+
+### Kimi K2.5
+
+| Property | Value |
+|----------|-------|
+| **Provider** | Moonshot |
+| **Model ID** | `kimi-k2.5` |
+| **Context Window** | 256K tokens |
+| **Output Limit** | 16K tokens |
+| **Thinking** | ✅ 16K thinking tokens |
+| **Best For** | Long-context tasks, document analysis |
+
+**Strengths**:
+- 256K context window
+- Chain-of-thought reasoning
+- Excellent at document analysis
+- Structured outputs
+
+---
+
+## Choosing the Right Model
+
+| Use Case | Recommended Model |
+|----------|-------------------|
+| Large codebase analysis | Qwen3 Coder Plus (1M context) |
+| Complex reasoning | Qwen3.5 Plus (80K thinking) |
+| Code generation | DeepSeek V3.2 |
+| Chinese content | GLM-5 or Qwen3 Max |
+| Document analysis | Kimi K2.5 |
+| General purpose | Qwen3 Max |
 
 ### GPT-4o
 

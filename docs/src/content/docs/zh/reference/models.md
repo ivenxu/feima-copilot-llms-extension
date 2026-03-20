@@ -1,102 +1,183 @@
 ---
-title: Supported Models
-description: Complete reference for all supported AI models
+title: 支持的模型
+description: 所有支持的 AI 模型完整参考
 ---
 
-# Model Reference
+# 模型参考
 
-Complete reference for all AI models available in Feima Copilot.
+飞码扣支持的所有 AI 模型完整参考。
 
-## Chinese Models
+## 通义千问系列（阿里云）
 
-### DeepSeek Coder V2
+### Qwen3 Max
 
-| Property | Value |
-|----------|-------|
-| **Provider** | DeepSeek |
-| **Model ID** | `deepseek-coder-v2` |
-| **Context Window** | 16K tokens |
-| **Output Limit** | 4K tokens |
-| **Status** | Stable |
-| **Latency** | Low (China direct) |
-| **Best For** | Code generation, debugging, technical Q&A |
+| 属性 | 值 |
+|------|-----|
+| **提供商** | 阿里云 |
+| **模型 ID** | `qwen3-max` |
+| **上下文窗口** | 256K tokens |
+| **输出限制** | 64K tokens |
+| **思维链** | ✅ 32K 思维 tokens |
+| **最适用于** | 复杂推理、大型代码库 |
 
-**Strengths**:
-- Excellent code understanding and generation
-- Strong debugging capabilities
-- Good at explaining technical concepts
-- Fast response times in China
-
-**Weaknesses**:
-- Limited context window compared to some international models
-- May struggle with very complex architectural questions
-
-**Example Usage**:
-```markdown
-Write a TypeScript function that implements a binary search algorithm
-with proper error handling and documentation.
-```
+**优势**:
+- 256K 上下文窗口，适合大型代码库
+- 思维链推理，解决复杂问题
+- 支持工具调用和并行工具调用
+- 结构化输出
 
 ---
 
-### Tongyi Qianwen 3 Coder
+### Qwen3 Coder Plus
 
-| Property | Value |
-|----------|-------|
-| **Provider** | Alibaba Cloud |
-| **Model ID** | `tongyi-qianwen-3-coder` |
-| **Context Window** | 32K tokens |
-| **Output Limit** | 8K tokens |
-| **Status** | Stable |
-| **Latency** | Low (China direct) |
-| **Best For** | Chinese documentation, code comments |
+| 属性 | 值 |
+|------|-----|
+| **提供商** | 阿里云 |
+| **模型 ID** | `qwen3-coder-plus` |
+| **上下文窗口** | 100万 tokens |
+| **输出限制** | 64K tokens |
+| **最适用于** | 代码生成、大型项目 |
 
-**Strengths**:
-- Superior Chinese language understanding
-- Excellent at writing Chinese documentation
-- Strong at generating Chinese code comments
-- Large context window
-
-**Weaknesses**:
-- May not be as strong on code optimization as DeepSeek
-- Response quality can vary on highly technical topics
-
-**Example Usage**:
-```markdown
-为这个React组件添加详细的中文注释，包括props说明、使用示例和注意事项。
-```
+**优势**:
+- 100万 token 上下文窗口
+- 代码生成专精
+- 支持工具调用
+- 适合大型代码仓库
 
 ---
 
-### Tencent Hunyuan
+### Qwen3.5 Plus
 
-| Property | Value |
-|----------|-------|
-| **Provider** | Tencent Cloud |
-| **Model ID** | `tencent-hunyuan` |
-| **Context Window** | 128K tokens |
-| **Output Limit** | 4K tokens |
-| **Status** | Stable |
-| **Latency** | Low (China direct) |
-| **Best For** | General Q&A, code understanding |
+| 属性 | 值 |
+|------|-----|
+| **提供商** | 阿里云 |
+| **模型 ID** | `qwen3.5-plus` |
+| **上下文窗口** | 100万 tokens |
+| **输出限制** | 64K tokens |
+| **思维链** | ✅ 80K 思维 tokens |
+| **最适用于** | 高级推理、复杂任务 |
 
-**Strengths**:
-- Very large context window
-- Balanced performance across tasks
-- Good at natural language explanation
-- Stable and reliable
+**优势**:
+- 100万 token 上下文窗口
+- 80K 思维链深度推理
+- 最新 Qwen 架构
+- 结构化输出
 
-**Weaknesses**:
-- Not as specialized for code as DeepSeek
-- May be slower on complex code tasks
+---
 
-**Example Usage**:
-```markdown
-Explain how this authentication system works, including all the
-components and their interactions.
-```
+## DeepSeek
 
-## International Models
+### DeepSeek V3.2
+
+| 属性 | 值 |
+|------|-----|
+| **提供商** | Ali Cloud（路由） |
+| **模型 ID** | `deepseek-v3.2` |
+| **上下文窗口** | 128K tokens |
+| **输出限制** | 64K tokens |
+| **思维链** | ✅ 支持 |
+| **最适用于** | 代码生成、技术推理 |
+
+**优势**:
+- 深度思考，稀疏注意力
+- 出色的代码理解能力
+- 强大的调试能力
+- 支持工具调用
+
+---
+
+## 智谱 AI（GLM）
+
+### GLM-5
+
+| 属性 | 值 |
+|------|-----|
+| **提供商** | 智谱 AI |
+| **模型 ID** | `glm-5` |
+| **上下文窗口** | 200K tokens |
+| **输出限制** | 16K tokens |
+| **思维链** | ✅ 支持 |
+| **最适用于** | 高级推理、中文 NLP |
+
+**优势**:
+- 200K 上下文窗口
+- 思维链推理
+- 出色的中文理解
+- 支持工具调用
+
+---
+
+### GLM-4.7
+
+| 属性 | 值 |
+|------|-----|
+| **提供商** | 智谱 AI |
+| **模型 ID** | `glm-4.7` |
+| **上下文窗口** | 200K tokens |
+| **输出限制** | 128K tokens |
+| **思维链** | ✅ 支持 |
+| **最适用于** | 高质量输出、长文本 |
+
+**优势**:
+- 200K 上下文窗口
+- 最高 128K 输出 tokens
+- 高级推理能力
+- 结构化输出
+
+---
+
+## MiniMax
+
+### MiniMax M2.5
+
+| 属性 | 值 |
+|------|-----|
+| **提供商** | MiniMax |
+| **模型 ID** | `minimax-m2.5` |
+| **上下文窗口** | 200K tokens |
+| **输出限制** | 32K tokens |
+| **思维链** | ✅ 32K 思维 tokens |
+| **最适用于** | 复杂推理、中文内容 |
+
+**优势**:
+- 200K 上下文窗口
+- 思维链推理
+- 强大的中文支持
+- 支持工具调用
+
+---
+
+## Moonshot（Kimi）
+
+### Kimi K2.5
+
+| 属性 | 值 |
+|------|-----|
+| **提供商** | Moonshot |
+| **模型 ID** | `kimi-k2.5` |
+| **上下文窗口** | 256K tokens |
+| **输出限制** | 16K tokens |
+| **思维链** | ✅ 16K 思维 tokens |
+| **最适用于** | 长上下文任务、文档分析 |
+
+**优势**:
+- 256K 上下文窗口
+- 思维链推理
+- 出色的文档分析能力
+- 结构化输出
+
+---
+
+## 模型选择指南
+
+| 使用场景 | 推荐模型 |
+|----------|----------|
+| 大型代码库分析 | Qwen3 Coder Plus（100万上下文） |
+| 复杂推理任务 | Qwen3.5 Plus（80K 思维链） |
+| 代码生成 | DeepSeek V3.2 |
+| 中文内容 | GLM-5 或 Qwen3 Max |
+| 文档分析 | Kimi K2.5 |
+| 通用场景 | Qwen3 Max |
 
 ### GPT-4o
 

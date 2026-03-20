@@ -1,7 +1,7 @@
 {
 	"extension.name": "copilot-more-models",
-	"extension.displayName": "Feima Code Models",
-	"extension.description": "VS Code code completion and editing extension with support for Claude, GPT-4, and more models.",
+	"extension.displayName": "Feima Copilot",
+	"extension.description": "Accelerating intent into execution - Chinese AI models for GitHub Copilot Chat: Qwen, DeepSeek, GLM, MiniMax, Kimi.",
 	
 	"error.languageModelNotAvailable": "Language Model API not available. Please ensure GitHub Copilot Chat is installed.",
 	"error.activationFailed": "Feima extension activation failed: {0}",

@@ -1,7 +1,7 @@
 {
 	"extension.name": "copilot-cn-models",
 	"extension.displayName": "飞码扣",
-	"extension.description": "中国优化版 VS Code 代码补全和编辑工具，集成本地推理模型。",
+	"extension.description": "加速创意落地 - GitHub Copilot Chat 的中国 AI 模型支持：通义千问、DeepSeek、智谱GLM、MiniMax、Kimi。",
 	
 	"error.languageModelNotAvailable": "语言模型 API 不可用。请确保已安装 GitHub Copilot Chat。",
 	"error.activationFailed": "飞码扣扩展激活失败：{0}",
