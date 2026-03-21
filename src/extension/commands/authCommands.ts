@@ -25,12 +25,12 @@ export function registerAuthCommands(
 				const session = await authService.createSession([], {});
 				
 				vscode.window.showInformationMessage(
-					`✅ 已登录为: ${session.account.label}`
+					vscode.l10n.t('Signed in as {0}', session.account.label)
 				);
 				logService.info(`Sign in successful: ${session.account.label}`);
 			} catch (error) {
 				const errorMsg = error instanceof Error ? error.message : String(error);
-				vscode.window.showErrorMessage(`❌ 登录失败: ${errorMsg}`);
+				vscode.window.showErrorMessage(vscode.l10n.t('Sign in failed: {0}', errorMsg));
 				logService.error(error as Error, 'Sign in failed');
 			}
 		})
@@ -43,11 +43,11 @@ export function registerAuthCommands(
 			
 			try {
 				await authService.signOut();
-				vscode.window.showInformationMessage('✅ 已登出 Feima 账号');
+				vscode.window.showInformationMessage(vscode.l10n.t('Signed out of Feima'));
 				logService.info('Sign out successful');
 			} catch (error) {
 				const errorMsg = error instanceof Error ? error.message : String(error);
-				vscode.window.showErrorMessage(`❌ 登出失败: ${errorMsg}`);
+				vscode.window.showErrorMessage(vscode.l10n.t('Sign out failed: {0}', errorMsg));
 				logService.error(error as Error, 'Sign out failed');
 			}
 		})
@@ -63,7 +63,7 @@ export function registerAuthCommands(
 				const sessions = await authService.getSessions([], {});
 				
 				if (sessions.length === 0) {
-					vscode.window.showWarningMessage('⚠️ 请先登录 Feima 账号');
+					vscode.window.showWarningMessage(vscode.l10n.t('Please sign in to Feima first'));
 					logService.info('No active session');
 					return;
 				}
@@ -71,12 +71,12 @@ export function registerAuthCommands(
 				const session = sessions[0];
 				
 				// Show account details in quick pick
-				const info = `当前账号: ${session.account.label}\n账号 ID: ${session.account.id}`;
+				const info = vscode.l10n.t('Current account: {0}\nAccount ID: {1}', session.account.label, session.account.id);
 				vscode.window.showInformationMessage(info);
 				logService.info(info);
 			} catch (error) {
 				const errorMsg = error instanceof Error ? error.message : String(error);
-				vscode.window.showErrorMessage(`❌ 获取账号信息失败: ${errorMsg}`);
+				vscode.window.showErrorMessage(vscode.l10n.t('Failed to get account info: {0}', errorMsg));
 				logService.error(error as Error, 'Get account failed');
 			}
 		})

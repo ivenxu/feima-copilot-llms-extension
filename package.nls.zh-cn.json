@@ -1,6 +1,6 @@
 {
 	"extension.name": "copilot-cn-models",
-	"extension.displayName": "飞码扣",
+	"extension.displayName": "飞码扣(Feimacode)",
 	"extension.description": "加速创意落地 - GitHub Copilot Chat 的中国 AI 模型支持：通义千问、DeepSeek、智谱GLM、MiniMax、Kimi。",
 	
 	"error.languageModelNotAvailable": "语言模型 API 不可用。请确保已安装 GitHub Copilot Chat。",
@@ -20,7 +20,6 @@
 	"error.unknownRegion": "未知区域：{0}",
 	"error.failedToParseToken": "无法解析存储的令牌",
 	
-	"settings.api.requestTimeout.description": "LLM API 请求的超时时间（秒）。对于慢速模型或复杂推理任务，可适当增大此值。最小值：30。",
 	"command.triggerCompletion.title": "触发代码补全",
 	"command.triggerCompletion.description": "从飞码扣触发代码补全建议",
 	
@@ -33,25 +32,20 @@
 	"command.generateTest.title": "生成测试",
 	"command.generateTest.description": "使用飞码扣 AI 为选中的代码生成测试",
 	
-	"settings.auth.baseUrl.description": "OAuth2 认证服务器基础 URL（覆盖区域默认值）",
-	"settings.api.baseUrl.description": "模型推理 API 服务器基础 URL（覆盖区域默认值）",
-	"settings.auth.clientId.description": "用于认证的 OAuth2 客户端 ID（覆盖区域默认值）",
-	"settings.auth.issuer.description": "OAuth2 发行者 URL（覆盖区域默认值）",
 	"settings.promotionUrl.description": "额度促销页面 URL（余额不足时显示）",
-	"settings.api.requestTimeout.description": "LLM API 请求的超时时间（秒）。对于慢速模型或复杂推理任务，可适当增大此值。最小值：30。",
 	"default.auth.baseUrl": "https://auth.feimacode.cn",
 	"default.api.baseUrl": "https://api.feimacode.cn/v1",
 	"default.auth.issuer": "https://auth.feimacode.cn",
 	"default.promotionUrl": "https://feimacode.cn/promotion",
 
 	"command.signIn.title": "登录",
-	"command.signIn.category": "飞码扣",
+	"command.signIn.category": "飞码扣(Feima)",
 	
-	"command.signOut.title": "登出",
-	"command.signOut.category": "飞码扣",
+	"command.signOut.title": "注销",
+	"command.signOut.category": "飞码扣(Feima)",
 	
 	"command.showAccount.title": "查看账号",
-	"command.showAccount.category": "飞码扣",
+	"command.showAccount.category": "飞码扣(Feima)",
 	
 	"settings.region.title": "区域设置",
 	"settings.region.description": "当前扩展运行区域（不可修改）",

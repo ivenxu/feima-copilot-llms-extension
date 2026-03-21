@@ -1,5 +1,13 @@
 {
 	"You ran out of Feima credits": "飞码扣额度已耗尽",
 	"Get more credits for free during the public preview: [Get Credits]({0})": "公测期间可免费领取更多额度：[领取额度]({0})",
-	"Unknown region: {0}": "未知区域：{0}"
+	"Unknown region: {0}": "未知区域：{0}",
+	"Feimacode": "飞码扣",
+	"Signed in as {0}": "已登录为: {0}",
+	"Sign in failed: {0}": "登录失败: {0}",
+	"Signed out of Feima": "已登出 Feima 账号",
+	"Sign out failed: {0}": "登出失败: {0}",
+	"Please sign in to Feima first": "请先登录 Feima 账号",
+	"Current account: {0}\nAccount ID: {1}": "当前账号: {0}\n账号 ID: {1}",
+	"Failed to get account info: {0}": "获取账号信息失败: {0}"
 }

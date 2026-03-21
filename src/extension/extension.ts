@@ -54,7 +54,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 		context.subscriptions.push(
 			vscode.authentication.registerAuthenticationProvider(
 				'feima',
-				'Feima (飞码扣)',
+				vscode.l10n.t('Feimacode'),
 				authProvider,
 				{ supportsMultipleAccounts: false }
 			)
