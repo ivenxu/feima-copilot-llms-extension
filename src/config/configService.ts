@@ -54,6 +54,13 @@ export interface ResolvedConfig {
 	promotionUrl: string;
 
 	/**
+	 * Base URL for the Feima website
+	 * Used to compose profile, activity log, and other user-facing links
+	 * Can be overridden by feima.website.baseUrl VS Code setting
+	 */
+	websiteBaseUrl: string;
+
+	/**
 	 * LLM API request timeout in seconds
 	 * Can be overridden by feima.api.requestTimeout VS Code setting
 	 * Default: 300 (5 minutes)
@@ -78,8 +85,7 @@ export class FeimaConfigService implements vscode.Disposable {
 					e.affectsConfiguration('feima.api.baseUrl') ||
 					e.affectsConfiguration('feima.auth.clientId') ||
 							e.affectsConfiguration('feima.auth.issuer') ||
-					e.affectsConfiguration('feima.promotionUrl') ||
-					e.affectsConfiguration('feima.api.requestTimeout')
+					e.affectsConfiguration('feima.promotionUrl') || e.affectsConfiguration('feima.website.baseUrl') || e.affectsConfiguration('feima.api.requestTimeout')
 				) {
 					// Invalidate cache on relevant setting changes
 					this.cachedConfig = undefined;
@@ -127,6 +133,9 @@ export class FeimaConfigService implements vscode.Disposable {
 		// Get promotion URL: setting > region default
 		const promotionUrl = config.get<string>('promotionUrl') || activeRegionConfig.promotionUrl;
 
+		// Get website base URL: setting > region default
+		const websiteBaseUrl = config.get<string>('website.baseUrl') || activeRegionConfig.websiteBaseUrl;
+
 		// Get request timeout: setting > default (300s / 5 minutes)
 		const requestTimeout = Math.max(30, config.get<number>('api.requestTimeout') ?? 300);
 
@@ -137,6 +146,7 @@ export class FeimaConfigService implements vscode.Disposable {
 			issuer,
 			scopes,
 			promotionUrl,
+			websiteBaseUrl,
 			requestTimeout,
 		};
 

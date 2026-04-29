@@ -194,6 +194,9 @@ class BuildSystem {
 			if (props['feima.promotionUrl']) {
 				props['feima.promotionUrl']['default'] = regionConfig.promotionUrl;
 			}
+			if (props['feima.website.baseUrl']) {
+				props['feima.website.baseUrl']['default'] = regionConfig.websiteBaseUrl;
+			}
 		}
 
 		// Write to root package.json (will be restored later)

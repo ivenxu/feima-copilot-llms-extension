@@ -62,10 +62,12 @@
 	"settings.auth.clientId.description": "OAuth2 client ID for authentication (overrides region default)",
 	"settings.auth.issuer.description": "OAuth2 issuer URL (overrides region default)",
 	"settings.promotionUrl.description": "URL for the credits promotion page (shown when balance runs out)",
+	"settings.website.baseUrl.description": "Base URL for the Feima website (used for profile and activity log links)",
 	"default.auth.baseUrl": "https://auth.feimacode.com",
 	"default.api.baseUrl": "https://api.feimacode.com/v1",
 	"default.auth.issuer": "https://auth.feimacode.com",
 	"default.promotionUrl": "https://feimacode.com/promotion",
+	"default.website.baseUrl": "https://feimacode.com",
 
 	"error.insufficientBalance": "You ran out of Feima credits. Get more credits for free during the public preview.",
 	"error.insufficientBalance.action": "Get Credits",

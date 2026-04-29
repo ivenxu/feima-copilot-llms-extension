@@ -111,6 +111,12 @@
           "markdownDescription": "%settings.promotionUrl.description%",
           "scope": "machine-overridable"
         },
+        "feima.website.baseUrl": {
+          "type": "string",
+          "default": "%default.website.baseUrl%",
+          "markdownDescription": "%settings.website.baseUrl.description%",
+          "scope": "machine-overridable"
+        },
         "feima.showQuotaInStatusBar": {
           "type": "boolean",
           "default": true,

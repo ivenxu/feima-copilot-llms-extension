@@ -419,7 +419,7 @@ export async function showAccountDialog(
 		referralStats,
 		transactions,
 		apiCalls,
-		profileUrl: getResolvedConfig().promotionUrl || 'https://feimacode.cn'
+		profileUrl: `${getResolvedConfig().websiteBaseUrl || 'https://feimacode.cn'}/profile`
 	});
 
 	logger.info(`[AccountDialog] Dialog shown for user: ${userName}`);
@@ -518,7 +518,7 @@ function getAccountHtml(data: {
 					${transactionRows || `<tr><td colspan="3" class="empty">${t('No transactions yet')}</td></tr>`}
 				</tbody>
 			</table>
-			${data.transactions.length > 0 ? `<button class="link-btn" onclick="viewMore('transactions')">${t('View More')} →</button>` : ''}
+			${data.transactions.length > 0 ? `<button class="link-btn" onclick="viewMore('#transactions')">${t('View More')} →</button>` : ''}
 		</div>
 	`;
 
@@ -547,7 +547,7 @@ function getAccountHtml(data: {
 					${apiCallRows || `<tr><td colspan="4" class="empty">${t('No API calls yet')}</td></tr>`}
 				</tbody>
 			</table>
-			${data.apiCalls.length > 0 ? `<button class="link-btn" onclick="viewMore('apiCalls')">${t('View More')} →</button>` : ''}
+			${data.apiCalls.length > 0 ? `<button class="link-btn" onclick="viewMore('#api-calls')">${t('View More')} →</button>` : ''}
 		</div>
 	`;
 
@@ -824,8 +824,8 @@ function getAccountHtml(data: {
 		function copyReferralCode() {
 			vscode.postMessage({ command: 'copyReferralCode', text: referralCode });
 		}
-		function viewMore(section) {
-			vscode.postMessage({ command: 'viewMore', url: profileUrl + '/' + section });
+		function viewMore(hash) {
+			vscode.postMessage({ command: 'viewMore', url: profileUrl + hash });
 		}
 		function signOut() {
 			vscode.postMessage({ command: 'signOut' });

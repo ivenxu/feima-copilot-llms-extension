@@ -77,4 +77,12 @@ export interface RegionConfig {
 	 * purchase page once the product is generally available.
 	 */
 	promotionUrl: string;
+
+	/**
+	 * Base URL for the Feima website.
+	 * Used to compose links to the profile page, activity logs, etc.
+	 * - CN default: https://feimacode.cn
+	 * - Global default: https://feimacode.com
+	 */
+	websiteBaseUrl: string;
 }

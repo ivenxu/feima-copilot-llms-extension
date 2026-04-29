@@ -25,6 +25,7 @@ export const cnRegionConfig: RegionConfig = {
 	marketplaceUrl: 'https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models',
 	repositoryUrl: 'https://github.com/feimacode/feima-copilot-llms-extension',
 	promotionUrl: 'https://feimacode.cn/promotion',
+	websiteBaseUrl: 'https://feimacode.cn',
 };
 
 /**
@@ -46,6 +47,7 @@ export const globalRegionConfig: RegionConfig = {
 	marketplaceUrl: 'https://marketplace.visualstudio.com/items?itemName=feima.copilot-more-models',
 	repositoryUrl: 'https://github.com/feimacode/feima-copilot-llms-extension',
 	promotionUrl: 'https://feimacode.com/promotion',
+	websiteBaseUrl: 'https://feimacode.com',
 };
 
 /**
