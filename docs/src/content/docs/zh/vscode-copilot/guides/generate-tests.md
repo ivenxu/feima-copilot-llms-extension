@@ -1,12 +1,12 @@
 ---
 title: 使用 Copilot 生成测试
 description: 了解如何在 VS Code 中使用 GitHub Copilot 生成测试代码，包括单元测试、集成测试和测试驱动开发。
+source: https://code.visualstudio.com/docs/copilot/guides/generate-tests
+---
 
 > **💡 国内用户提示**
 > 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
 
-source: https://code.visualstudio.com/docs/copilot/guides/generate-tests
----
 
 GitHub Copilot 可以帮助你为应用程序代码生成测试，从单元测试到集成测试，支持多种测试框架。
 

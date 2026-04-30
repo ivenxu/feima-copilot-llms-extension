@@ -1,12 +1,12 @@
 ---
 title: 提示词工程指南
 description: 了解如何为 VS Code GitHub Copilot 编写有效的提示词，提高 AI 响应质量和代码生成准确性。
+source: https://code.visualstudio.com/docs/copilot/guides/prompt-engineering
+---
 
 > **💡 国内用户提示**
 > 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
 
-source: https://code.visualstudio.com/docs/copilot/guides/prompt-engineering
----
 
 提示词(Prompt)工程是编写有效指令以从 AI 模型获得所需输出的技巧。本指南提供在 VS Code GitHub Copilot 中编写有效提示词(Prompt)的实用建议。
 

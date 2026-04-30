@@ -1,12 +1,12 @@
 ---
 title: 使用 Copilot 修复 Bug
 description: 了解如何在 VS Code 中使用 GitHub Copilot 识别和修复代码中的 Bug，包括使用聊天、内联聊天和智能操作。
+source: https://code.visualstudio.com/docs/copilot/guides/fix-bugs
+---
 
 > **💡 国内用户提示**
 > 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
 
-source: https://code.visualstudio.com/docs/copilot/guides/fix-bugs
----
 
 GitHub Copilot 可以帮助你识别和修复代码中的 Bug，从简单的语法错误到复杂的逻辑问题。
 
