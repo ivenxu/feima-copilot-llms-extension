@@ -180,9 +180,9 @@ export default defineConfig({
   output: 'static',
   outDir: './dist',
   srcDir,
-  trailingSlash: 'never',
+  trailingSlash: 'always',
   build: {
-    format: 'file',   // output guides/quickstart.html instead of guides/quickstart/index.html
+    format: 'directory',  // output guides/quickstart/index.html; works with OSS default-document (index.html)
   },
 
   integrations: [
