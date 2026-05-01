@@ -8,7 +8,7 @@
 
 ## 快速链接
 
-- 🛒 [VS Code 插件市场](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models) | [打开飞码扣](vscode:extension/feima.copilot-cn-models)
+- 🛒 [VS Code 插件市场](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models) | [下载飞码扣](https://feimacode.cn/download)
 - 📖 [英文文档](https://ivenxu.github.io/feima-copilot-llms-extension/) | [中文文档](https://docs.feimacode.cn/)
 - 🚀 [快速入门](https://ivenxu.github.io/feima-copilot-llms-extension/guides/quickstart/) | [快速入门（中文）](https://docs.feimacode.cn/guides/quickstart/)
 - 📦 [安装指南](https://ivenxu.github.io/feima-copilot-llms-extension/guides/installation/) | [安装指南（中文）](https://docs.feimacode.cn/guides/installation/)
