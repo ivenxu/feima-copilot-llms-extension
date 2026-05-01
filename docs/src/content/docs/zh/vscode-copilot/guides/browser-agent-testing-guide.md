@@ -13,11 +13,11 @@ source: https://code.visualstudio.com/docs/copilot/guides/browser-agent-testing-
 
 ## 前提条件
 
-- [安装 Visual Studio Code](/download)
-- [GitHub Copilot 订阅](/docs/copilot/setup)
+- [安装 Visual Studio Code](https://code.visualstudio.com/download)
+- [GitHub Copilot 订阅](/vscode-copilot/setup)
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 - 使用 `workbench.browser.enableChatTools` 设置启用浏览器智能体(Agent)工具
 
@@ -119,5 +119,5 @@ source: https://code.visualstudio.com/docs/copilot/guides/browser-agent-testing-
 
 ## 延伸阅读
 
-- [集成浏览器](/docs/debugtest/integrated-browser)
-- [智能体(Agent)概览](/docs/copilot/agents/overview)
+- [集成浏览器](https://code.visualstudio.com/docs/debugtest/integrated-browser)
+- [智能体(Agent)概览](/vscode-copilot/agents/overview)

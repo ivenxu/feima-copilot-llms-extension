@@ -7,7 +7,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/chat-view
 聊天视图（**Chat view**）是 VS Code 中与 GitHub Copilot 交互的主要界面。通过聊天视图，你可以向 AI 提出问题、请求代码更改、管理智能体(Agent)会话(Agent Session)和配置 AI 工具。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 ## 打开聊天视图
@@ -66,7 +66,7 @@ VS Code 保存聊天会话历史。你可以通过以下方式访问历史：
 
 ## 延伸阅读
 
-- [内联聊天(Inline Chat)](/docs/copilot/chat/inline-chat)
-- [聊天会话管理](/docs/copilot/chat/chat-sessions)
-- [提示词(Prompt)编写技巧](/docs/copilot/chat/prompt-crafting)
-- [向聊天添加上下文](/docs/copilot/chat/copilot-chat-context)
+- [内联聊天(Inline Chat)](/vscode-copilot/chat/inline-chat)
+- [聊天会话管理](/vscode-copilot/chat/chat-sessions)
+- [提示词(Prompt)编写技巧](/vscode-copilot/chat/prompt-crafting)
+- [向聊天添加上下文](https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context)

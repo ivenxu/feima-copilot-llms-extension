@@ -23,11 +23,11 @@ source: https://code.visualstudio.com/docs/copilot/faq
 
 - [更多每月聊天交互额度](https://docs.github.com/en/copilot/get-started/plans#comparing-copilot-plans)
 - [在聊天中访问高级语言模型(Language Model)](https://docs.github.com/en/copilot/reference/ai-models/supported-models#supported-ai-models-per-copilot-plan)
-- [携带自己的模型密钥 (BYOK)](/docs/copilot/customization/language-models#_bring-your-own-language-model-key)
-- [远程仓库索引和语义代码搜索](/docs/copilot/reference/workspace-context#_remote-index)
+- [携带自己的模型密钥 (BYOK)](/vscode-copilot/customization/model-selection#_bring-your-own-language-model-key)
+- [远程仓库索引和语义代码搜索](https://code.visualstudio.com/docs/copilot/reference/workspace-context#_remote-index)
 - [Copilot 代码审查](https://docs.github.com/en/copilot/concepts/agents/code-review)
 - [Copilot 内容排除](https://docs.github.com/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot)
-- [将任务委托给 Copilot 云端智能体(Cloud Agent)](/docs/copilot/agents/cloud-agents#_github-copilot-cloud-agent)进行后台执行
+- [将任务委托给 Copilot 云端智能体(Cloud Agent)](/vscode-copilot/agents/cloud-agents#_github-copilot-cloud-agent)进行后台执行
 
 ### 如何监控 Copilot 使用情况？
 
@@ -58,7 +58,7 @@ source: https://code.visualstudio.com/docs/copilot/faq
 
 如果你的 Copilot 订阅与另一个 GitHub 账号关联，请在 VS Code 中退出 GitHub 账号，然后用另一个账号登录。
 
-参见[为 Copilot 使用不同的 GitHub 账号](/docs/copilot/setup#_use-a-different-github-account-with-copilot)获取更多信息。
+参见[为 Copilot 使用不同的 GitHub 账号](/vscode-copilot/setup#_use-a-different-github-account-with-copilot)获取更多信息。
 
 ## 一般 Copilot 问题
 
@@ -79,6 +79,9 @@ source: https://code.visualstudio.com/docs/copilot/faq
 
 了解更多：[GitHub Copilot 的速率限制](https://docs.github.com/en/copilot/troubleshooting-github-copilot/rate-limits-for-github-copilot)。
 
+> **💡 遇到限速？切换到飞码扣模型**
+> 安装 **[飞码扣插件](/guides/quickstart)** 后，即可在 GitHub Copilot Chat 中切换到通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内模型，不受 GitHub 速率限制影响，按次计费。[立即开始 →](/guides/quickstart)
+
 ### 是否有 Copilot 扩展的预发布版本？
 
 有，你可以切换到 Copilot 扩展的预发布（每晚构建）版本以尝试最新功能和修复。在扩展视图中，右键单击或选择齿轮图标打开上下文菜单，然后选择**切换到预发布版本**。
@@ -98,9 +101,9 @@ source: https://code.visualstudio.com/docs/copilot/faq
 - 验证[网络设置](#_network-and-firewall-configuration-for-copilot)已配置为允许连接到 GitHub Copilot
 - 验证你尚未达到本月 Copilot 免费计划的内联建议(Inline Suggestion)限制
 
-## 聊天
+## 聊天(Chat)
 
-### 聊天功能对我不起作用
+### 聊天功能不工作
 
 确保满足以下要求：
 
@@ -119,15 +122,15 @@ source: https://code.visualstudio.com/docs/copilot/faq
 
 ### Copilot 与大型代码库和 monorepo 兼容吗？
 
-是的。VS Code 使用语义搜索、语言智能（LSP）和 GitHub 代码搜索自动索引工作区，跨仓库提供深度理解。对于大型仓库，[远程索引](/docs/copilot/reference/workspace-context#_remote-index)使用 GitHub 的索引跨相关仓库获得快速、全面的结果。使用[多根工作区](/docs/editing/workspaces/multi-root-workspaces)在 monorepo 中限定上下文，使用[自定义说明(Custom Instructions)](/docs/copilot/customization/custom-instructions)描述项目架构。
+是的。VS Code 使用语义搜索、语言智能（LSP）和 GitHub 代码搜索自动索引工作区，跨仓库提供深度理解。对于大型仓库，[远程索引](https://code.visualstudio.com/docs/copilot/reference/workspace-context#_remote-index)使用 GitHub 的索引跨相关仓库获得快速、全面的结果。使用[多根工作区](https://code.visualstudio.com/docs/editing/workspaces/multi-root-workspaces)在 monorepo 中限定上下文，使用[自定义说明(Custom Instructions)](/vscode-copilot/customization/custom-instructions)描述项目架构。
 
 ### 我的组织能控制 AI 功能和智能体(Agent)访问吗？
 
-是的。组织管理员可以通过[企业 AI 设置](/docs/enterprise/ai-settings)和[策略](/docs/enterprise/policies)管理 Copilot，包括启用或禁用智能体(Agent)、控制模型访问、配置内容排除和强制执行信任边界。
+是的。组织管理员可以通过[企业 AI 设置](https://code.visualstudio.com/docs/enterprise/ai-settings)和[策略](https://code.visualstudio.com/docs/enterprise/policies)管理 Copilot，包括启用或禁用智能体(Agent)、控制模型访问、配置内容排除和强制执行信任边界。
 
 ### 语言模型(Language Model)选择器中并非所有模型都可用
 
-你可以选择哪些模型在语言模型(Language Model)选择器中可用。了解如何[自定义语言模型(Language Model)选择器](/docs/copilot/customization/language-models#_customize-the-model-picker)。
+你可以选择哪些模型在语言模型(Language Model)选择器中可用。了解如何[自定义语言模型(Language Model)选择器](/vscode-copilot/customization/model-selection#_customize-the-model-picker)。
 
 组织可以限制对某些模型的访问。如果你认为某个模型应该可用，请联系组织管理员。
 
@@ -156,11 +159,11 @@ source: https://code.visualstudio.com/docs/copilot/faq
 
 ## 飞码扣：国内用户的替代方案
 
-如果您正在寻找适合国内使用的 AI 编程助手，**[飞码扣插件](/zh/guides/quickstart)** 是一个绝佳选择：
+如果您正在寻找适合国内使用的 AI 编程助手，**[飞码扣插件](/guides/quickstart)** 是一个绝佳选择：
 
 - 🇨🇳 **国内顶级模型**：通义千问(Qwen3)、DeepSeek V3.2、GLM-5、MiniMax M2.5、Kimi K2.5
 - 💰 **按次计费**：无需月付订阅，只为使用的请求付费
 - 💬 **无缝集成**：直接在 GitHub Copilot Chat 界面中使用，无需切换工具
 - 🔒 **安全可靠**：OAuth2 认证，代码不离开 VS Code
 
-[快速入门指南 →](/zh/guides/quickstart) | [查看所有模型 →](/zh/guides/using-models)
+[快速入门指南 →](/guides/quickstart) | [查看所有模型 →](/guides/using-models)

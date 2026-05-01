@@ -410,9 +410,9 @@ npm run compile
 
 ## 下一步
 
-- [测试指南](./testing.md) - 如何编写测试
-- [构建指南](./building.md) - 构建和打包扩展
-- [API 参考](../reference/api.md) - 扩展 API
+- [测试指南](./testing) - 如何编写测试
+- [构建指南](./building) - 构建和打包扩展
+- [API 参考](../reference/api) - 扩展 API
 
 ## 需要帮助？
 

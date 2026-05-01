@@ -25,7 +25,7 @@ VS Code 使用提供商的 SDK 和智能体(Agent)框架来访问智能体(Agent
 在 VS Code 中使用云端第三方智能体(Third-party Agent)之前，需要在 Copilot 账号设置中启用对云端第三方智能体(Third-party Agent)的支持。请按照 GitHub 文档中[在仓库中启用或禁用第三方编程智能体(Agent)](https://docs.github.com/en/copilot/how-tos/manage-your-account/manage-policies#enabling-or-disabling-third-party-coding-agents-in-your-repositories)的步骤操作。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 无需安装提供商的 VS Code 扩展即可在 VS Code 中使用其云端智能体(Cloud Agent)。
@@ -136,5 +136,5 @@ VS Code 允许你根据提供商的可用性选择本地或云端第三方智能
 
 ## 延伸阅读
 
-- [智能体(Agent)概览](/docs/copilot/agents/overview)：了解不同智能体(Agent)类型以及如何在智能体(Agent)之间移交任务
+- [智能体(Agent)概览](/vscode-copilot/agents/overview)：了解不同智能体(Agent)类型以及如何在智能体(Agent)之间移交任务
 - [关于第三方智能体(Third-party Agent)](https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents)：在 GitHub 文档中了解更多第三方智能体(Third-party Agent)

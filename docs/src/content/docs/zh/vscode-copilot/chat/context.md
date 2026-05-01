@@ -71,7 +71,7 @@ VS Code 使用多种技术索引你的工作区以提供上下文：
 1. 打开命令面板，运行 **GitHub Copilot: Build Remote Index**
 2. 索引构建后，搜索结果将包括整个仓库的内容
 
-了解更多：[工作区上下文和代码库搜索](/docs/copilot/reference/workspace-context)。
+了解更多：[工作区上下文和代码库搜索](https://code.visualstudio.com/docs/copilot/reference/workspace-context)。
 
 ## 上下文压缩
 
@@ -89,6 +89,6 @@ VS Code 使用多种技术索引你的工作区以提供上下文：
 
 ## 延伸阅读
 
-- [上下文变量(Context Variable)参考](/docs/copilot/reference/context-variables)
-- [自定义说明(Custom Instructions)](/docs/copilot/customization/custom-instructions)
-- [提示词(Prompt)编写技巧](/docs/copilot/chat/prompt-crafting)
+- [上下文变量(Context Variable)参考](/vscode-copilot/reference/context-variables)
+- [自定义说明(Custom Instructions)](/vscode-copilot/customization/custom-instructions)
+- [提示词(Prompt)编写技巧](/vscode-copilot/chat/prompt-crafting)

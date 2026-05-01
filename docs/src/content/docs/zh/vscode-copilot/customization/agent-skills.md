@@ -6,15 +6,15 @@ source: https://code.visualstudio.com/docs/copilot/customization/agent-skills
 
 智能体(Agent)技能让 AI 能够通过运行脚本和工具来执行特定任务。技能可以在不同工具之间共享，例如 VS Code、Copilot CLI、CLI 工具及 GitHub Copilot。例如，你可以创建一个技能，从内部 CRM 中获取用户数据，以便在编写与用户相关的功能时使用。
 
-与只提供文本说明的[自定义说明(Custom Instructions)](/docs/copilot/customization/custom-instructions)和提供可重用聊天提示词(Prompt)的[提示词(Prompt)文件](/docs/copilot/customization/prompt-files)不同，技能通过脚本、命令行工具、程序或任何可通过命令行调用的工具提供可执行能力。
+与只提供文本说明的[自定义说明(Custom Instructions)](/vscode-copilot/customization/custom-instructions)和提供可重用聊天提示词(Prompt)的[提示词(Prompt)文件](https://code.visualstudio.com/docs/copilot/customization/prompt-files)不同，技能通过脚本、命令行工具、程序或任何可通过命令行调用的工具提供可执行能力。
 
-你还可以将技能打包为[智能体(Agent)插件](/docs/copilot/customization/agent-plugins)。
-
-> **提示**
-> 使用[智能体(Agent)自定义编辑器](/docs/copilot/customization/overview#_agent-customizations-editor)（预览版）在一个地方发现、创建和管理所有智能体(Agent)自定义内容。通过命令面板运行 **Chat: Open Customizations** 命令。
+你还可以将技能打包为[智能体(Agent)插件](https://code.visualstudio.com/docs/copilot/customization/agent-plugins)。
 
 > **提示**
-> **智能体(Agent)、提示词(Prompt)文件还是技能？** 当你需要带有特定工具限制、模型偏好或智能体(Agent)之间移交的持久化角色时，使用[自定义智能体(Custom Agent)](/docs/copilot/customization/custom-agents)。对于不需要工具限制的一次性任务，使用[提示词(Prompt)文件](/docs/copilot/customization/prompt-files)。对于带有脚本和资源的可移植、可重用能力，使用技能。
+> 使用[智能体(Agent)自定义编辑器](/vscode-copilot/customization/overview#_agent-customizations-editor)（预览版）在一个地方发现、创建和管理所有智能体(Agent)自定义内容。通过命令面板运行 **Chat: Open Customizations** 命令。
+
+> **提示**
+> **智能体(Agent)、提示词(Prompt)文件还是技能？** 当你需要带有特定工具限制、模型偏好或智能体(Agent)之间移交的持久化角色时，使用[自定义智能体(Custom Agent)](/vscode-copilot/customization/custom-agents)。对于不需要工具限制的一次性任务，使用[提示词(Prompt)文件](https://code.visualstudio.com/docs/copilot/customization/prompt-files)。对于带有脚本和资源的可移植、可重用能力，使用技能。
 
 ## 什么是智能体(Agent)技能？
 
@@ -30,7 +30,7 @@ source: https://code.visualstudio.com/docs/copilot/customization/agent-skills
 - **开发工具集成**：连接到代码分析工具、质量检查器或其他开发流程工具。
 - **业务特定处理**：执行公司内部工具或与业务工作流集成的脚本。
 
-技能文件可以作为独立文件共享，也可以打包为[智能体(Agent)插件](/docs/copilot/customization/agent-plugins)，实现更结构化的分发。
+技能文件可以作为独立文件共享，也可以打包为[智能体(Agent)插件](https://code.visualstudio.com/docs/copilot/customization/agent-plugins)，实现更结构化的分发。
 
 ## 技能文件位置
 
@@ -105,6 +105,6 @@ Return the raw data as-is.
 
 ## 延伸阅读
 
-- [自定义智能体(Custom Agent)](/docs/copilot/customization/custom-agents)
-- [智能体(Agent)插件](/docs/copilot/customization/agent-plugins)
-- [使用智能体(Agent)的工具](/docs/copilot/agents/agent-tools)
+- [自定义智能体(Custom Agent)](/vscode-copilot/customization/custom-agents)
+- [智能体(Agent)插件](https://code.visualstudio.com/docs/copilot/customization/agent-plugins)
+- [使用智能体(Agent)的工具](https://code.visualstudio.com/docs/copilot/agents/agent-tools)

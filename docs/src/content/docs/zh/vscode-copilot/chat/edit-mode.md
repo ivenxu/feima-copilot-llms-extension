@@ -29,5 +29,5 @@ source: https://code.visualstudio.com/docs/copilot/chat/edit-mode
 
 ## 延伸阅读
 
-- [智能体(Agent)模式](/docs/copilot/chat/agent-mode)
-- [本地智能体(Local Agent)](/docs/copilot/agents/local-agents)
+- [智能体(Agent)模式](/vscode-copilot/chat/agent-mode)
+- [本地智能体(Local Agent)](/vscode-copilot/agents/local-agents)

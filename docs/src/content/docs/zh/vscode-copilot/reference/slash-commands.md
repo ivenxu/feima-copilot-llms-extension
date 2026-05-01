@@ -45,14 +45,14 @@ source: https://code.visualstudio.com/docs/copilot/reference/slash-commands
 @code-review 请审查我最近的变更
 ```
 
-了解更多：[智能体(Agent)技能](/docs/copilot/customization/agent-skills)。
+了解更多：[智能体(Agent)技能](/vscode-copilot/customization/agent-skills)。
 
 ## 创建自定义斜杠命令(Slash Command)
 
-你可以通过创建[提示词(Prompt)文件](/docs/copilot/customization/prompt-files)创建自定义斜杠命令(Slash Command)。将 `.prompt.md` 文件保存在 `.github/prompts/` 目录中，就可以在聊天中通过 `/<文件名>` 调用。
+你可以通过创建[提示词(Prompt)文件](https://code.visualstudio.com/docs/copilot/customization/prompt-files)创建自定义斜杠命令(Slash Command)。将 `.prompt.md` 文件保存在 `.github/prompts/` 目录中，就可以在聊天中通过 `/<文件名>` 调用。
 
 ## 延伸阅读
 
-- [上下文变量(Context Variable)参考](/docs/copilot/reference/context-variables)
-- [自定义说明(Custom Instructions)](/docs/copilot/customization/custom-instructions)
-- [智能体(Agent)技能](/docs/copilot/customization/agent-skills)
+- [上下文变量(Context Variable)参考](/vscode-copilot/reference/context-variables)
+- [自定义说明(Custom Instructions)](/vscode-copilot/customization/custom-instructions)
+- [智能体(Agent)技能](/vscode-copilot/customization/agent-skills)

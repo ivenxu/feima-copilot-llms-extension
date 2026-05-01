@@ -19,7 +19,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/agent-mode
 对于简单的问答，使用 **Ask** 模式。对于有针对性的单文件编辑，使用**内联聊天(Inline Chat)**。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 ## 开始使用智能体(Agent)模式
@@ -76,6 +76,6 @@ source: https://code.visualstudio.com/docs/copilot/chat/agent-mode
 
 ## 延伸阅读
 
-- [本地智能体(Local Agent)](/docs/copilot/agents/local-agents)
-- [智能体(Agent)工具](/docs/copilot/agents/agent-tools)
-- [最佳实践](/docs/copilot/best-practices)
+- [本地智能体(Local Agent)](/vscode-copilot/agents/local-agents)
+- [智能体(Agent)工具](https://code.visualstudio.com/docs/copilot/agents/agent-tools)
+- [最佳实践](/vscode-copilot/best-practices)

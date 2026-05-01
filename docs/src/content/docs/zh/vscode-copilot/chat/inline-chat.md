@@ -6,7 +6,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/inline-chat
 
 借助 Visual Studio Code 中的内联聊天(Inline Chat)，你可以直接在编辑器中请求生成代码或进行编辑，也可以在集成终端中获取 Shell 命令方面的帮助。内联聊天(Inline Chat)让你无需切换到单独的聊天视图即可保持工作流程。
 
-当你想在可见代码上下文中进行快速、有针对性的编辑时，请使用内联聊天(Inline Chat)。对于多步骤任务、多文件变更或更广泛的代码库探索，请改用[聊天视图](/docs/copilot/chat/copilot-chat)。
+当你想在可见代码上下文中进行快速、有针对性的编辑时，请使用内联聊天(Inline Chat)。对于多步骤任务、多文件变更或更广泛的代码库探索，请改用[聊天视图](https://code.visualstudio.com/docs/copilot/chat/copilot-chat)。
 
 ## 使用编辑器内联聊天(Inline Chat)
 
@@ -54,7 +54,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/inline-chat
 
 ## 使用终端内联聊天(Inline Chat)
 
-可以在[集成终端](/docs/terminal/basics)中调出终端内联聊天(Inline Chat)，获取 Shell 命令帮助或提问与终端相关的问题。
+可以在[集成终端](https://code.visualstudio.com/docs/terminal/basics)中调出终端内联聊天(Inline Chat)，获取 Shell 命令帮助或提问与终端相关的问题。
 
 使用终端内联聊天(Inline Chat)：
 
@@ -76,7 +76,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/inline-chat
 
 如果在内联聊天(Inline Chat)会话中更改了模型，选择会在会话的剩余时间内保持。重新加载 VS Code 后，模型会重置为 `inlineChat.defaultModel` 设置中指定的值。
 
-了解更多：[为任务选择合适的模型](/docs/copilot/customization/language-models#_choose-the-right-model-for-your-task)。
+了解更多：[为任务选择合适的模型](/vscode-copilot/customization/model-selection#_choose-the-right-model-for-your-task)。
 
 ## 使用快速聊天
 
@@ -88,7 +88,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/inline-chat
 
 ## 延伸阅读
 
-- [聊天概览](/docs/copilot/chat/copilot-chat)
-- [向聊天提示词(Prompt)添加上下文](/docs/copilot/chat/copilot-chat-context)
-- [审查 AI 生成的代码编辑](/docs/copilot/chat/review-code-edits)
-- [VS Code 中的 AI 语言模型(Language Model)](/docs/copilot/customization/language-models)
+- [聊天概览](https://code.visualstudio.com/docs/copilot/chat/copilot-chat)
+- [向聊天提示词(Prompt)添加上下文](https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context)
+- [审查 AI 生成的代码编辑](https://code.visualstudio.com/docs/copilot/chat/review-code-edits)
+- [VS Code 中的 AI 语言模型(Language Model)](/vscode-copilot/customization/model-selection)

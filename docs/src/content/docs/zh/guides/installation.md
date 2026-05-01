@@ -109,7 +109,7 @@ code .
 # Press F5 to launch Extension Development Host
 ```
 
-See [Development Setup](../dev/setup.md) for more details.
+See [Development Setup](../dev/setup) for more details.
 
 ## Uninstallation
 
@@ -162,13 +162,13 @@ Some corporate networks may block OAuth redirects. If you encounter authenticati
 
 1. Check with your IT department about OAuth policy
 2. Try connecting from a different network
-3. Use the [troubleshooting guide](../guides/quickstart.md#troubleshooting)
+3. Use the [troubleshooting guide](../guides/quickstart#troubleshooting)
 
 ## Next Steps
 
-- [Quick Start](./quickstart.md) - Start using Feima Copilot
-- [Authentication](./authentication.md) - Learn about OAuth2 setup
-- [Configuration](./configuration.md) - Customize your settings
+- [Quick Start](./quickstart) - Start using Feima Copilot
+- [Authentication](./authentication) - Learn about OAuth2 setup
+- [Configuration](./configuration) - Customize your settings
 
 ## Need Help?
 

@@ -50,7 +50,6 @@ const sidebarEn = [
   {
     label: 'Reference',
     items: [
-      { label: 'Supported Models', link: '/reference/models' },
       { label: 'API Reference', link: '/reference/api' },
       { label: 'Config Reference', link: '/reference/config' },
     ],

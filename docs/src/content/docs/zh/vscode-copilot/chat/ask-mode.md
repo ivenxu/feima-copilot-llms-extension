@@ -58,6 +58,6 @@ Ask 的响应中可能包含代码块。要将代码块应用到编辑器：
 
 ## 延伸阅读
 
-- [智能体(Agent)模式](/docs/copilot/chat/agent-mode)：自主实施代码变更
-- [聊天视图](/docs/copilot/chat/chat-view)
-- [提示词(Prompt)编写技巧](/docs/copilot/chat/prompt-crafting)
+- [智能体(Agent)模式](/vscode-copilot/chat/agent-mode)：自主实施代码变更
+- [聊天视图](/vscode-copilot/chat/chat-view)
+- [提示词(Prompt)编写技巧](/vscode-copilot/chat/prompt-crafting)

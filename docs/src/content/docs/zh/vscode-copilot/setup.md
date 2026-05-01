@@ -20,14 +20,14 @@ source: https://code.visualstudio.com/docs/copilot/setup
 3. 开始在 VS Code 中使用 Copilot！
 
 > **💡 国内用户替代方案**
-> 除了 GitHub Copilot 官方订阅，您也可以使用 **[飞码扣插件](/zh/guides/quickstart)** — 在 GitHub Copilot Chat 中直接使用通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内顶级 AI 模型，按次计费，无需月付订阅。[立即开始 →](/zh/guides/quickstart)
+> 除了 GitHub Copilot 官方订阅，您也可以使用 **[飞码扣插件](/guides/quickstart)** — 在 GitHub Copilot Chat 中直接使用通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内顶级 AI 模型，按次计费，无需月付订阅。[立即开始 →](/guides/quickstart)
 
 
-   通过 [Copilot 快速入门](/docs/copilot/getting-started) 了解基本功能。
+   通过 [Copilot 快速入门](/vscode-copilot/getting-started) 了解基本功能。
 
 4. 在聊天会话中输入 `/init` 为你的项目配置 AI。
 
-   `/init` 命令会分析你的代码库，并创建[自定义说明(Custom Instructions)](/docs/copilot/customization/custom-instructions)，帮助 AI 生成符合你编码习惯的代码。
+   `/init` 命令会分析你的代码库，并创建[自定义说明(Custom Instructions)](/vscode-copilot/customization/custom-instructions)，帮助 AI 生成符合你编码习惯的代码。
 
 > **重要提示**
 > 免费版 GitHub Copilot 的遥测功能当前已启用。默认情况下，匹配公开代码的代码建议（包括 VS Code 和 [github.com](http://github.com/copilot) 中的代码引用）是被允许的。你可以在 VS Code 中将 `telemetry.telemetryLevel` 设置为 `off` 来选择退出遥测数据收集，或者在 [Copilot 设置](https://github.com/settings/copilot) 中同时调整遥测和代码建议设置。此设置由组织级别管理，如需更改请联系管理员。
@@ -102,4 +102,4 @@ source: https://code.visualstudio.com/docs/copilot/setup
 
 ## 后续步骤
 
-- 继续阅读 [AI 使用快速入门](/docs/copilot/getting-started)，了解 VS Code 中 AI 驱动开发的核心功能。
+- 继续阅读 [AI 使用快速入门](/vscode-copilot/getting-started)，了解 VS Code 中 AI 驱动开发的核心功能。

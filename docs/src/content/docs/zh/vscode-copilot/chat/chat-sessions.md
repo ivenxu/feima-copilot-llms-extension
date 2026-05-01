@@ -12,9 +12,9 @@ source: https://code.visualstudio.com/docs/copilot/chat/chat-sessions
 
 关于聊天会话的重要说明：
 
-- **上下文窗口**：随着聊天进行，会话会积累上下文。创建新会话会清除历史记录并开始全新的上下文窗口。可以在聊天输入框中[监控上下文窗口用量](/docs/copilot/chat/copilot-chat-context#_monitor-context-window-usage)。
-- **检查点**：随时可以回滚到之前的状态或编辑之前的提示词(Prompt)来改变方向。了解更多[检查点](/docs/copilot/chat/chat-checkpoints)。
-- **智能体(Agent)类型**：会话可以在本地、后台或云端运行。了解更多[智能体(Agent)类型](/docs/copilot/agents/overview#_types-of-agents)。
+- **上下文窗口**：随着聊天进行，会话会积累上下文。创建新会话会清除历史记录并开始全新的上下文窗口。可以在聊天输入框中[监控上下文窗口用量](https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context#_monitor-context-window-usage)。
+- **检查点**：随时可以回滚到之前的状态或编辑之前的提示词(Prompt)来改变方向。了解更多[检查点](https://code.visualstudio.com/docs/copilot/chat/chat-checkpoints)。
+- **智能体(Agent)类型**：会话可以在本地、后台或云端运行。了解更多[智能体(Agent)类型](/vscode-copilot/agents/overview#_types-of-agents)。
 - **多个会话**：可以并行运行多个会话，每个专注于不同任务。使用[会话列表](#_sessions-list)监控进行中的会话并在它们之间切换。
 
 > **提示**
@@ -38,7 +38,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/chat-sessions
 
 5. 在聊天输入框中输入提示词(Prompt)并按 Enter 提交。
 
-了解更多：[智能体(Agent)目标、智能体(Agent)和权限级别](/docs/copilot/agents/overview)。
+了解更多：[智能体(Agent)目标、智能体(Agent)和权限级别](/vscode-copilot/agents/overview)。
 
 ## 在哪里打开聊天会话
 
@@ -58,7 +58,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/chat-sessions
 
 - **最大化**：选择聊天视图标题栏中的**最大化**按钮，或运行 **View: Toggle Maximized Panel** 命令。聊天会接管整个编辑器区域，获得最大空间。再次选择按钮可恢复之前的布局。
 
-- **Agents 应用**：一个专用的伴随应用，以智能体(Agent)为主要体验。最适合以智能体(Agent)为主的工作流程，可以专注于描述任务和管理智能体(Agent)。运行 **Chat: Open Agents Application** 命令，或从命令行使用 `code --agents`。了解更多 [Agents 应用](/docs/copilot/agents-app)。
+- **Agents 应用**：一个专用的伴随应用，以智能体(Agent)为主要体验。最适合以智能体(Agent)为主的工作流程，可以专注于描述任务和管理智能体(Agent)。运行 **Chat: Open Agents Application** 命令，或从命令行使用 `code --agents`。了解更多 [Agents 应用](/vscode-copilot/agents-app)。
 
 可以随时在视图之间移动聊天会话。选择聊天视图、编辑器标签或聊天窗口中的 `...` 菜单，然后选择**将聊天移至...**选项之一。或者使用命令面板中的相应 **Chat: Move Chat** 命令。
 
@@ -92,7 +92,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/chat-sessions
 
 ## 删除会话
 
-要永久删除会话，右键单击会话列表中的会话并选择**删除**。删除会话会永久删除它，无法撤销。对于 [Copilot CLI 会话](/docs/copilot/agents/copilot-cli)，删除会话还会删除为该会话创建的任何关联 worktree。
+要永久删除会话，右键单击会话列表中的会话并选择**删除**。删除会话会永久删除它，无法撤销。对于 [Copilot CLI 会话](/vscode-copilot/agents/copilot-cli)，删除会话还会删除为该会话创建的任何关联 worktree。
 
 > **注意**
 > 删除会话不可逆。如果只是想隐藏会话，请考虑[归档](#_archive-sessions)它。

@@ -18,29 +18,29 @@ Visual Studio Code 提供多种方式，让你向 AI 讲授你的代码库、编
 
 ### 定义编码标准
 
-使用[自定义说明(Custom Instructions)](/docs/copilot/customization/custom-instructions)与 AI 分享项目范围的规则和约定。始终启用的说明适用于每个请求，而基于文件的说明针对特定文件类型或文件夹。例如，在所有文件中强制执行 ESLint 规则，并仅在 `.tsx` 文件中应用 React 模式。
+使用[自定义说明(Custom Instructions)](/vscode-copilot/customization/custom-instructions)与 AI 分享项目范围的规则和约定。始终启用的说明适用于每个请求，而基于文件的说明针对特定文件类型或文件夹。例如，在所有文件中强制执行 ESLint 规则，并仅在 `.tsx` 文件中应用 React 模式。
 
 ### 自动化任务和工作流
 
-为你经常运行的重复性任务创建[提示词(Prompt)文件](/docs/copilot/customization/prompt-files)，例如构建组件框架或准备拉取请求(Pull Request)。
+为你经常运行的重复性任务创建[提示词(Prompt)文件](https://code.visualstudio.com/docs/copilot/customization/prompt-files)，例如构建组件框架或准备拉取请求(Pull Request)。
 
-对于涉及脚本和外部工具的更复杂的多步骤工作流，将它们打包为[智能体(Agent)技能](/docs/copilot/customization/agent-skills)。
+对于涉及脚本和外部工具的更复杂的多步骤工作流，将它们打包为[智能体(Agent)技能](/vscode-copilot/customization/agent-skills)。
 
 ### 专业化 AI
 
-创建承担特定角色（如安全审查者、数据库管理员或规划师）的[自定义智能体(Custom Agent)](/docs/copilot/customization/custom-agents)。每个智能体(Agent)定义自己的行为、可用工具和语言模型(Language Model)偏好。为不同任务选择不同的[语言模型(Language Model)](/docs/copilot/customization/language-models)，或携带自己的 API 密钥访问其他模型。
+创建承担特定角色（如安全审查者、数据库管理员或规划师）的[自定义智能体(Custom Agent)](/vscode-copilot/customization/custom-agents)。每个智能体(Agent)定义自己的行为、可用工具和语言模型(Language Model)偏好。为不同任务选择不同的[语言模型(Language Model)](/vscode-copilot/customization/model-selection)，或携带自己的 API 密钥访问其他模型。
 
 ### 发现并安装插件
 
-安装[智能体(Agent)插件](/docs/copilot/customization/agent-plugins)（预览版），从插件市场添加预打包的自定义包。单个插件可以提供斜杠命令(Slash Command)、技能、自定义智能体(Custom Agent)、Hooks 和 MCP 服务器。
+安装[智能体(Agent)插件](https://code.visualstudio.com/docs/copilot/customization/agent-plugins)（预览版），从插件市场添加预打包的自定义包。单个插件可以提供斜杠命令(Slash Command)、技能、自定义智能体(Custom Agent)、Hooks 和 MCP 服务器。
 
 ### 连接外部工具和数据
 
-添加 [MCP 服务器](/docs/copilot/customization/mcp-servers)，通过[模型上下文协议](https://modelcontextprotocol.io/)让 AI 访问数据库、API 和其他服务。使用 [Hooks](/docs/copilot/customization/hooks) 在关键生命周期节点运行 Shell 命令，例如在每次文件编辑后运行格式化程序或强制执行安全策略。
+添加 [MCP 服务器](/vscode-copilot/customization/mcp-servers)，通过[模型上下文协议](https://modelcontextprotocol.io/)让 AI 访问数据库、API 和其他服务。使用 [Hooks](/vscode-copilot/customization/hooks) 在关键生命周期节点运行 Shell 命令，例如在每次文件编辑后运行格式化程序或强制执行安全策略。
 
 ## 快速上手
 
-逐步实现 AI 自定义。从基础开始，根据需要添加更多。有关实践演练，请参阅[为你的项目自定义 AI](/docs/copilot/guides/customize-copilot-guide) 指南。
+逐步实现 AI 自定义。从基础开始，根据需要添加更多。有关实践演练，请参阅[为你的项目自定义 AI](https://code.visualstudio.com/docs/copilot/guides/customize-copilot-guide) 指南。
 
 1. **初始化你的项目**：在聊天中输入 `/init`，生成为你的代码库定制编码标准的 `.github/copilot-instructions.md` 文件。
 
@@ -81,7 +81,7 @@ my-monorepo/              # 仓库根目录（有 .git 文件夹）
 
 - 工作区文件夹不包含 `.git` 文件夹（它本身不是仓库根目录）。
 - 父文件夹包含 `.git` 文件夹。
-- 父仓库文件夹是[受信任的](/docs/editing/workspaces/workspace-trust)。打开工作区时，VS Code 会提示你信任父文件夹。
+- 父仓库文件夹是[受信任的](https://code.visualstudio.com/docs/editing/workspaces/workspace-trust)。打开工作区时，VS Code 会提示你信任父文件夹。
 
 > **注意**
 > `chat.useCustomizationsInParentRepositories` 设置默认禁用。
@@ -101,11 +101,11 @@ my-monorepo/              # 仓库根目录（有 .git 文件夹）
 
 要打开智能体(Agent)自定义编辑器，在聊天视图中选择**配置聊天（齿轮图标）**，或通过命令面板（⇧⌘P / Windows、Linux：Ctrl+Shift+P）运行 **Chat: Open Customizations** 命令。
 
-你可以为不同的[智能体(Agent)类型](/docs/copilot/agents/overview#_types-of-agents)配置自定义内容：本地智能体(Local Agent)、Copilot CLI 和 Claude 智能体(Agent)。从编辑器顶部的下拉菜单选择智能体(Agent)类型，查看和管理该智能体(Agent)类型的自定义内容。
+你可以为不同的[智能体(Agent)类型](/vscode-copilot/agents/overview#_types-of-agents)配置自定义内容：本地智能体(Local Agent)、Copilot CLI 和 Claude 智能体(Agent)。从编辑器顶部的下拉菜单选择智能体(Agent)类型，查看和管理该智能体(Agent)类型的自定义内容。
 
 ## 排除自定义问题
 
-如果你的自定义内容未被应用或导致意外行为，选择聊天视图中的省略号（**...**）菜单，选择**显示智能体(Agent)调试日志**来[排除智能体(Agent)问题](/docs/copilot/troubleshooting)。
+如果你的自定义内容未被应用或导致意外行为，选择聊天视图中的省略号（**...**）菜单，选择**显示智能体(Agent)调试日志**来[排除智能体(Agent)问题](/vscode-copilot/troubleshooting)。
 
-- [自定义概念](/docs/copilot/concepts/customization)
-- [为你的项目自定义 AI 指南](/docs/copilot/guides/customize-copilot-guide)
+- [自定义概念](https://code.visualstudio.com/docs/copilot/concepts/customization)
+- [为你的项目自定义 AI 指南](https://code.visualstudio.com/docs/copilot/guides/customize-copilot-guide)

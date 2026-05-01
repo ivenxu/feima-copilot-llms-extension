@@ -59,6 +59,6 @@ source: https://code.visualstudio.com/docs/copilot/reference/context-variables
 
 ## 延伸阅读
 
-- [斜杠命令(Slash Command)参考](/docs/copilot/reference/slash-commands)
-- [向聊天添加上下文](/docs/copilot/chat/copilot-chat-context)
-- [提示词(Prompt)编写技巧](/docs/copilot/chat/prompt-crafting)
+- [斜杠命令(Slash Command)参考](/vscode-copilot/reference/slash-commands)
+- [向聊天添加上下文](https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context)
+- [提示词(Prompt)编写技巧](/vscode-copilot/chat/prompt-crafting)

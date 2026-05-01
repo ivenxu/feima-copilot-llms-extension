@@ -5,7 +5,7 @@ source: https://code.visualstudio.com/docs/copilot/guides/prompt-engineering
 ---
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 提示词(Prompt)工程是编写有效指令以从 AI 模型获得所需输出的技巧。本指南提供在 VS Code GitHub Copilot 中编写有效提示词(Prompt)的实用建议。
@@ -115,6 +115,6 @@ Copilot 的建议质量取决于可用的上下文。提升上下文质量的方
 
 ## 延伸阅读
 
-- [最佳实践](/docs/copilot/best-practices)
-- [聊天上下文](/docs/copilot/chat/context)
-- [提示词(Prompt)编写技巧](/docs/copilot/chat/prompt-crafting)
+- [最佳实践](/vscode-copilot/best-practices)
+- [聊天上下文](/vscode-copilot/chat/context)
+- [提示词(Prompt)编写技巧](/vscode-copilot/chat/prompt-crafting)

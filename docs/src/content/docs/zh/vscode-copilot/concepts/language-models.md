@@ -7,14 +7,14 @@ source: https://code.visualstudio.com/docs/copilot/concepts/language-models
 Visual Studio Code 使用大型语言模型（LLM）为其 AI 功能提供支持。你可以通过 GitHub Copilot 计划选择多个模型，或携带自己的模型。本文解释了语言模型(Language Model)的工作原理、主要特性以及如何进行模型选择。
 
 > **💡 使用飞码国内模型**
-> **[飞码扣插件](/zh/guides/quickstart)** 为 GitHub Copilot Chat 扩展了国内 AI 模型支持，包括通义千问(Qwen3 Max/Flash/Coder)、DeepSeek V3.2、GLM-5、MiniMax M2.5 和 Kimi K2.5。在模型选择器中即可看到这些模型。查看[完整模型列表](/zh/guides/using-models)。
+> **[飞码扣插件](/guides/quickstart)** 为 GitHub Copilot Chat 扩展了国内 AI 模型支持，包括通义千问(Qwen3 Max/Flash/Coder)、DeepSeek V3.2、GLM-5、MiniMax M2.5 和 Kimi K2.5。在模型选择器中即可看到这些模型。查看[完整模型列表](/guides/using-models)。
 
 
 ## 语言模型(Language Model)的工作原理
 
-语言模型(Language Model)处理文本输入（"提示词(Prompt)"）并生成文本输出。在 VS Code 中，提示词(Prompt)由多个来源组成：你的消息、对话历史、文件内容、工具输出以及自定义说明(Custom Instructions)。模型生成的响应可以包括解释、代码编辑或[调用工具](/docs/copilot/concepts/tools)的请求。
+语言模型(Language Model)处理文本输入（"提示词(Prompt)"）并生成文本输出。在 VS Code 中，提示词(Prompt)由多个来源组成：你的消息、对话历史、文件内容、工具输出以及自定义说明(Custom Instructions)。模型生成的响应可以包括解释、代码编辑或[调用工具](https://code.visualstudio.com/docs/copilot/concepts/tools)的请求。
 
-语言模型(Language Model)不会直接执行代码或访问文件。相反，它们生成文本，由[智能体(Agent)循环](/docs/copilot/concepts/agents#_agent-loop)将其解释为操作。当模型请求工具调用(Tool Call)时，VS Code 执行该工具并将结果反馈给模型用于下一次迭代。
+语言模型(Language Model)不会直接执行代码或访问文件。相反，它们生成文本，由[智能体(Agent)循环](/vscode-copilot/agents/overview#_agent-loop)将其解释为操作。当模型请求工具调用(Tool Call)时，VS Code 执行该工具并将结果反馈给模型用于下一次迭代。
 
 ## 主要特性
 
@@ -28,7 +28,7 @@ Visual Studio Code 使用大型语言模型（LLM）为其 AI 功能提供支持
 
 当上下文窗口填满时，VS Code 会自动压缩对话的较旧部分以腾出空间。这意味着长时间对话早期的重要细节可能被压缩或丢失。你也可以在聊天输入框中输入 `/compact` 手动触发压缩。可选地，在命令后添加自定义说明(Custom Instructions)来指导压缩，例如 `/compact focus on the API design decisions`。
 
-了解更多：[VS Code 如何组织上下文](/docs/copilot/concepts/context)和[上下文压缩](/docs/copilot/chat/copilot-chat-context#_context-compaction)。
+了解更多：[VS Code 如何组织上下文](https://code.visualstudio.com/docs/copilot/concepts/context)和[上下文压缩](https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context#_context-compaction)。
 
 ## 思考与推理
 
@@ -48,7 +48,7 @@ VS Code 根据评估和在线性能数据设置默认强度级别，并在支持
 
 思考 token 计入模型的上下文窗口，即使它们在响应中不可见。实际的思考输出通常以摘要形式返回，或者为降低延迟可以完全省略。请注意，较高的思考强度级别可能产生更多的思考 token，这可能增加延迟。
 
-了解如何在 VS Code 中[配置思考强度级别](/docs/copilot/customization/language-models#_configure-thinking-effort)。
+了解如何在 VS Code 中[配置思考强度级别](/vscode-copilot/customization/model-selection#_configure-thinking-effort)。
 
 ## 选择合适的模型
 
@@ -56,9 +56,9 @@ VS Code 根据评估和在线性能数据设置默认强度级别，并在支持
 
 VS Code 还支持**自动模型选择**，自动选择模型以确保最佳性能并减少速率限制。自动选择从可用模型中选择，并对付费用户提供请求折扣。
 
-了解更多：[选择和配置语言模型(Language Model)](/docs/copilot/customization/language-models)。
+了解更多：[选择和配置语言模型(Language Model)](/vscode-copilot/customization/model-selection)。
 
 ## 延伸阅读
 
-- [上下文](/docs/copilot/concepts/context)
-- [VS Code 中的 AI 语言模型(Language Model)](/docs/copilot/customization/language-models)
+- [上下文](https://code.visualstudio.com/docs/copilot/concepts/context)
+- [VS Code 中的 AI 语言模型(Language Model)](/vscode-copilot/customization/model-selection)

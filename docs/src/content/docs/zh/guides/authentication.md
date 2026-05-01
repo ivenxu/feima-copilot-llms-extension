@@ -197,9 +197,9 @@ description: 为飞码扣设置 OAuth2 认证
 
 ## 下一步
 
-- [快速入门](./quickstart.md) - 开始使用飞码扣
-- [使用模型](./using-models.md) - 了解可用的模型
-- [配置](./configuration.md) - 自定义您的设置
+- [快速入门](./quickstart) - 开始使用飞码扣
+- [使用模型](./using-models) - 了解可用的模型
+- [配置](./configuration) - 自定义您的设置
 
 ## 需要帮助？
 

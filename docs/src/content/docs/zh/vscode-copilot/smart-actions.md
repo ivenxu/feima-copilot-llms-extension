@@ -7,7 +7,7 @@ source: https://code.visualstudio.com/docs/copilot/copilot-smart-actions
 对于几种常见场景，你可以使用_智能操作(Smart Action)_从 AI 获取帮助，而无需编写提示词(Prompt)。智能操作(Smart Action)的示例包括生成提交消息、生成文档、解释或修复代码，或执行代码审查。这些智能操作(Smart Action)遍布 VS Code UI。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 ## 生成提交消息和 PR 信息
@@ -22,7 +22,7 @@ source: https://code.visualstudio.com/docs/copilot/copilot-smart-actions
 
 ![编辑器中建议的合并冲突解决方案截图。](/assets/docs/copilot/copilot-smart-actions/ai-merge-conflict-resolution.png)
 
-如果你安装了 [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github) 扩展，可以使用 AI 通过 [Copilot 云端智能体(Cloud Agent)](/docs/copilot/agents/cloud-agents#_github-copilot-cloud-agent)实现代码中的 `TODO` 注释。
+如果你安装了 [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github) 扩展，可以使用 AI 通过 [Copilot 云端智能体(Cloud Agent)](/vscode-copilot/agents/cloud-agents#_github-copilot-cloud-agent)实现代码中的 `TODO` 注释。
 
 1. 确保安装了 [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github) 扩展。
 2. 在代码中添加 `TODO` 注释。注释旁边会出现代码操作（灯泡图标）。
@@ -104,7 +104,7 @@ source: https://code.visualstudio.com/docs/copilot/copilot-smart-actions
 3. 按照 Copilot 的建议修复测试。
 
 > **提示**
-> 使用[智能体(Agent)](/docs/copilot/agents/local-agents)时，智能体(Agent)在运行测试时会监控测试输出，并自动尝试修复和重新运行失败的测试。
+> 使用[智能体(Agent)](/vscode-copilot/agents/local-agents)时，智能体(Agent)在运行测试时会监控测试输出，并自动尝试修复和重新运行失败的测试。
 
 ## 修复终端错误
 
@@ -147,4 +147,4 @@ VS Code 中的搜索视图让你能够在文件中搜索文本。语义搜索让
 
 ## 延伸阅读
 
-- [AI 使用快速入门](/docs/copilot/getting-started)
+- [AI 使用快速入门](/vscode-copilot/getting-started)

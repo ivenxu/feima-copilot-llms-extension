@@ -13,13 +13,13 @@ source: https://code.visualstudio.com/docs/copilot/agents/agents-tutorial
 
 完成本教程需要：
 
-- [在计算机上安装 Visual Studio Code](/download)
+- [在计算机上安装 Visual Studio Code](https://code.visualstudio.com/download)
 - 在 VS Code 中安装 [Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) 扩展（用于预览待办应用）
 - [一个 GitHub 账号](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)（用于云端智能体(Cloud Agent)工作流）
-- [一个 GitHub Copilot 订阅](/docs/copilot/setup)
+- [一个 GitHub Copilot 订阅](/vscode-copilot/setup)
 
 > **💡 国内用户替代方案**
-> 除了 GitHub Copilot 官方订阅，您也可以使用 **[飞码扣插件](/zh/guides/quickstart)** — 在 GitHub Copilot Chat 中直接使用通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内顶级 AI 模型，按次计费，无需月付订阅。[立即开始 →](/zh/guides/quickstart)
+> 除了 GitHub Copilot 官方订阅，您也可以使用 **[飞码扣插件](/guides/quickstart)** — 在 GitHub Copilot Chat 中直接使用通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内顶级 AI 模型，按次计费，无需月付订阅。[立即开始 →](/guides/quickstart)
 
 
 ## 第一步：使用本地智能体(Local Agent)搭建应用框架
@@ -140,6 +140,6 @@ source: https://code.visualstudio.com/docs/copilot/agents/agents-tutorial
 
 你已成功使用不同类型的智能体(Agent)来构建、增强和重新设计待办应用。继续探索智能体(Agent)：
 
-- 了解[智能体(Agent)类型及何时使用它们](/docs/copilot/agents/overview)
-- [使用 Plan 智能体(Agent)规划和研究任务](/docs/copilot/agents/planning)
-- 探索[创建自定义智能体(Custom Agent)](/docs/copilot/customization/custom-agents)
+- 了解[智能体(Agent)类型及何时使用它们](/vscode-copilot/agents/overview)
+- [使用 Plan 智能体(Agent)规划和研究任务](/vscode-copilot/agents/planning)
+- 探索[创建自定义智能体(Custom Agent)](/vscode-copilot/customization/custom-agents)

@@ -5,7 +5,7 @@ source: https://code.visualstudio.com/docs/copilot/guides/fix-bugs
 ---
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 GitHub Copilot 可以帮助你识别和修复代码中的 Bug，从简单的语法错误到复杂的逻辑问题。
@@ -93,7 +93,7 @@ Create a debug configuration for a Node.js Express app with
 environment variables loaded from .env file
 ```
 
-了解更多：[使用 Copilot 调试](/docs/copilot/guides/debug-with-copilot)。
+了解更多：[使用 Copilot 调试](/vscode-copilot/guides/debug-with-copilot)。
 
 ## 分析错误模式
 
@@ -109,6 +109,6 @@ and how should I prevent it in the future?
 
 ## 延伸阅读
 
-- [使用 Copilot 调试](/docs/copilot/guides/debug-with-copilot)
-- [使用 Copilot 生成测试](/docs/copilot/guides/generate-tests)
-- [智能操作(Smart Action)](/docs/copilot/copilot-smart-actions)
+- [使用 Copilot 调试](/vscode-copilot/guides/debug-with-copilot)
+- [使用 Copilot 生成测试](/vscode-copilot/guides/generate-tests)
+- [智能操作(Smart Action)](/vscode-copilot/smart-actions)

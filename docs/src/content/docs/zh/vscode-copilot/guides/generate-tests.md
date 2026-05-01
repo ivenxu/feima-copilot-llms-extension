@@ -5,7 +5,7 @@ source: https://code.visualstudio.com/docs/copilot/guides/generate-tests
 ---
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 GitHub Copilot 可以帮助你为应用程序代码生成测试，从单元测试到集成测试，支持多种测试框架。
@@ -97,6 +97,6 @@ Copilot 支持主要的测试框架：
 
 ## 延伸阅读
 
-- [使用 Copilot 修复 Bug](/docs/copilot/guides/fix-bugs)
-- [智能操作(Smart Action)](/docs/copilot/copilot-smart-actions)
-- [最佳实践](/docs/copilot/best-practices)
+- [使用 Copilot 修复 Bug](/vscode-copilot/guides/fix-bugs)
+- [智能操作(Smart Action)](/vscode-copilot/smart-actions)
+- [最佳实践](/vscode-copilot/best-practices)

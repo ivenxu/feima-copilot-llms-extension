@@ -5,7 +5,7 @@ source: https://code.visualstudio.com/docs/copilot/guides/debug-with-copilot
 ---
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 GitHub Copilot 可以帮助改善你在 Visual Studio Code 中的调试工作流程。Copilot 可以帮助设置项目的调试配置，并提供修复调试过程中发现问题的建议。本文概述如何在 VS Code 中使用 Copilot 调试应用程序。
@@ -18,7 +18,7 @@ Copilot 可以帮助以下调试任务：
 
 ## 使用 Copilot 设置调试配置
 
-VS Code 使用 `launch.json` 文件存储[调试配置](/docs/debugtest/debugging-configuration)。Copilot 可以帮助你创建和自定义此文件，为项目设置调试。
+VS Code 使用 `launch.json` 文件存储[调试配置](https://code.visualstudio.com/docs/debugtest/debugging-configuration)。Copilot 可以帮助你创建和自定义此文件，为项目设置调试。
 
 1. 打开聊天视图（⌃⌘I / Windows、Linux：Ctrl+Alt+I）。
 2. 输入 `/startDebugging` 命令。
@@ -46,7 +46,7 @@ VS Code 使用 `launch.json` 文件存储[调试配置](/docs/debugtest/debuggin
 
 3. Copilot 为你的应用程序启动调试会话。现在可以使用 VS Code 中的内置调试功能。
 
-了解更多：[VS Code 中的调试](/docs/debugtest/debugging)。
+了解更多：[VS Code 中的调试](https://code.visualstudio.com/docs/debugtest/debugging)。
 
 ## 使用 Copilot 修复编码问题
 
@@ -76,5 +76,5 @@ VS Code 使用 `launch.json` 文件存储[调试配置](/docs/debugtest/debuggin
 
 ## 延伸阅读
 
-- [VS Code 中的通用调试功能](/docs/debugtest/debugging)
-- [VS Code 中的 Copilot 概览](/docs/copilot/overview)
+- [VS Code 中的通用调试功能](https://code.visualstudio.com/docs/debugtest/debugging)
+- [VS Code 中的 Copilot 概览](/vscode-copilot/overview)

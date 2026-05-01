@@ -9,14 +9,14 @@ source: https://code.visualstudio.com/docs/copilot/customization/custom-agents
 你还可以使用移交（handoffs）在智能体(Agent)之间创建引导式工作流。通过一次选择即可从一个专业智能体(Agent)无缝切换到另一个，并携带相关上下文。例如，从规划智能体(Agent)直接进入实施智能体(Agent)，或携带相关上下文移交给代码审查者。
 
 > **提示**
-> 使用[智能体(Agent)自定义编辑器](/docs/copilot/customization/overview#_agent-customizations-editor)（预览版）在一个地方发现、创建和管理所有智能体(Agent)自定义内容。通过命令面板运行 **Chat: Open Customizations** 命令。
+> 使用[智能体(Agent)自定义编辑器](/vscode-copilot/customization/overview#_agent-customizations-editor)（预览版）在一个地方发现、创建和管理所有智能体(Agent)自定义内容。通过命令面板运行 **Chat: Open Customizations** 命令。
 
 > **提示**
-> **智能体(Agent)、提示词(Prompt)文件还是技能？** 当你需要带有特定工具限制、模型偏好或智能体(Agent)之间移交的持久化角色时，使用自定义智能体(Custom Agent)。对于不需要工具限制的一次性任务，使用[提示词(Prompt)文件](/docs/copilot/customization/prompt-files)。对于带有脚本和资源的可移植、可重用能力，使用[智能体(Agent)技能](/docs/copilot/customization/agent-skills)。
+> **智能体(Agent)、提示词(Prompt)文件还是技能？** 当你需要带有特定工具限制、模型偏好或智能体(Agent)之间移交的持久化角色时，使用自定义智能体(Custom Agent)。对于不需要工具限制的一次性任务，使用[提示词(Prompt)文件](https://code.visualstudio.com/docs/copilot/customization/prompt-files)。对于带有脚本和资源的可移植、可重用能力，使用[智能体(Agent)技能](/vscode-copilot/customization/agent-skills)。
 
 ## 什么是自定义智能体(Custom Agent)？
 
-[内置智能体(Agent)](/docs/copilot/agents/local-agents)为 VS Code 中的聊天提供通用配置。对于更贴合需求的聊天体验，你可以创建自己的自定义智能体(Custom Agent)。
+[内置智能体(Agent)](/vscode-copilot/agents/local-agents)为 VS Code 中的聊天提供通用配置。对于更贴合需求的聊天体验，你可以创建自己的自定义智能体(Custom Agent)。
 
 自定义智能体(Custom Agent)由一套说明和工具组成，当你切换到该智能体(Agent)时会自动应用。例如，"Plan" 智能体(Agent)可以包含生成实施计划的说明，并且只使用只读工具。通过创建自定义智能体(Custom Agent)，你可以快速切换到该特定配置，而无需每次手动选择相关工具和说明。
 
@@ -137,8 +137,8 @@ The plan consists of a Markdown document that describes the implementation plan,
 
 ## 延伸阅读
 
-- [使用智能体(Agent)的工具](/docs/copilot/agents/agent-tools)
-- [智能体(Agent)技能](/docs/copilot/customization/agent-skills)
-- [MCP 服务器](/docs/copilot/customization/mcp-servers)
-- [Hooks](/docs/copilot/customization/hooks)
+- [使用智能体(Agent)的工具](https://code.visualstudio.com/docs/copilot/agents/agent-tools)
+- [智能体(Agent)技能](/vscode-copilot/customization/agent-skills)
+- [MCP 服务器](/vscode-copilot/customization/mcp-servers)
+- [Hooks](/vscode-copilot/customization/hooks)
 - [社区贡献的自定义示例](https://github.com/github/awesome-copilot/tree/main)

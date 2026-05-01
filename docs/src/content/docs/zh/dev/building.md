@@ -399,8 +399,8 @@ View build status at:
 
 ## Next Steps
 
-- [Development Setup](./setup.md) - Set up development environment
-- [Testing Guide](./testing.md) - Write tests
+- [Development Setup](./setup) - Set up development environment
+- [Testing Guide](./testing) - Write tests
 - [Documentation](../) - Project documentation
 
 ## Need Help?

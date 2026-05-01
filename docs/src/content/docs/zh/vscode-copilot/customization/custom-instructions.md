@@ -9,10 +9,10 @@ source: https://code.visualstudio.com/docs/copilot/customization/custom-instruct
 你可以配置自定义说明(Custom Instructions)，让其自动应用于所有聊天请求，或仅应用于特定文件。也可以手动将自定义说明(Custom Instructions)附加到特定的聊天提示词(Prompt)。
 
 > **提示**
-> 使用[智能体(Agent)自定义编辑器](/docs/copilot/customization/overview#_agent-customizations-editor)（预览版）在一个地方发现、创建和管理所有智能体(Agent)自定义内容。通过命令面板运行 **Chat: Open Customizations** 命令。
+> 使用[智能体(Agent)自定义编辑器](/vscode-copilot/customization/overview#_agent-customizations-editor)（预览版）在一个地方发现、创建和管理所有智能体(Agent)自定义内容。通过命令面板运行 **Chat: Open Customizations** 命令。
 
 > **注意**
-> 自定义说明(Custom Instructions)不适用于你在编辑器中输入时的[内联建议(Inline Suggestion)](/docs/copilot/ai-powered-suggestions)。
+> 自定义说明(Custom Instructions)不适用于你在编辑器中输入时的[内联建议(Inline Suggestion)](/vscode-copilot/inline-suggestions)。
 
 ## 说明文件类型
 
@@ -241,13 +241,13 @@ VS Code 在以下位置搜索 `CLAUDE.md` 文件：
 如果你是 GitHub 组织的管理员，可以在组织级别定义自定义说明(Custom Instructions)，自动应用于 GitHub Copilot 订阅者的所有工作区（包括 VS Code）。这样你可以在整个组织中强制执行一致的编码标准，无需每个开发者单独配置。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/zh/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/zh/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
 
 
 了解更多：[为你的 GitHub 组织创建自定义说明(Custom Instructions)](https://docs.github.com/en/copilot/customizing-copilot/creating-a-custom-instructions-file-for-your-github-organization-or-enterprise)。
 
 ## 延伸阅读
 
-- [向聊天提示词(Prompt)添加上下文](/docs/copilot/chat/copilot-chat-context)
-- [自定义概览](/docs/copilot/customization/overview)
+- [向聊天提示词(Prompt)添加上下文](https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context)
+- [自定义概览](/vscode-copilot/customization/overview)
 - [社区贡献的自定义示例](https://github.com/github/awesome-copilot/tree/main)
