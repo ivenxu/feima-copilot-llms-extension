@@ -72,6 +72,8 @@ const sidebarZh = [
       { label: '认证', link: '/guides/authentication' },
       { label: '使用模型', link: '/guides/using-models' },
       { label: '配置', link: '/guides/configuration' },
+      { label: '计费', link: '/guides/billing' },
+      { label: '常见问题', link: '/guides/faq' },
     ],
   },
   {
