@@ -20,7 +20,7 @@ GitHub Copilot 彻底改变了你在 Visual Studio Code 中编写代码的方式
   > **自 2026 年 4 月 20 日起**，Copilot Pro、Copilot Pro+ 及学生计划暂停新用户注册。详见 [GitHub Copilot 使用限制](https://docs.github.com/copilot/concepts/usage-limits)。
 
 > **💡 国内用户替代方案**
-> 除了 GitHub Copilot 官方订阅，您也可以使用 **[飞码扣插件](/guides/quickstart)** — 在 GitHub Copilot Chat 中直接使用通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内顶级 AI 模型，按次计费，无需月付订阅。[立即开始 →](/guides/quickstart)
+> 除了 GitHub Copilot 官方订阅，您也可以使用 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** — 在 GitHub Copilot Chat 中直接使用通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内顶级 AI 模型，按次计费，无需月付订阅。[立即开始 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 ## 第一步：体验内联建议(Inline Suggestion)

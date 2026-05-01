@@ -7,7 +7,7 @@ source: https://code.visualstudio.com/docs/copilot/concepts/privacy
 了解 GitHub Copilot 如何处理你的数据对于在企业和个人环境中负责任地使用 AI 至关重要。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 ## 什么数据被发送到 GitHub？

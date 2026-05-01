@@ -9,7 +9,7 @@ VS Code 中的 GitHub Copilot 在你输入时提供 AI 驱动的内联建议(Inl
 Copilot 提供两种内联建议(Inline Suggestion)，都会匹配你的编码风格并考虑现有代码：
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 - **幽灵文字建议**：在编辑器中开始输入，Copilot 在光标位置以暗淡的_幽灵文字_提供建议。

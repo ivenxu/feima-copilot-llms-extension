@@ -7,7 +7,7 @@ source: https://code.visualstudio.com/docs/copilot/chat/chat-view
 聊天视图（**Chat view**）是 VS Code 中与 GitHub Copilot 交互的主要界面。通过聊天视图，你可以向 AI 提出问题、请求代码更改、管理智能体(Agent)会话(Agent Session)和配置 AI 工具。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 ## 打开聊天视图

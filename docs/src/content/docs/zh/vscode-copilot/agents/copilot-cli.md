@@ -9,7 +9,7 @@ Visual Studio Code 支持通过 GitHub Copilot CLI 在后台运行智能体(Agen
 要启动 Copilot CLI 会话，可以[创建新会话](#_create-a-copilot-cli-session)，也可以将本地智能体(Local Agent)会话(Agent Session)[移交](#_hand-off-a-local-session-to-copilot-cli)给 Copilot CLI，传递现有上下文。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 ![VS Code 中 Copilot CLI 会话（聊天编辑器）的截图。](/assets/docs/copilot/background-agents/copilot-cli-session.png)

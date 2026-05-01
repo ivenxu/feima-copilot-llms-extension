@@ -116,7 +116,7 @@ GitHub Copilot Chat 的支持由 GitHub 提供，可访问 [https://support.gith
 ## 定价
 
 > **💡 国内用户替代方案**
-> 除了 GitHub Copilot 官方订阅，您也可以使用 **[飞码扣插件](/guides/quickstart)** — 在 GitHub Copilot Chat 中直接使用通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内顶级 AI 模型，按次计费，无需月付订阅。[立即开始 →](/guides/quickstart)
+> 除了 GitHub Copilot 官方订阅，您也可以使用 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** — 在 GitHub Copilot Chat 中直接使用通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内顶级 AI 模型，按次计费，无需月付订阅。[立即开始 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 > **重要提示**

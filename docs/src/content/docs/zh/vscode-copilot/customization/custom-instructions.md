@@ -241,7 +241,7 @@ VS Code 在以下位置搜索 `CLAUDE.md` 文件：
 如果你是 GitHub 组织的管理员，可以在组织级别定义自定义说明(Custom Instructions)，自动应用于 GitHub Copilot 订阅者的所有工作区（包括 VS Code）。这样你可以在整个组织中强制执行一致的编码标准，无需每个开发者单独配置。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 了解更多：[为你的 GitHub 组织创建自定义说明(Custom Instructions)](https://docs.github.com/en/copilot/customizing-copilot/creating-a-custom-instructions-file-for-your-github-organization-or-enterprise)。

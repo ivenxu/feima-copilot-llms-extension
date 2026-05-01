@@ -8,11 +8,12 @@
 
 ## 快速链接
 
-- 📖 [文档](https://feimacode.cn/docs/) | [中文文档](https://docs.feima.cn/)
-- 🚀 [快速入门](https://feimacode.cn/docs/guides/quickstart/) | [快速入门（中文）](https://docs.feimacode.cn/guides/quickstart/)
-- 📦 [安装指南](https://feimacode.cn/docs/guides/installation/) | [安装指南（中文）](https://docs.feimacode.cn/guides/installation/)
-- 🔧 [配置选项](https://feimacode.cn/docs/guides/configuration/) | [配置选项（中文）](https://docs.feimacoe.cn/guides/configuration/)
-- 💻 [开发指南](https://feimacode.cn/docs/dev/setup/) | [开发指南（中文）](https://docs.feimacode.cn/dev/setup/)
+- 🛒 [VS Code 插件市场](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models) | [打开飞码扣](vscode:extension/feima.copilot-cn-models)
+- 📖 [英文文档](https://ivenxu.github.io/feima-copilot-llms-extension/) | [中文文档](https://docs.feimacode.cn/)
+- 🚀 [快速入门](https://ivenxu.github.io/feima-copilot-llms-extension/guides/quickstart/) | [快速入门（中文）](https://docs.feimacode.cn/guides/quickstart/)
+- 📦 [安装指南](https://ivenxu.github.io/feima-copilot-llms-extension/guides/installation/) | [安装指南（中文）](https://docs.feimacode.cn/guides/installation/)
+- 🔧 [配置选项](https://ivenxu.github.io/feima-copilot-llms-extension/guides/configuration/) | [配置选项（中文）](https://docs.feimacode.cn/guides/configuration/)
+- 💻 [开发指南](https://ivenxu.github.io/feima-copilot-llms-extension/dev/setup/) | [开发指南（中文）](https://docs.feimacode.cn/dev/setup/)
 
 ## 简介
 
@@ -93,7 +94,7 @@ git push --follow-tags
 
 ## 贡献
 
-我们欢迎社区贡献！请查看[完整文档](https://feimacode.cn/docs/dev/setup/)了解如何参与开发。
+我们欢迎社区贡献！请查看[完整文档](https://docs.feimacode.cn/dev/setup/)了解如何参与开发。
 
 ```bash
 # 克隆仓库
@@ -115,8 +116,8 @@ code .
 ## 文档
 
 完整的文档请访问：
-- [中文文档](https://docs.feima.cn/)
-- [英文文档](https://feimacode.cn/docs/)
+- [中文文档](https://docs.feimacode.cn/)
+- [英文文档](https://ivenxu.github.io/feima-copilot-llms-extension/)
 
 ## 支持与联系
 

@@ -7,7 +7,7 @@ source: https://code.visualstudio.com/docs/copilot/copilot-smart-actions
 对于几种常见场景，你可以使用_智能操作(Smart Action)_从 AI 获取帮助，而无需编写提示词(Prompt)。智能操作(Smart Action)的示例包括生成提交消息、生成文档、解释或修复代码，或执行代码审查。这些智能操作(Smart Action)遍布 VS Code UI。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 ## 生成提交消息和 PR 信息

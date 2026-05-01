@@ -80,7 +80,7 @@ source: https://code.visualstudio.com/docs/copilot/faq
 了解更多：[GitHub Copilot 的速率限制](https://docs.github.com/en/copilot/troubleshooting-github-copilot/rate-limits-for-github-copilot)。
 
 > **💡 遇到限速？切换到飞码扣模型**
-> 安装 **[飞码扣插件](/guides/quickstart)** 后，即可在 GitHub Copilot Chat 中切换到通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内模型，不受 GitHub 速率限制影响，按次计费。[立即开始 →](/guides/quickstart)
+> 安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 后，即可在 GitHub Copilot Chat 中切换到通义千问(Qwen3)、DeepSeek V3.2、GLM-5 等国内模型，不受 GitHub 速率限制影响，按次计费。[立即开始 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 ### 是否有 Copilot 扩展的预发布版本？
 
@@ -159,7 +159,7 @@ source: https://code.visualstudio.com/docs/copilot/faq
 
 ## 飞码扣：国内用户的替代方案
 
-如果您正在寻找适合国内使用的 AI 编程助手，**[飞码扣插件](/guides/quickstart)** 是一个绝佳选择：
+如果您正在寻找适合国内使用的 AI 编程助手，**[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 是一个绝佳选择：
 
 - 🇨🇳 **国内顶级模型**：通义千问(Qwen3)、DeepSeek V3.2、GLM-5、MiniMax M2.5、Kimi K2.5
 - 💰 **按次计费**：无需月付订阅，只为使用的请求付费

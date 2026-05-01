@@ -5,7 +5,7 @@ source: https://code.visualstudio.com/docs/copilot/guides/debug-with-copilot
 ---
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 GitHub Copilot 可以帮助改善你在 Visual Studio Code 中的调试工作流程。Copilot 可以帮助设置项目的调试配置，并提供修复调试过程中发现问题的建议。本文概述如何在 VS Code 中使用 Copilot 调试应用程序。

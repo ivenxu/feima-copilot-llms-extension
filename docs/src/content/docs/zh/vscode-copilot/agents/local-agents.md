@@ -9,7 +9,7 @@ source: https://code.visualstudio.com/docs/copilot/agents/local-agents
 本地智能体(Local Agent)在 VS Code 的聊天界面中运行。当你关闭聊天会话时，本地智能体(Local Agent)保持活跃，你可以在会话视图中跟踪它。
 
 > **💡 国内用户提示**
-> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](/guides/quickstart)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart)
+> 如果您希望使用国内 AI 模型，安装 **[飞码扣插件](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models)** 即可在 GitHub Copilot Chat 中使用通义千问(Qwen3)、DeepSeek、GLM 等模型，按次计费。[了解更多 →](/guides/quickstart) [打开飞码扣](vscode:extension/feima.copilot-cn-models)
 
 
 ## 为什么使用本地智能体(Local Agent)？
