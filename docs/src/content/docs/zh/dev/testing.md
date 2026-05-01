@@ -475,9 +475,9 @@ afterEach(() => {
 
 ## Next Steps
 
-- [Development Setup](./setup) - Set up development environment
-- [Building Guide](./building) - Build and package
-- [API Reference](../reference/api) - Extension API
+- [Development Setup](/dev/setup) - Set up development environment
+- [Building Guide](/dev/building) - Build and package
+- [API Reference](/reference/api) - Extension API
 
 ## Need Help?
 

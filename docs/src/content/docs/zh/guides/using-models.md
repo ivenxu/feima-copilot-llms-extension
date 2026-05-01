@@ -428,15 +428,15 @@ API 请求有速率限制：
 - 上下文：20,000 tokens（大上下文，1.5x）
 - 加权请求：0.5 × 1.5 = **0.75 次**
 
-详细计费信息请参阅[计费指南](./billing)。
+详细计费信息请参阅[计费指南](/guides/billing)。
 
 ---
 
 ## 下一步
 
-- [快速入门](./quickstart) - 开始使用飞码扣
-- [配置指南](./configuration) - 自定义模型设置
-- [计费指南](./billing) - 了解计费详情
+- [快速入门](/guides/quickstart) - 开始使用飞码扣
+- [配置指南](/guides/configuration) - 自定义模型设置
+- [计费指南](/guides/billing) - 了解计费详情
 
 ## 需要帮助？
 

@@ -567,9 +567,9 @@ export const CONFIG_KEYS = {
 
 ## Next Steps
 
-- [Development Setup](../dev/setup.md) - Set up development environment
-- [Testing Guide](../dev/testing.md) - Test your changes
-- [Building Guide](../dev/building.md) - Build and package
+- [Development Setup](/dev/setup) - Set up development environment
+- [Testing Guide](/dev/testing) - Test your changes
+- [Building Guide](/dev/building) - Build and package
 
 ## Need Help?
 

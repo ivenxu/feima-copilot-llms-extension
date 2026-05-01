@@ -240,8 +240,8 @@ Write this function, and explain:
 
 ## Next Steps
 
-- [Quick Start](./quickstart.md) - Get started with Feima Copilot
-- [Configuration](./configuration.md) - Customize model settings
+- [Quick Start](/guides/quickstart) - Get started with Feima Copilot
+- [Configuration](/guides/configuration) - Customize model settings
 
 ## Need Help?
 

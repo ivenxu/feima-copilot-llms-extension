@@ -96,10 +96,10 @@ description: 几分钟内开始使用飞码扣
 
 ## 下一步
 
-- [安装指南](./installation) - 更多详细的安装选项
-- [认证指南](./authentication) - 了解 OAuth2 流程
-- [配置指南](./configuration) - 自定义您的体验
-- [开发指南](../dev/setup) - 为项目做出贡献
+- [安装指南](/guides/installation) - 更多详细的安装选项
+- [认证指南](/guides/authentication) - 了解 OAuth2 流程
+- [配置指南](/guides/configuration) - 自定义您的体验
+- [开发指南](/dev/setup) - 为项目做出贡献
 
 ## 需要帮助？
 

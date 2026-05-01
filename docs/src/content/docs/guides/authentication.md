@@ -199,9 +199,9 @@ Both extensions can use the same OAuth tokens, providing a seamless experience.
 
 ## Next Steps
 
-- [Quick Start](./quickstart.md) - Start using Feima Copilot
-- [Using Models](./using-models.md) - Learn about available models
-- [Configuration](./configuration.md) - Customize your settings
+- [Quick Start](/guides/quickstart) - Start using Feima Copilot
+- [Using Models](/guides/using-models) - Learn about available models
+- [Configuration](/guides/configuration) - Customize your settings
 
 ## Need Help?
 

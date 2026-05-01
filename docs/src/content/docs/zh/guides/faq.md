@@ -185,7 +185,7 @@ VS Code Insiders 版本与稳定版功能相同，飞码扣在两个版本中都
 - **模型倍率**：从 0.1x（Qwen Flash）到 2.0x（Qwen3 Coder Plus）
 - **上下文倍率**：根据上下文大小从 0.5x 到 2.0x
 
-详细计费信息请参阅[计费指南](./billing)。
+详细计费信息请参阅[计费指南](/guides/billing)。
 
 ---
 
@@ -251,7 +251,7 @@ VS Code Insiders 版本与稳定版功能相同，飞码扣在两个版本中都
 | 中文文档 | GLM-5 或 GLM-4.7 |
 | 大型代码库 | Qwen3 Coder Plus（100万上下文） |
 
-详细选择指南请参阅[使用模型](./using-models)。
+详细选择指南请参阅[使用模型](/guides/using-models)。
 
 
 ---
@@ -431,10 +431,10 @@ VS Code Insiders 版本与稳定版功能相同，飞码扣在两个版本中都
 
 ## 相关文档
 
-- [快速入门](./quickstart) - 开始使用飞码扣
-- [使用模型](./using-models) - 模型选择和使用指南
-- [计费指南](./billing) - 了解计费详情
-- [配置指南](./configuration) - 自定义设置
+- [快速入门](/guides/quickstart) - 开始使用飞码扣
+- [使用模型](/guides/using-models) - 模型选择和使用指南
+- [计费指南](/guides/billing) - 了解计费详情
+- [配置指南](/guides/configuration) - 自定义设置
 
 ---
 

@@ -73,14 +73,14 @@ We're implementing core features:
 
 ## Resources
 
-- [Quick Start Guide](./guides/quickstart.md) - Get up and running in minutes
-- [Installation Guide](./guides/installation.md) - Detailed installation instructions
-- [Authentication Guide](./guides/authentication.md) - Set up OAuth2 authentication
-- [Development Setup](./dev/setup.md) - Contribute to the project
+- [Quick Start Guide](/guides/quickstart) - Get up and running in minutes
+- [Installation Guide](/guides/installation) - Detailed installation instructions
+- [Authentication Guide](/guides/authentication) - Set up OAuth2 authentication
+- [Development Setup](/dev/setup) - Contribute to the project
 
 ## Get Involved
 
-We welcome community contributions! See our [Development Guide](./dev/setup.md) to learn how to participate.
+We welcome community contributions! See our [Development Guide](/dev/setup) to learn how to participate.
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Feature Requests](https://github.com/feimacode/feima-copilot-llms-extension/discussions)

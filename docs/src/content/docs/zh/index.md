@@ -55,7 +55,7 @@ description: 加速创意落地 - GitHub Copilot Chat 的中国 AI 模型支持
 | **MiniMax M2.5** | MiniMax | 200K | ✅ 32K | 1.0x | 思维链推理，中文优化 |
 | **Kimi K2.5** | Moonshot | 256K | ✅ 16K | 1.0x | 文档分析，长上下文 |
 
-**详细模型信息**：请参阅[使用模型](./guides/using-models)了解完整的模型规格、计费倍率和使用建议。
+**详细模型信息**：请参阅[使用模型](/guides/using-models)了解完整的模型规格、计费倍率和使用建议。
 
 
 ## 为什么选择飞码扣？
@@ -77,14 +77,14 @@ description: 加速创意落地 - GitHub Copilot Chat 的中国 AI 模型支持
 
 ## 相关资源
 
-- [快速入门指南](./guides/quickstart) - 几分钟内开始使用
-- [安装指南](./guides/installation) - 详细的安装说明
-- [认证指南](./guides/authentication) - 设置 OAuth2 认证
-- [开发设置](./dev/setup) - 参与项目开发
+- [快速入门指南](/guides/quickstart) - 几分钟内开始使用
+- [安装指南](/guides/installation) - 详细的安装说明
+- [认证指南](/guides/authentication) - 设置 OAuth2 认证
+- [开发设置](/dev/setup) - 参与项目开发
 
 ## 参与贡献
 
-我们欢迎社区贡献！请查看[开发指南](./dev/setup)了解如何参与。
+我们欢迎社区贡献！请查看[开发指南](/dev/setup)了解如何参与。
 
 - 🐛 [报告问题](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [功能建议](https://github.com/feimacode/feima-copilot-llms-extension/discussions)

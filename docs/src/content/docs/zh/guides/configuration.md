@@ -356,9 +356,9 @@ OAuth2 发行者 URL。覆盖区域默认值。
 
 ## 下一步
 
-- [快速入门](./quickstart) - 开始使用飞码扣
-- [使用模型](./using-models) - 了解可用模型
-- [配置参考](../reference/config) - 完整配置参考
+- [快速入门](/guides/quickstart) - 开始使用飞码扣
+- [使用模型](/guides/using-models) - 了解可用模型
+- [配置参考](/reference/config) - 完整配置参考
 
 ## 需要帮助？
 
@@ -601,9 +601,9 @@ To share your Feima configuration with your team:
 
 ## Next Steps
 
-- [Quick Start](./quickstart) - Get started with Feima Copilot
-- [Using Models](./using-models) - Learn about available models
-- [Reference - Configuration](../reference/config) - Complete configuration reference
+- [Quick Start](/guides/quickstart) - Get started with Feima Copilot
+- [Using Models](/guides/using-models) - Learn about available models
+- [Reference - Configuration](/reference/config) - Complete configuration reference
 
 ## Need Help?
 

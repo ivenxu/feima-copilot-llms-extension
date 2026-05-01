@@ -493,9 +493,9 @@ To reset all settings to defaults:
 
 ## Next Steps
 
-- [Configuration Guide](../guides/configuration.md) - How to configure
-- [Development Setup](../dev/setup.md) - Develop for Feima Copilot
-- [API Reference](./api.md) - Extension API
+- [Configuration Guide](/guides/configuration) - How to configure
+- [Development Setup](/dev/setup) - Develop for Feima Copilot
+- [API Reference](/reference/api) - Extension API
 
 ## Need Help?
 

@@ -261,9 +261,9 @@ OAuth2 发行者 URL。
 
 ## 下一步
 
-- [配置指南](../guides/configuration) - 配置使用说明
-- [快速入门](../guides/quickstart) - 开始使用
-- [使用模型](../guides/using-models) - 了解可用模型
+- [配置指南](/guides/configuration) - 配置使用说明
+- [快速入门](/guides/quickstart) - 开始使用
+- [使用模型](/guides/using-models) - 了解可用模型
 
 ## 需要帮助？
 
@@ -665,9 +665,9 @@ To reset all settings to defaults:
 
 ## Next Steps
 
-- [Configuration Guide](../guides/configuration) - How to configure
-- [Development Setup](../dev/setup) - Develop for Feima Copilot
-- [API Reference](./api) - Extension API
+- [Configuration Guide](/guides/configuration) - How to configure
+- [Development Setup](/dev/setup) - Develop for Feima Copilot
+- [API Reference](/reference/api) - Extension API
 
 ## Need Help?
 

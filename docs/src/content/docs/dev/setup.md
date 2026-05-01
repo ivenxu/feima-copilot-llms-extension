@@ -410,9 +410,9 @@ npm run compile
 
 ## Next Steps
 
-- [Testing Guide](./testing.md) - How to write tests
-- [Building Guide](./building.md) - Build and package the extension
-- [API Reference](../reference/api.md) - Extension API
+- [Testing Guide](/dev/testing) - How to write tests
+- [Building Guide](/dev/building) - Build and package the extension
+- [API Reference](/reference/api) - Extension API
 
 ## Need Help?
 

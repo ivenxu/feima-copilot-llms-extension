@@ -284,9 +284,9 @@ To share your Feima configuration with your team:
 
 ## Next Steps
 
-- [Quick Start](./quickstart.md) - Get started with Feima Copilot
-- [Using Models](./using-models.md) - Learn about available models
-- [Reference - Configuration](../reference/config.md) - Complete configuration reference
+- [Quick Start](/guides/quickstart) - Get started with Feima Copilot
+- [Using Models](/guides/using-models) - Learn about available models
+- [Reference - Configuration](/reference/config) - Complete configuration reference
 
 ## Need Help?
 

@@ -98,10 +98,10 @@ Try this simple example to verify everything is working:
 
 ## What's Next?
 
-- [Installation Guide](./installation.md) - More detailed installation options
-- [Authentication Guide](./authentication.md) - Learn about OAuth2 flow
-- [Configuration Guide](./configuration.md) - Customize your experience
-- [Development Guide](../dev/setup.md) - Contribute to the project
+- [Installation Guide](/guides/installation) - More detailed installation options
+- [Authentication Guide](/guides/authentication) - Learn about OAuth2 flow
+- [Configuration Guide](/guides/configuration) - Customize your experience
+- [Development Guide](/dev/setup) - Contribute to the project
 
 ## Need Help?
 
