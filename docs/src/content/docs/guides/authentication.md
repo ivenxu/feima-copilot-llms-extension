@@ -42,10 +42,10 @@ Feima Copilot uses the **OAuth2 + PKCE** (Proof Key for Code Exchange) flow, whi
 
 1. **Open Command Palette**
    - Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac)
-   - Type "Feima: 登录" (Sign In)
+   - Type "Feima: Sign In"
 
 2. **Authorize in Browser**
-   - A browser window will open at `https://idp.feimacode.cn/oauth/authorize`
+   - A browser window will open at `https://idp.feimacode.com/oauth/authorize`
    - Choose your login method: WeChat or Weibo
    - Scan the QR code or enter your credentials
 
@@ -55,7 +55,7 @@ Feima Copilot uses the **OAuth2 + PKCE** (Proof Key for Code Exchange) flow, whi
 
 4. **Complete Sign In**
    - You'll be redirected back to VS Code
-   - Success message: "✅ 已登录为: [your-email]"
+   - Success message: "✅ Signed in as: [your-email]"
 
 ### Token Storage
 
@@ -70,7 +70,7 @@ Your tokens are securely stored in VS Code's encrypted secrets storage:
 ### Check Account Status
 
 1. Press `Ctrl+Shift+P`
-2. Type "Feima: 查看账号" (Show Account)
+2. Type "Feima: Show Account"
 3. View your account information:
    - Email address
    - Account ID (WeChat_[openid] or Weibo_[uid])
@@ -86,9 +86,9 @@ Your tokens are securely stored in VS Code's encrypted secrets storage:
 ### Manual Sign Out
 
 1. Press `Ctrl+Shift+P`
-2. Type "Feima: 登出" (Sign Out)
+2. Type "Feima: Sign Out"
 3. Confirm the action
-4. Success message: "✅ 已登出 Feima 账号"
+4. Success message: "✅ Signed out of Feima"
 
 **Note**: Sign out removes all stored tokens. You'll need to sign in again to use Feima Copilot.
 
@@ -100,7 +100,7 @@ Feima Copilot uses a public OAuth client with no secret:
 |----------|-------|
 | **client_id** | `vscode-feima-client` |
 | **client_secret** | None (public client) |
-| **redirect_uri** | `vscode://feima.cn-model-for-copilot/oauth/callback` |
+| **redirect_uri** | `vscode://feima.copilot-more-models/oauth/callback` |
 | **grant_types** | `authorization_code`, `refresh_token` |
 | **scopes** | `openid`, `profile`, `email` |
 | **auth method** | PKCE (Proof Key for Code Exchange) |
@@ -168,7 +168,7 @@ Both extensions can use the same OAuth tokens, providing a seamless experience.
 
 **Solutions**:
 1. Check network connectivity
-2. Verify feima-idp is accessible: `curl https://idp.feimacode.cn/.well-known/openid-configuration`
+2. Verify feima-idp is accessible: `curl https://idp.feimacode.com/.well-known/openid-configuration`
 3. Sign in again to get a new code
 
 ### Token not refreshing automatically
@@ -187,7 +187,7 @@ Both extensions can use the same OAuth tokens, providing a seamless experience.
 ### Security Tips
 
 1. **Never share your tokens** - They are stored securely and never exposed
-2. **Sign out on shared computers** - Use "Feima: 登出" when done
+2. **Sign out on shared computers** - Use "Feima: Sign Out" when done
 3. **Keep VS Code updated** - Security improvements are included in updates
 4. **Use secure networks** - Avoid public Wi-Fi when signing in
 
@@ -207,4 +207,4 @@ Both extensions can use the same OAuth tokens, providing a seamless experience.
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)

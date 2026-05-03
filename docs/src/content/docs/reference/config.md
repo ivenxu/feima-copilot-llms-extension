@@ -18,21 +18,24 @@ All Feima Copilot settings are prefixed with `feima.` in VS Code settings.
 Default model for new conversations.
 
 **Type**: `string`
-**Default**: `"deepseek-coder-v2"`
+**Default**: `"qwen-flash"`
 **Scope**: Window
 
 **Valid Values**:
-- `"deepseek-coder-v2"`
-- `"tongyi-qianwen-3-coder"`
-- `"tencent-hunyuan"`
-- `"gpt-4o"`
-- `"claude-3.5-sonnet"`
-- `"gemini-1.5-pro"`
+- `"qwen-flash"` - Qwen3 Flash (free tier, chat default)
+- `"qwen3-max"` - Qwen3 Max (thinking capable)
+- `"qwen3-coder-plus"` - Qwen3 Coder Plus (1M context)
+- `"qwen3.5-plus"` - Qwen3.5 Plus (vision + thinking)
+- `"deepseek-v3.2"` - DeepSeek V3.2 (deep thinking)
+- `"glm-5"` - GLM-5 (Zhipu, thinking capable)
+- `"glm-4.7"` - GLM-4.7 (Zhipu, long output)
+- `"minimax-m2.5"` - MiniMax M2.5
+- `"kimi-k2.5"` - Kimi K2.5 (256K context + vision)
 
 **Example**:
 ```json
 {
-  "feima.defaultModel": "gpt-4o"
+  "feima.defaultModel": "qwen3-max"
 }
 ```
 
@@ -191,10 +194,11 @@ Custom aliases for models.
 ```json
 {
   "feima.modelAliases": {
-    "code": "deepseek-coder-v2",
-    "review": "claude-3.5-sonnet",
-    "chinese": "tongyi-qianwen-3-coder",
-    "arch": "gpt-4o"
+    "code": "qwen3-coder-plus",
+    "review": "qwen3-max",
+    "docs": "glm-4.7",
+    "arch": "deepseek-v3.2",
+    "fast": "qwen-flash"
   }
 }
 ```
@@ -216,7 +220,7 @@ Model override for current workspace.
 **Example**:
 ```json
 {
-  "feima.workspaceModel": "claude-3.5-sonnet"
+  "feima.workspaceModel": "qwen3-coder-plus"
 }
 ```
 
@@ -501,4 +505,4 @@ To reset all settings to defaults:
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)

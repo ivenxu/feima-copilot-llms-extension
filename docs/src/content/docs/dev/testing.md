@@ -149,7 +149,7 @@ describe('LanguageModelProvider', () => {
 
   it('should fetch models from API', async () => {
     const mockModels = [
-      { id: 'deepseek-coder-v2', name: 'DeepSeek Coder V2' }
+      { id: 'qwen-flash', name: '[Feima] Qwen3 Flash' }
     ];
     mockApiClient.models.mockResolvedValue(mockModels);
 
@@ -222,7 +222,7 @@ describe('API Integration Tests', () => {
     const api = new FeimaApiClient(authService);
 
     const response = await api.chat({
-      model: 'deepseek-coder-v2',
+      model: 'qwen-flash',
       messages: [{ role: 'user', content: 'Hello' }]
     });
 
@@ -287,9 +287,9 @@ describe('Model Selection', () => {
   it('should return correct model by ID', () => {
     const provider = new LanguageModelProvider(context);
 
-    const model = provider.getModel('deepseek-coder-v2');
-    expect(model?.id).toBe('deepseek-coder-v2');
-    expect(model?.name).toBe('DeepSeek Coder V2');
+    const model = provider.getModel('qwen-flash');
+    expect(model?.id).toBe('qwen-flash');
+    expect(model?.name).toBe('[Feima] Qwen3 Flash');
   });
 
   it('should return undefined for unknown model', () => {
@@ -483,4 +483,4 @@ afterEach(() => {
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)

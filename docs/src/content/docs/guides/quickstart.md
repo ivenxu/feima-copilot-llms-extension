@@ -13,7 +13,7 @@ Before you begin, make sure you have:
 
 - ✅ **VS Code** >= 1.85.0
 - ✅ **GitHub Copilot Chat** extension installed (required)
-- ✅ **Feima Account** (sign up at [feimacode.cn](https://feimacode.cn))
+- ✅ **Feima Account** (sign up at [feimacode.com](https://feimacode.com))
 
 ## Installation
 
@@ -37,14 +37,14 @@ Make sure you have the **GitHub Copilot Chat** extension installed. Feima Copilo
 ### Step 3: Sign In to Feima
 
 1. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac) to open the Command Palette
-2. Type "Feima: 登录" (Sign In)
+2. Type "Feima: Sign In"
 3. Select the command
 4. A browser window will open
 5. Sign in with your Feima account (WeChat or Weibo)
 6. Grant the requested permissions
 7. You'll be redirected back to VS Code
 
-**Success message**: "✅ 已登录为: [your-email]"
+**Success message**: "✅ Signed in as: [your-email]"
 
 ## Using Feima Copilot
 
@@ -53,12 +53,15 @@ Make sure you have the **GitHub Copilot Chat** extension installed. Feima Copilo
 1. Open the Copilot Chat panel (click the chat icon in the sidebar or press `Ctrl+Alt+I`)
 2. Click the model selector at the top of the panel
 3. Choose a Feima model from the list:
-   - **DeepSeek Coder V2** - Best for code generation
-   - **Tongyi Qianwen 3 Coder** - Best for Chinese code comments
-   - **Tencent Hunyuan** - General purpose Q&A
-   - **GPT-4o** - Complex logic and architecture
-   - **Claude 3.5 Sonnet** - Code review and optimization
-   - **Gemini 1.5 Pro** - Large codebase understanding
+   - **Qwen3 Flash** - Fast responses, free tier (chat default)
+   - **Qwen3 Max** - Complex reasoning with thinking mode
+   - **Qwen3 Coder Plus** - Advanced code generation with 1M context
+   - **Qwen3.5 Plus** - Vision-capable with 80K thinking chain
+   - **DeepSeek V3.2** - Deep thinking for complex problems
+   - **GLM-5** - Zhipu's advanced reasoning model
+   - **GLM-4.7** - Long-form content and documentation
+   - **MiniMax M2.5** - Balanced performance
+   - **Kimi K2.5** - 256K context with vision support
 
 ### Step 5: Start Chatting
 
@@ -70,7 +73,7 @@ Make sure you have the **GitHub Copilot Chat** extension installed. Feima Copilo
 
 Try this simple example to verify everything is working:
 
-1. Select "DeepSeek Coder V2" in Copilot Chat
+1. Select "Qwen3 Flash" in Copilot Chat (it's free!)
 2. Ask: "How do I create a REST API endpoint in Node.js with Express?"
 3. The AI should provide code and explanation
 
@@ -88,7 +91,7 @@ Try this simple example to verify everything is working:
 
 ### Can't find Feima models in selector
 
-- Make sure you're signed in: Press `Ctrl+Shift+P` → "Feima: 查看账号"
+- Make sure you're signed in: Press `Ctrl+Shift+P` → "Feima: Show Account"
 - Check the Output panel (View → Output) for any error messages
 
 ### Token exchange failed
@@ -107,4 +110,4 @@ Try this simple example to verify everything is working:
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)

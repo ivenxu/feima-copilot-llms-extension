@@ -82,7 +82,7 @@ Larger context windows require more computational resources:
 Tokens are the basic units of text that AI models process:
 
 - **English**: Roughly 1 token ≈ 4 characters or ¾ of a word
-- **Chinese**: Roughly 1 token ≈ 1-2 characters
+- **CJK Languages**: Roughly 1 token ≈ 1-2 characters
 - **Code**: Tokens vary depending on the programming language and syntax
 
 **Example**: The phrase "Hello, world!" is approximately 4 tokens.

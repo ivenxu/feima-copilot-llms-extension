@@ -17,7 +17,7 @@ This guide covers all the installation options for Feima Copilot.
 
 ### Account Requirements
 
-- Feima account ([sign up](https://feimacode.cn/register))
+- Feima account ([sign up](https://feimacode.com/register))
 - Feima account supports WeChat or Weibo authentication
 
 ## Installation Methods
@@ -73,16 +73,16 @@ Feima Copilot requires GitHub Copilot Chat to be installed and activated.
 1. Open VS Code
 2. Go to View → Output
 3. Select "Feima" from the dropdown
-4. You should see: "✅ 飞码扣 (Feima) extension activated successfully!"
+4. You should see: "✅ Feima extension activated successfully!"
 
 ### Check Commands
 
 1. Press `Ctrl+Shift+P`
 2. Type "Feima:"
 3. You should see commands like:
-   - Feima: 登录 (Sign In)
-   - Feima: 查看账号 (Show Account)
-   - Feima: 登出 (Sign Out)
+   - Feima: Sign In
+   - Feima: Show Account
+   - Feima: Sign Out
 
 ### Check Model Availability
 
@@ -146,17 +146,15 @@ When installed from VS Code Marketplace, updates are automatic. VS Code will not
 3. Click the "Update" button if available
 4. Restart VS Code when prompted
 
-## Firewall and Proxy Issues
+## Network Connectivity
 
-### China Users
+### Regional Access
 
-Feima Copilot provides direct access to Chinese models without needing to bypass the firewall. However, international models are accessed via Feima's accelerated service.
+Feima Copilot provides optimized access to models from diverse providers. Connectivity varies by region:
 
-If you experience issues:
-
-1. Check if `https://idp.feimacode.cn` is accessible
-2. Try using a different network
-3. Contact support if issues persist
+1. Check if `https://idp.feimacode.com` is accessible for your region
+2. Try using a different network if you experience latency issues
+3. Contact support if connectivity issues persist
 
 ### Corporate Networks
 
@@ -176,4 +174,4 @@ Some corporate networks may block OAuth redirects. If you encounter authenticati
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)

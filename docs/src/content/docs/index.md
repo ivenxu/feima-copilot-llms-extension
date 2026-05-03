@@ -1,19 +1,19 @@
 ---
 title: Feima Copilot Documentation
-description: Accelerating intent into execution - Chinese AI models for GitHub Copilot Chat
+description: Accelerating intent into execution - Alternative AI models for GitHub Copilot Chat
 ---
 
 # Welcome to Feima Copilot
 
-**加速创意落地 - Accelerating intent into execution**
+**Accelerating intent into execution**
 
-Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with Chinese AI model support.
+Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with alternative AI model support — cost-effective alternatives with diverse model selection.
 
 ## What is Feima Copilot?
 
-**Feima Copilot (飞码扣)** is a VS Code extension that provides:
+**Feima Copilot** is a VS Code extension that provides:
 
-- 🇨🇳 **Chinese AI Models**: Direct access to Qwen3, DeepSeek V3.2, GLM-5, MiniMax M2.5, Kimi K2.5 and other top Chinese models
+- � **Diverse Model Selection**: Direct access to Claude, Gemini, GPT-4o, Qwen3, DeepSeek V3.2, GLM-5, MiniMax M2.5, Kimi K2.5 and more
 - 💬 **Seamless Integration**: Works directly within GitHub Copilot Chat without switching interfaces
 - 💰 **Pay-Per-Use**: Pay only for requests you make, not monthly subscriptions
 - 🔒 **Secure**: OAuth2 authentication with code that never leaves VS Code
@@ -56,10 +56,10 @@ Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with Chin
 
 | Feature | GitHub Copilot Native | Feima Copilot Enhanced |
 |---------|----------------------|----------------------|
-| Chinese Understanding | ✅ Good | 🔥 **Excellent** (Chinese models) |
-| International Model Access | ⚠️ Unstable (GFW) | ✅ **Stable & Accelerated** |
-| Model Selection | 3-4 models | 🎉 **6+ models** |
-| Pricing | Monthly subscription | 💡 **Pay-per-use** |
+| Model Selection | 3-4 models | 🎉 **10+ models** |
+| Cost Control | Fixed subscription | 💡 **Pay-per-request** |
+| International Models | ⚠️ Limited access | ✅ **Full access** |
+| Pricing | Monthly subscription | 🔥 **Cost-effective** |
 
 ## Development Status
 
@@ -84,8 +84,8 @@ We welcome community contributions! See our [Development Guide](/dev/setup) to l
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Feature Requests](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)
 
 ---
 
-Made with ❤️ by [Feima Team](https://feimacode.cn)
+Made with ❤️ by [Feima Team](https://feimacode.com)

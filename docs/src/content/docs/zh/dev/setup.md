@@ -183,7 +183,7 @@ FEIMA_IDP_ENDPOINT=https://idp.feimacode.cn
 
 # OAuth 配置
 OAUTH_CLIENT_ID=vscode-feima-client
-OAUTH_REDIRECT_URI=vscode://feima.cn-model-for-copilot/oauth/callback
+OAUTH_REDIRECT_URI=vscode://feima.copilot-cn-models/oauth/callback
 
 # 调试设置
 DEBUG=feima:*

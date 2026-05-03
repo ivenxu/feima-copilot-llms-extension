@@ -26,22 +26,25 @@ Or use the command palette:
 ### `feima.defaultModel`
 
 **Type**: `string`
-**Default**: `"deepseek-coder-v2"`
+**Default**: `"qwen-flash"`
 
 The default model to use when starting a new conversation.
 
 **Options**:
-- `"deepseek-coder-v2"` - DeepSeek Coder V2
-- `"tongyi-qianwen-3-coder"` - Tongyi Qianwen 3 Coder
-- `"tencent-hunyuan"` - Tencent Hunyuan
-- `"gpt-4o"` - GPT-4o
-- `"claude-3.5-sonnet"` - Claude 3.5 Sonnet
-- `"gemini-1.5-pro"` - Gemini 1.5 Pro
+- `"qwen-flash"` - Qwen3 Flash (free tier, chat default)
+- `"qwen3-max"` - Qwen3 Max (thinking capable)
+- `"qwen3-coder-plus"` - Qwen3 Coder Plus (1M context)
+- `"qwen3.5-plus"` - Qwen3.5 Plus (vision + thinking)
+- `"deepseek-v3.2"` - DeepSeek V3.2 (deep thinking)
+- `"glm-5"` - GLM-5 (Zhipu, thinking capable)
+- `"glm-4.7"` - GLM-4.7 (Zhipu, long output)
+- `"minimax-m2.5"` - MiniMax M2.5
+- `"kimi-k2.5"` - Kimi K2.5 (256K context + vision)
 
 **Example**:
 ```json
 {
-  "feima.defaultModel": "gpt-4o"
+  "feima.defaultModel": "qwen3-max"
 }
 ```
 
@@ -133,7 +136,7 @@ Apply only to the current workspace. Stored in `.vscode/settings.json` in your p
 **Example**:
 ```json
 {
-  "feima.defaultModel": "deepseek-coder-v2",
+  "feima.defaultModel": "qwen-flash",
   "feima.enableDebugLogging": true
 }
 ```
@@ -144,7 +147,7 @@ Apply only to the current workspace. Stored in `.vscode/settings.json` in your p
 
 ```json
 {
-  "feima.defaultModel": "claude-3.5-sonnet",
+  "feima.defaultModel": "qwen3-max",
   "feima.enableDebugLogging": true,
   "feima.showStatusBar": true
 }
@@ -154,7 +157,7 @@ Apply only to the current workspace. Stored in `.vscode/settings.json` in your p
 
 ```json
 {
-  "feima.defaultModel": "tongyi-qianwen-3-coder"
+  "feima.defaultModel": "glm-4.7"
 }
 ```
 
@@ -162,7 +165,7 @@ Apply only to the current workspace. Stored in `.vscode/settings.json` in your p
 
 ```json
 {
-  "feima.defaultModel": "gpt-4o",
+  "feima.defaultModel": "deepseek-v3.2",
   "feima.maxRetries": 2
 }
 ```
@@ -171,7 +174,7 @@ Apply only to the current workspace. Stored in `.vscode/settings.json` in your p
 
 ```json
 {
-  "feima.defaultModel": "gemini-1.5-pro",
+  "feima.defaultModel": "qwen3-coder-plus",
   "feima.requestTimeout": 60000
 }
 ```
@@ -183,7 +186,7 @@ Create multiple configuration files for different workflows:
 ### `.vscode/settings.json` (Production)
 ```json
 {
-  "feima.defaultModel": "deepseek-coder-v2",
+  "feima.defaultModel": "qwen-flash",
   "feima.showStatusBar": true
 }
 ```
@@ -191,7 +194,7 @@ Create multiple configuration files for different workflows:
 ### `.vscode/settings.local.json` (Development)
 ```json
 {
-  "feima.defaultModel": "gpt-4o",
+  "feima.defaultModel": "qwen3-max",
   "feima.enableDebugLogging": true
 }
 ```
@@ -251,9 +254,9 @@ Define custom aliases for frequently used models (planned feature):
 ```json
 {
   "feima.modelAliases": {
-    "code": "deepseek-coder-v2",
-    "review": "claude-3.5-sonnet",
-    "chinese": "tongyi-qianwen-3-coder"
+    "code": "qwen3-coder-plus",
+    "review": "qwen3-max",
+    "docs": "glm-4.7"
   }
 }
 ```
@@ -265,9 +268,9 @@ Configure different models for different file types (planned feature):
 ```json
 {
   "feima.modelsByFiletype": {
-    "typescript": "claude-3.5-sonnet",
-    "python": "gpt-4o",
-    "markdown": "tongyi-qianwen-3-coder"
+    "typescript": "qwen3-coder-plus",
+    "python": "deepseek-v3.2",
+    "markdown": "glm-4.7"
   }
 }
 ```
@@ -292,4 +295,4 @@ To share your Feima configuration with your team:
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)

@@ -463,7 +463,7 @@ import { LanguageModelProvider } from './models/languageModelProvider';
 const provider = new LanguageModelProvider(context);
 
 function getModelExample() {
-  const model = provider.getModel('deepseek-coder-v2');
+  const model = provider.getModel('qwen-flash');
   if (model) {
     console.log(`Model: ${model.name}`);
     console.log(`Provider: ${model.provider}`);
@@ -483,7 +483,7 @@ const api = new FeimaApiClient(authService);
 
 async function chatExample() {
   const response = await api.chat({
-    model: 'deepseek-coder-v2',
+    model: 'qwen3-coder-plus',
     messages: [
       {
         role: 'user',
@@ -539,12 +539,15 @@ enum ModelProvider {
 
 ```typescript
 export const MODEL_IDS = {
-  DEEPSEEK_CODER_V2: 'deepseek-coder-v2',
-  TONGYI_QIANWEN_3_CODER: 'tongyi-qianwen-3-coder',
-  TENCENT_HUNYUAN: 'tencent-hunyuan',
-  GPT_4O: 'gpt-4o',
-  CLAUDE_3_5_SONNET: 'claude-3.5-sonnet',
-  GEMINI_1_5_PRO: 'gemini-1.5-pro'
+  QWEN_FLASH: 'qwen-flash',
+  QWEN3_MAX: 'qwen3-max',
+  QWEN3_CODER_PLUS: 'qwen3-coder-plus',
+  QWEN3_5_PLUS: 'qwen3.5-plus',
+  DEEPSEEK_V3_2: 'deepseek-v3.2',
+  GLM_5: 'glm-5',
+  GLM_4_7: 'glm-4.7',
+  MINIMAX_M2_5: 'minimax-m2.5',
+  KIMI_K2_5: 'kimi-k2.5'
 } as const;
 ```
 
@@ -575,4 +578,4 @@ export const CONFIG_KEYS = {
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)

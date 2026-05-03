@@ -5,61 +5,107 @@ description: How to select and use different AI models in Feima Copilot
 
 # Using Models
 
-Feima Copilot provides access to multiple AI models, both Chinese and international, to suit different tasks.
+Feima Copilot provides access to multiple AI models from diverse providers to suit different tasks and budgets.
 
 ## Available Models
 
-### Chinese Models (Direct Connection)
+### Ali Cloud Models
 
-#### DeepSeek Coder V2
-- **Provider**: DeepSeek
-- **Best For**: Code generation, code completion, technical Q&A
+#### Qwen3 Flash
+- **Model ID**: `qwen-flash`
+- **Provider**: Ali Cloud
+- **Best For**: Fast responses, everyday coding tasks
 - **Strengths**:
-  - Excellent at understanding and generating code
-  - Strong debugging capabilities
-  - Good at explaining complex code
+  - Ultra-fast with 1M context window
+  - Free tier included
+  - Great for quick questions and simple tasks
 
-#### Tongyi Qianwen 3 Coder
-- **Provider**: Alibaba Cloud
-- **Best For**: Chinese code comments, documentation generation
+#### Qwen Coder Turbo
+- **Model ID**: `qwen-coder-turbo`
+- **Provider**: Ali Cloud
+- **Best For**: Code completions, inline suggestions
 - **Strengths**:
-  - Superior Chinese language understanding
-  - Great at writing docstrings and comments
-  - Strong at Chinese technical documentation
+  - Optimized for code completion
+  - Fast and efficient
+  - Free tier included
 
-#### Tencent Hunyuan
-- **Provider**: Tencent Cloud
-- **Best For**: General Q&A, code understanding
+#### Qwen3 Max
+- **Model ID**: `qwen3-max`
+- **Provider**: Ali Cloud
+- **Best For**: Complex reasoning, architecture design
 - **Strengths**:
-  - Balanced performance across tasks
-  - Good at natural language explanation
-  - Stable performance
+  - 256K context with thinking capabilities
+  - Advanced reasoning
+  - Premium tier required
 
-### International Models (Accelerated)
-
-#### GPT-4o
-- **Provider**: OpenAI
-- **Best For**: Complex logic, architecture design, advanced reasoning
+#### Qwen3 Coder Plus
+- **Model ID**: `qwen3-coder-plus`
+- **Provider**: Ali Cloud
+- **Best For**: Advanced code generation, large codebases
 - **Strengths**:
-  - State-of-the-art reasoning
-  - Excellent at architectural decisions
-  - Strong at system design
+  - 1M context window
+  - Excellent at code generation
+  - Premium tier required
 
-#### Claude 3.5 Sonnet
-- **Provider**: Anthropic
-- **Best For**: Code review, algorithm optimization, refactoring
+#### Qwen3.5 Plus
+- **Model ID**: `qwen3.5-plus`
+- **Provider**: Ali Cloud
+- **Best For**: Complex reasoning with vision support
 - **Strengths**:
-  - Very thorough code review
-  - Excellent at suggesting optimizations
-  - Good at identifying edge cases
+  - 1M context with 80K thinking chain
+  - Vision capabilities for image analysis
+  - Premium tier required
 
-#### Gemini 1.5 Pro
-- **Provider**: Google
-- **Best For**: Large codebase understanding, long context analysis
+#### DeepSeek V3.2
+- **Model ID**: `deepseek-v3.2`
+- **Provider**: Ali Cloud
+- **Best For**: Deep thinking, complex problem solving
 - **Strengths**:
-  - Very long context window
-  - Good at understanding large codebases
-  - Strong at cross-file analysis
+  - Sparse attention for efficient reasoning
+  - Strong at algorithm design
+  - Premium tier required
+
+### Zhipu Models
+
+#### GLM-5
+- **Model ID**: `glm-5`
+- **Provider**: Zhipu (via Ali Cloud)
+- **Best For**: Advanced reasoning, Chinese language tasks
+- **Strengths**:
+  - 200K context with thinking capabilities
+  - Excellent Chinese understanding
+  - Premium tier required
+
+#### GLM-4.7
+- **Model ID**: `glm-4.7`
+- **Provider**: Zhipu (via Ali Cloud)
+- **Best For**: Long-form content, technical writing
+- **Strengths**:
+  - 200K context with 128K output
+  - Strong at documentation
+  - Premium tier required
+
+### MiniMax Models
+
+#### MiniMax M2.5
+- **Model ID**: `minimax-m2.5`
+- **Provider**: MiniMax (via Ali Cloud)
+- **Best For**: Complex reasoning, creative tasks
+- **Strengths**:
+  - 200K context with thinking capabilities
+  - Balanced performance
+  - Premium tier required
+
+### Moonshot Models
+
+#### Kimi K2.5
+- **Model ID**: `kimi-k2.5`
+- **Provider**: Moonshot (via Ali Cloud)
+- **Best For**: Large context analysis, vision tasks
+- **Strengths**:
+  - 256K context with vision support
+  - Thinking capabilities
+  - Premium tier required
 
 ## Selecting a Model
 
@@ -81,7 +127,7 @@ You can switch models at any time:
 
 ### For Code Generation
 
-**Recommended**: DeepSeek Coder V2, Claude 3.5 Sonnet
+**Recommended**: Qwen3 Coder Plus, DeepSeek V3.2
 
 ```markdown
 # Example Prompt
@@ -90,7 +136,7 @@ Generate a function to validate email addresses using regex in TypeScript.
 
 ### For Code Review
 
-**Recommended**: Claude 3.5 Sonnet, GPT-4o
+**Recommended**: Qwen3 Max, GLM-5
 
 ```markdown
 # Example Prompt
@@ -98,27 +144,27 @@ Review this code for potential bugs and performance issues:
 [paste code]
 ```
 
-### For Chinese Documentation
+### For Documentation
 
-**Recommended**: Tongyi Qianwen 3 Coder, DeepSeek Coder V2
+**Recommended**: GLM-4.7, Qwen3.5 Plus
 
 ```markdown
 # Example Prompt
-为这个函数添加详细的中文注释说明其用途和参数。
+Add detailed documentation for this function explaining its purpose and parameters.
 ```
 
 ### For Architecture Design
 
-**Recommended**: GPT-4o, Claude 3.5 Sonnet
+**Recommended**: Qwen3 Max, DeepSeek V3.2
 
 ```markdown
 # Example Prompt
-设计一个微服务架构来处理用户认证和授权，包括组件和交互流程。
+Design a microservice architecture for user authentication and authorization, including components and interaction flows.
 ```
 
 ### For Understanding Large Codebases
 
-**Recommended**: Gemini 1.5 Pro, GPT-4o
+**Recommended**: Qwen3 Coder Plus, Kimi K2.5
 
 ```markdown
 # Example Prompt
@@ -127,23 +173,24 @@ Explain how the authentication flow works in this codebase.
 
 ## Model Comparison
 
-| Task | Chinese Models | International Models |
-|------|----------------|---------------------|
-| **Code Generation** | DeepSeek Coder V2 | Claude 3.5 Sonnet |
-| **Code Review** | DeepSeek Coder V2 | Claude 3.5 Sonnet |
-| **Chinese Doc** | Tongyi Qianwen 3 Coder | GPT-4o |
-| **Architecture** | DeepSeek Coder V2 | GPT-4o |
-| **Large Context** | DeepSeek Coder V2 | Gemini 1.5 Pro |
-| **Speed** | Tencent Hunyuan | GPT-4o |
+| Task | Lightweight Models | Powerful Models |
+|------|-------------------|-----------------|
+| **Code Generation** | Qwen3 Flash | Qwen3 Coder Plus, DeepSeek V3.2 |
+| **Code Review** | Qwen3 Flash | Qwen3 Max, GLM-5 |
+| **Documentation** | Qwen3 Flash | GLM-4.7, Qwen3.5 Plus |
+| **Architecture** | Qwen3 Max | DeepSeek V3.2, GLM-5 |
+| **Large Context** | Qwen3 Flash | Qwen3 Coder Plus, Kimi K2.5 |
+| **Cost-Effective** | Qwen3 Flash | Qwen3.5 Plus |
 
 ## Best Practices
 
 ### Match Model to Task
 
-1. **Code tasks** - Use DeepSeek Coder V2 or Claude 3.5 Sonnet
-2. **Chinese content** - Use Tongyi Qianwen 3 Coder
-3. **Complex reasoning** - Use GPT-4o or Claude 3.5 Sonnet
-4. **Large context** - Use Gemini 1.5 Pro
+1. **Quick questions** - Use Qwen3 Flash (free tier)
+2. **Code generation** - Use Qwen3 Coder Plus or DeepSeek V3.2
+3. **Documentation** - Use GLM-4.7 or Qwen3.5 Plus
+4. **Complex reasoning** - Use Qwen3 Max or DeepSeek V3.2
+5. **Large context** - Use Qwen3 Coder Plus or Kimi K2.5
 
 ### Provide Clear Context
 
@@ -190,8 +237,8 @@ API requests are rate limited:
 
 ### Network Latency
 
-- Chinese models: Direct connection, lower latency
-- International models: Accelerated via Feima, slightly higher latency
+- Provider models: Direct connection, lower latency
+- Global models: Accelerated via Feima, slightly higher latency
 - Network conditions can affect response time
 
 ## Tips for Better Results
@@ -247,4 +294,4 @@ Write this function, and explain:
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)

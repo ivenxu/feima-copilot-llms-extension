@@ -178,12 +178,12 @@ Create a `.env` file for local development (not committed):
 
 ```env
 # Feima API configuration
-FEIMA_API_ENDPOINT=https://api.feimacode.cn
-FEIMA_IDP_ENDPOINT=https://idp.feimacode.cn
+FEIMA_API_ENDPOINT=https://api.feimacode.com
+FEIMA_IDP_ENDPOINT=https://idp.feimacode.com
 
 # OAuth configuration
 OAUTH_CLIENT_ID=vscode-feima-client
-OAUTH_REDIRECT_URI=vscode://feima.cn-model-for-copilot/oauth/callback
+OAUTH_REDIRECT_URI=vscode://feima.copilot-more-models/oauth/callback
 
 # Debug settings
 DEBUG=feima:*
@@ -418,4 +418,4 @@ npm run compile
 
 - 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
 - 💬 [Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [Email Support](mailto:support@feimacode.cn)
+- 📧 [Email Support](mailto:support@feimacode.com)
