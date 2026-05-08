@@ -50,8 +50,8 @@ jobs:
           rm -rf dist/zh
         env:
           BUILD_LOCALE: en
-          SITE_URL: https://ivenxu.github.io
-          BASE_PATH: /feima-copilot-llms-extension
+          SITE_URL: https://docs.feimacode.com
+          BASE_PATH: /
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -216,6 +216,6 @@ export default defineConfig({
     }),
   ],
 
-  site: process.env.SITE_URL ?? 'https://ivenxu.github.io',
-  base: process.env.BASE_PATH ?? '/feima-copilot-llms-extension',
+  site: process.env.SITE_URL ?? 'https://docs.feimacode.com',
+  base: process.env.BASE_PATH ?? '/',
 });
