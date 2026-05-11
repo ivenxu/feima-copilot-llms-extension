@@ -18,6 +18,21 @@
       "preLaunchTask": "${defaultBuildTask}"
     },
     {
+      "name": "Launch global feima-copilot-llms Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "env": {
+        "FEIMA_REGION": "global"
+      },
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "preLaunchTask": "npm: ext:build:global"
+    },
+    {
       "name": "Extension Tests",
       "type": "extensionHost",
       "request": "launch",

@@ -103,8 +103,6 @@ A: No. Your code is only sent to the AI model for processing and is never stored
 **Q: Are conversation histories saved?**
 A: Conversations are stored locally on your device and never uploaded to our servers.
 
-**Q: Is this GDPR compliant?**
-A: Yes. We are fully GDPR compliant. See our [Data Protection](https://feimacode.com/data-protection) page for details.
 
 ## 📚 Documentation
 

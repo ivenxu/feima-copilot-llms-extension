@@ -6,18 +6,18 @@
   "publisher": "feima",
   "author": {
     "name": "Feima",
-    "email": "support@feimacode.cn"
+    "email": "support@feimacode.com"
   },
   "license": "MIT",
   "icon": "assets/ext-icon3.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/feimacode/cn-model-for-copilot"
+    "url": "https://github.com/feimacode/feima-copilot-llms-extension"
   },
   "bugs": {
-    "url": "https://github.com/feimacode/cn-model-for-copilot/issues"
+    "url": "https://github.com/feimacode/feima-copilot-llms-extension/issues"
   },
-  "homepage": "https://github.com/feimacode/cn-model-for-copilot#readme",
+  "homepage": "https://github.com/feimacode/feima-copilot-llms-extension#readme",
   "keywords": [
     "Copilot",
     "飞码扣",
@@ -155,6 +155,7 @@
     "ext:build": "tsx .esbuild.ts",
     "ext:compile": "tsx .esbuild.ts --dev",
     "ext:watch": "tsx .esbuild.ts --watch --dev",
+    "ext:build:global": "FEIMA_REGION=global tsx .esbuild.ts",
     "ext:package": "tsx .esbuild.ts",
     "ext:compile-tests": "tsc -p . --outDir out",
     "ext:watch-tests": "tsc -p . -w --outDir out",
