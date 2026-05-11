@@ -1,59 +1,81 @@
-# Feima Code Models
+# Feima Copilot
 
-**Access Claude, Gemini, Qwen, GPT-4o, and more — one extension, multiple LLMs**
+**Access Qwen, DeepSeek, GLM, and more — one extension, multiple LLMs**
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/feimacode/feima-copilot-llms-extension/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ## ✨ Key Features
 
 - 🌍 **Global Access** - Works worldwide, no regional restrictions
-- 🤖 **Multi-Model Support** - Claude, Gemini, Qwen, GPT-4o, DeepSeek, and more
+- 🤖 **Multi-Model Support** - Qwen, DeepSeek, GLM, MiniMax, Kimi, and more
 - 🔐 **Secure Login** - GitHub OAuth for quick authentication
 - 💰 **Pay-As-You-Go** - No subscription required, pay only for what you use
 - 🚀 **Fast & Reliable** - Optimized for low latency responses
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- ✅ **VS Code** >= 1.85.0
+- ✅ **GitHub Copilot Chat** extension installed (required)
+- ✅ **Feima Account** (sign up at [feimacode.com](https://feimacode.com))
 
 ## 🎯 Supported Models
 
 | Model | Provider | Best For |
 |-------|----------|----------|
-| **Claude 3.5 Sonnet** | Anthropic | Complex reasoning, long context |
-| **Claude 3.5 Haiku** | Anthropic | Fast responses, high volume |
-| **Gemini 1.5 Pro** | Google | Multimodal tasks, long context |
-| **GPT-4o** | OpenAI | General purpose, multimodal |
-| **Qwen-Plus** | Alibaba Cloud | Cost-effective, strong reasoning |
-| **DeepSeek-V3** | DeepSeek | Code generation, reasoning |
+| **Qwen3 Flash** | Alibaba Cloud | Fast responses, free tier |
+| **Qwen3 Max** | Alibaba Cloud | Complex reasoning with thinking mode |
+| **Qwen3 Coder Plus** | Alibaba Cloud | Advanced code generation, 1M context |
+| **Qwen3.5 Plus** | Alibaba Cloud | Vision-capable, 80K thinking chain |
+| **DeepSeek V3.2** | DeepSeek | Deep thinking for complex problems |
+| **GLM-5** | Zhipu AI | Advanced reasoning |
+| **GLM-4.7** | Zhipu AI | Long-form content and documentation |
+| **MiniMax M2.5** | MiniMax | Balanced performance |
+| **Kimi K2.5** | Moonshot | 256K context with vision support |
 
 ## 📦 Installation
 
-### Option 1: VS Code Marketplace
+### Step 1: Install Feima Copilot
 
 1. Open VS Code
-2. Press `Ctrl+Shift+X` to open Extensions
-3. Search for "Feima Code Models"
+2. Press `Ctrl+Shift+X` (or `Cmd+Shift+X` on Mac) to open Extensions
+3. Search for "Feima Copilot"
 4. Click "Install"
 
-### Option 2: Manual Installation
+### Step 2: Verify GitHub Copilot Chat
 
-1. Download the `.vsix` file from [GitHub Releases](https://github.com/feimacode/feima-copilot-llms-extension/releases)
-2. In VS Code, press `Ctrl+Shift+P`
-3. Type "Extensions: Install from VSIX"
-4. Select the downloaded `.vsix` file
+Make sure you have the **GitHub Copilot Chat** extension installed. Feima Copilot requires it to function.
+
+1. Open Extensions view
+2. Search for "GitHub Copilot Chat"
+3. If not installed, click "Install"
 
 ## 🚀 Quick Start
 
-### 1. Authenticate
+### Step 3: Sign In to Feima
 
-After installing the extension, authenticate using:
-- **GitHub OAuth** - Click "Sign in with GitHub" for instant access
+1. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac) to open the Command Palette
+2. Type "Feima: Sign In"
+3. Select the command
+4. A browser window will open
+5. Sign in with your Feima account (GitHub OAuth)
+6. Grant the requested permissions
+7. You'll be redirected back to VS Code
 
-### 2. Select a Model
+**Success message**: "✅ Signed in as: [your-email]"
 
-Find the Feima icon in the VS Code sidebar, click to open the model selector.
+### Step 4: Select a Feima Model
 
-### 3. Start Coding
+1. Open the Copilot Chat panel (click the chat icon in the sidebar or press `Ctrl+Alt+I`)
+2. Click the model selector at the top of the panel
+3. Choose a Feima model from the list
 
-Select code in your editor, right-click and choose "Feima: Explain Code" or "Feima: Optimize Code" to start an AI conversation.
+### Step 5: Start Chatting
+
+1. Type your question or coding request in the chat input
+2. The AI will respond using the selected model
+3. You can switch models anytime during your session
 
 ## 💰 Pricing
 
@@ -71,11 +93,30 @@ Flexible pay-as-you-go pricing:
 ### Model Selection
 ![Model Selection](https://feimacode.com/screenshots/global/model-selection.png)
 
-### Code Explanation
-![Code Explanation](https://feimacode.com/screenshots/global/code-explanation.png)
-
 ### Chat Interface
 ![Chat Interface](https://feimacode.com/screenshots/global/chat-interface.png)
+
+## 🔧 Troubleshooting
+
+### Browser doesn't open
+
+- Check VS Code has permission to open your default browser
+- Ensure your default browser is properly configured
+
+### "No pending callback" error
+
+- The callback expires after 5 minutes - try signing in again quickly
+- Check your browser security settings aren't blocking redirects
+
+### Can't find Feima models in selector
+
+- Make sure you're signed in: Press `Ctrl+Shift+P` → "Feima: Show Account"
+- Check the Output panel (View → Output) for any error messages
+
+### Token exchange failed
+
+- Verify feima-idp is accessible
+- Check your network connectivity
 
 ## ❓ Frequently Asked Questions
 
@@ -112,16 +153,15 @@ A: Conversations are stored locally on your device and never uploaded to our ser
 
 ## 🤝 Feedback & Support
 
-- **Bug Reports**: [GitHub Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- **Community**: Join our Discord server
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 **Feature Requests**: [GitHub Discussions](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
+- 📧 **Email Support**: [support@feimacode.com](mailto:support@feimacode.com)
 
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
-
 ---
 
-**Feima Code Models** - Your AI coding assistant with access to the best LLMs
+**Feima Copilot** - Your AI coding assistant with access to the best LLMs
 
-[Website](https://feimacode.com) | [Pricing](https://feimacode.com/pricing) | [Docs](https://docs.feimacode.com)
+[Website](https://feimacode.com) | [Pricing](https://feimacode.com/pricing) | [Docs](https://docs.feimacode.com) | [GitHub](https://github.com/feimacode/feima-copilot-llms-extension)
