@@ -3,7 +3,6 @@ import { FeimaAuthProvider } from './auth/feimaAuthProvider';
 import { FeimaAuthenticationService } from './platform/authentication/vscode/feimaAuthenticationService';
 import { registerAuthCommands } from './commands/authCommands';
 import { FeimaLanguageModelProvider } from './models/feimaLanguageModelProvider';
-import { registerInlineCompletionProvider } from './completion/feimaInlineCompletionProvider';
 import { ModelCatalogService } from './models/modelCatalog';
 import { LogServiceImpl } from './platform/log/common/logService';
 import { VSCodeLogTarget, ConsoleLogTarget } from './platform/log/vscode/logService';

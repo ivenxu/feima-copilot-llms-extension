@@ -218,7 +218,7 @@ export class FeimaLanguageModelProvider implements vscode.LanguageModelChatProvi
 					tools: options.tools,
 					toolMode: options.toolMode
 				},
-				progress as unknown as vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart>,
+				progress as unknown as vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart | vscode.LanguageModelDataPart>,
 				token
 			);
 		} catch (error) {

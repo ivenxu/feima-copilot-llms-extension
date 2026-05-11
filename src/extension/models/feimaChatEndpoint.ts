@@ -37,11 +37,21 @@ export interface StreamDelta {
 }
 
 /**
+ * Token usage reported by the API for a completed request.
+ */
+export interface ApiUsage {
+	prompt_tokens: number;
+	completion_tokens: number;
+	total_tokens: number;
+	prompt_tokens_details?: { cached_tokens?: number };
+}
+
+/**
  * Chat response result with error type differentiation.
  * Follows feima-code pattern: success/blocked/quotaExceeded/rateLimited/error.
  */
 export type ChatResponse =
-	| { type: 'success'; requestId?: string }
+	| { type: 'success'; requestId?: string; usage?: ApiUsage }
 	| { type: 'cancelled'; requestId?: string }
 	| { type: 'error'; reason: string; requestId?: string }
 	| { type: 'blocked'; reason: string; requestId?: string }
@@ -257,6 +267,13 @@ export class FeimaChatEndpoint {
 		// Need to handle tool calls and tool results properly
 		const requestMessages: ChatCompletionRequest['messages'] = [];
 
+		// Prepend an English-enforcement system message for the global market.
+		if (getResolvedConfig().enforceEnglish) {
+			requestMessages.push({
+				role: 'system',
+				content: 'Always respond in English, regardless of the language used in the conversation.'
+			});
+		}
 		for (const msg of messages) {
 			// Check if this is a User message with tool results
 			const hasToolResults = Array.isArray(msg.content) && 
@@ -710,12 +727,12 @@ export class FeimaChatEndpoint {
 
 			this.log.debug(`[FeimaChatEndpoint] Starting SSE stream parsing`);
 			// Parse SSE stream
-			await this._parseSSEStream(response.body, callback, token);
+			const usage = await this._parseSSEStream(response.body, callback, token);
 			const elapsedMs = Date.now() - requestStartTime;
 			this.log.info(`[FeimaChatEndpoint] LLM response completed: model=${this.model}, elapsed=${elapsedMs}ms`);
 			this.log.debug(`[FeimaChatEndpoint] SSE stream parsing completed successfully`);
 
-			return { type: 'success' };
+			return { type: 'success', usage };
 
 		} catch (error) {
 			const reason = error instanceof Error ? error.message : String(error);
@@ -732,13 +749,14 @@ export class FeimaChatEndpoint {
 		body: ReadableStream<Uint8Array>,
 		callback: FinishedCallback,
 		token: vscode.CancellationToken
-	): Promise<void> {
+	): Promise<ApiUsage | undefined> {
 		const reader = body.getReader();
 		const decoder = new TextDecoder('utf-8');
 		let buffer = '';
 		let fullText = '';
 		let chunkCount = 0;
 		let emitCount = 0;
+		let capturedUsage: ApiUsage | undefined;
 		const toolCallsMap = new Map<number, { id: string; name: string; arguments: string }>();
 		// P1 #28: Remove duplicate deduplication tracking here
 		// Only the wrapper tracks emitted IDs (single source of truth)
@@ -811,6 +829,7 @@ export class FeimaChatEndpoint {
 								type?: string;
 								snapshot?: string;
 								error?: { message?: string; code?: unknown; http_code?: unknown };
+								usage?: ApiUsage;
 								choices?: Array<{
 									delta: {
 										content?: string;
@@ -832,6 +851,11 @@ export class FeimaChatEndpoint {
 									this.log.warn(`[FeimaChatEndpoint] Failed to parse quota_snapshot SSE value: "${chunk.snapshot}"`);
 								}
 								continue;
+							}
+
+							// Capture top-level usage (present in the final chunk of OpenAI-compatible streams)
+							if (chunk.usage) {
+								capturedUsage = chunk.usage;
 							}
 
 							// Check if this is an error response (not a normal choice response)
@@ -933,5 +957,6 @@ export class FeimaChatEndpoint {
 		} finally {
 			reader.releaseLock();
 		}
+		return capturedUsage;
 	}
 }

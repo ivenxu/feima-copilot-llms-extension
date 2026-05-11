@@ -85,4 +85,11 @@ export interface RegionConfig {
 	 * - Global default: https://feimacode.com
 	 */
 	websiteBaseUrl: string;
+
+	/**
+	 * When true, a system message instructing the model to always respond in
+	 * English is prepended to every request. Should be `true` for the global
+	 * market and `false` for the CN market.
+	 */
+	enforceEnglish: boolean;
 }

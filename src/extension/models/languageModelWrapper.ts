@@ -32,7 +32,7 @@ export class FeimaLanguageModelWrapper {
 			tools?: readonly vscode.LanguageModelChatTool[];
 			toolMode?: vscode.LanguageModelChatToolMode;
 		},
-		progress: vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart>,
+		progress: vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart | vscode.LanguageModelDataPart>,
 		token: vscode.CancellationToken
 	): Promise<void> {
 		this.log.info(`[Wrapper] provideLanguageModelResponse called for model: ${endpoint.model}`);
@@ -166,6 +166,21 @@ export class FeimaLanguageModelWrapper {
 				this.log.error(`[Wrapper] Chat request failed: ${result.reason}`);
 				throw new Error(result.reason);
 			}
+		}
+
+		// Emit token usage so VS Code 1.120+ can display the context window widget.
+		// On older VS Code, the LanguageModelDataPart with mime 'usage' is silently ignored.
+		if (result.usage) {
+			progress.report(new vscode.LanguageModelDataPart(
+				new TextEncoder().encode(JSON.stringify({
+					prompt_tokens: result.usage.prompt_tokens,
+					completion_tokens: result.usage.completion_tokens,
+					total_tokens: result.usage.total_tokens,
+					prompt_tokens_details: { cached_tokens: result.usage.prompt_tokens_details?.cached_tokens ?? 0 },
+				})),
+				'usage'
+			));
+			this.log.debug(`[Wrapper] Emitted usage data part: prompt=${result.usage.prompt_tokens} completion=${result.usage.completion_tokens}`);
 		}
 
 		this.log.debug('[Wrapper] Chat request completed successfully');

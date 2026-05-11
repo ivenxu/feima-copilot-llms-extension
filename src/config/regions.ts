@@ -26,6 +26,7 @@ export const cnRegionConfig: RegionConfig = {
 	repositoryUrl: 'https://github.com/feimacode/feima-copilot-llms-extension',
 	promotionUrl: 'https://feimacode.cn/promotion',
 	websiteBaseUrl: 'https://feimacode.cn',
+	enforceEnglish: false,
 };
 
 /**
@@ -48,6 +49,7 @@ export const globalRegionConfig: RegionConfig = {
 	repositoryUrl: 'https://github.com/feimacode/feima-copilot-llms-extension',
 	promotionUrl: 'https://feimacode.com/promotion',
 	websiteBaseUrl: 'https://feimacode.com',
+	enforceEnglish: true,
 };
 
 /**

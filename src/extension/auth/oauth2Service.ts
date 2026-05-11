@@ -121,22 +121,17 @@ export class OAuth2Service {
 	 */
 	async logout(accessToken: string, config: IOAuth2Config): Promise<void> {
 		const logoutEndpoint = `${config.authBaseUrl}/oauth/logout`;
-		try {
-			const response = await fetch(logoutEndpoint, {
-				method: 'POST',
-				headers: {
-					'Authorization': `Bearer ${accessToken}`,
-					'Accept': 'application/json',
-				},
-			});
-			if (!response.ok) {
-				// Non-fatal — local token is cleared regardless
-				const errorText = await response.text();
-				throw new Error(`IDP logout failed: ${response.status} ${errorText}`);
-			}
-		} catch (error) {
-			// Re-throw so caller can log; local sign-out should still proceed
-			throw error;
+		const response = await fetch(logoutEndpoint, {
+			method: 'POST',
+			headers: {
+				'Authorization': `Bearer ${accessToken}`,
+				'Accept': 'application/json',
+			},
+		});
+		if (!response.ok) {
+			// Non-fatal — local token is cleared regardless
+			const errorText = await response.text();
+			throw new Error(`IDP logout failed: ${response.status} ${errorText}`);
 		}
 	}
 

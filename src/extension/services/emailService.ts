@@ -2,8 +2,6 @@
  *  Licensed under the MIT License.
  *--------------------------------------------------------------------------------------------*/
 
-import * as vscode from 'vscode';
-
 /**
  * Email service for managing user email collection.
  */
@@ -15,7 +13,7 @@ export interface EmailUpdateResponse {
 
 export class EmailService {
 	constructor(
-		private readonly _logService: any,
+		private readonly _logService: { error: (message: string, ...args: unknown[]) => void },
 		private readonly _apiBaseUrl: string,
 		private readonly _accessToken: string
 	) {
@@ -37,11 +35,11 @@ export class EmailService {
 			});
 
 			if (!response.ok) {
-				const data = await response.json();
+				const data = (await response.json()) as { detail?: string };
 				throw new Error(data.detail || 'Failed to update email');
 			}
 
-			return await response.json();
+			return (await response.json()) as EmailUpdateResponse;
 		} catch (error) {
 			this._logService.error('[EmailService] Failed to update email:', error);
 			throw error;
