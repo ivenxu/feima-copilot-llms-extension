@@ -128,6 +128,9 @@ A: No. Feima Code Models works globally without any regional restrictions or VPN
 **Q: What's the response latency?**
 A: We use edge deployments for low latency worldwide. Most responses complete within 2-5 seconds.
 
+**Q: Where are your servers located?**
+A: Our servers are deployed in **Singapore**, and most LLM providers we use also have infrastructure in the same region. This ensures your data stays within Southeast Asia and is not transferred to China, addressing common data residency concerns.
+
 ### VS Code Compatibility
 
 **Q: Which VS Code versions are supported?**
@@ -143,6 +146,9 @@ A: No. Your code is only sent to the AI model for processing and is never stored
 
 **Q: Are conversation histories saved?**
 A: Conversations are stored locally on your device and never uploaded to our servers.
+
+**Q: Where is my data processed?**
+A: All requests are routed through our Singapore servers, and most LLM providers we work with also operate in Singapore. Your code and data remain in Southeast Asia, ensuring no transfer to China.
 
 
 ## 📚 Documentation

@@ -19,11 +19,11 @@ A VS Code extension that adds alternative AI model support to GitHub Copilot Cha
 
 ## Overview
 
-Feima Copilot is a VS Code extension that adds alternative AI model support to GitHub Copilot Chat. Access top-tier models like Claude, Gemini, GPT-4o, DeepSeek, Qwen, and more — cost-effective alternatives with diverse model selection and benchmark-parity performance.
+Feima Copilot is a VS Code extension that adds alternative AI model support to GitHub Copilot Chat. Access top-tier models like DeepSeek, Qwen, and more — cost-effective alternatives with diverse model selection and benchmark-parity performance.
 
 ### Key Features
 
-- � **Diverse Model Selection**: Claude, Gemini, GPT-4o, Qwen3, DeepSeek V3.2, GLM-5, MiniMax M2.5, Kimi K2.5
+- � **Diverse Model Selection**: Qwen3, DeepSeek V3.2, GLM-5, MiniMax M2.5, Kimi K2.5
 - 💬 **Seamless Integration**: Works directly in GitHub Copilot Chat, no interface switching needed
 - 💰 **Pay-per-Request**: Request-based pricing, cost-controllable, no monthly subscriptions
 - 🔒 **Secure & Reliable**: OAuth2 authentication, code never leaves VS Code
