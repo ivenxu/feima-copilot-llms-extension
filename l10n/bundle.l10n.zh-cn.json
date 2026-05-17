@@ -58,5 +58,17 @@
 	"Your email is needed for account notifications and support.": "您的邮箱用于接收账户通知和提供客户支持。",
 	"Please enter a valid email address": "请输入有效的邮箱地址",
 	"Email saved successfully!": "邮箱已成功保存！",
-	"Failed to save email. You can add it later in your profile.": "保存邮箱失败。您可以稍后在个人资料中添加。"
+	"Failed to save email. You can add it later in your profile.": "保存邮箱失败。您可以稍后在个人资料中添加。",
+	"Please sign in to Feima to purchase credits.": "请先登录 Feima 账号以购买积分。",
+	"Sign In": "登录",
+	"Loading credit packs…": "加载积分套餐中……",
+	"No credit packs are currently available.": "当前暂无可用的积分套餐。",
+	"Select a credit pack to purchase": "选择要购买的积分套餐",
+	"{0} credits": "{0} 积分",
+	"Preparing checkout…": "正在准备结账……",
+	"Failed to get checkout URL: {0}": "获取结账链接失败：{0}",
+	"Failed to fetch credit packs: {0}": "获取积分套餐失败：{0}",
+	"Failed to open checkout: {0}": "打开结账页面失败：{0}",
+	"Credits added! Your new balance is {0} requests.": "积分已添加！您的新余额为 {0} 次请求。",
+	"Your requests have been added to your account!": "您的请求数已成功添加到账户！"
 }

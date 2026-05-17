@@ -16,3 +16,10 @@ export const FEIMA_AUTH_SIGNED_IN_KEY = 'github.copilot.feimaAuth.signedIn';
  * Reset to `false` on a successful request.
  */
 export const FEIMA_INSUFFICIENT_BALANCE_KEY = 'feima.insufficientBalance';
+
+/**
+ * Set to `true` for global market builds that support the purchase/credit-buying feature.
+ * Set to `false` for CN market builds where purchase integration is not available.
+ * Drives `when` clause expressions in package.json (e.g., hiding feima.buyCredits).
+ */
+export const FEIMA_IS_GLOBAL_MARKET_KEY = 'feima.isGlobalMarket';

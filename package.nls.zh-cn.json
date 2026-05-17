@@ -41,6 +41,9 @@
 	
 	"command.showAccount.title": "查看账号",
 	"command.showAccount.category": "飞码扣(Feima)",
+
+	"command.buyCredits.title": "购买积分",
+	"command.buyCredits.category": "飞码扣(Feima)",
 	
 	"settings.region.title": "区域设置",
 	"settings.region.description": "当前扩展运行区域（不可修改）",

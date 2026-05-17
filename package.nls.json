@@ -33,6 +33,9 @@
 	
 	"command.showAccount.title": "View Account",
 	"command.showAccount.category": "Feima",
+
+	"command.buyCredits.title": "Buy Credits",
+	"command.buyCredits.category": "Feima",
 	
 	"settings.region.title": "Region Setting",
 	"settings.region.description": "Current extension region (immutable)",

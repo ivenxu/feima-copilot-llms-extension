@@ -7,6 +7,7 @@ import * as vscode from 'vscode';
 import { FeimaAuthenticationService } from '../platform/authentication/vscode/feimaAuthenticationService';
 import { ILogger } from '../platform/log/common/logService';
 import { getResolvedConfig } from '../../config/configService';
+import { FEIMA_REGION } from '../../config/regions';
 
 // ============= Data Interfaces =============
 
@@ -398,6 +399,9 @@ export async function showAccountDialog(
 						panel.dispose();
 					}
 					break;
+				case 'buyCredits':
+					await vscode.commands.executeCommand('feima.buyCredits');
+					break;
 			}
 		},
 		undefined,
@@ -419,7 +423,8 @@ export async function showAccountDialog(
 		referralStats,
 		transactions,
 		apiCalls,
-		profileUrl: `${getResolvedConfig().websiteBaseUrl || 'https://feimacode.cn'}/profile`
+		profileUrl: `${getResolvedConfig().websiteBaseUrl || 'https://feimacode.cn'}/profile`,
+		isGlobalMarket: FEIMA_REGION === 'global',
 	});
 
 	logger.info(`[AccountDialog] Dialog shown for user: ${userName}`);
@@ -443,6 +448,7 @@ function getAccountHtml(data: {
 	transactions: Transaction[];
 	apiCalls: ApiCall[];
 	profileUrl: string;
+	isGlobalMarket: boolean;
 }): string {
 	const formatNumber = (n: number) => n.toLocaleString();
 	const formatDate = (dateStr: string) => {
@@ -810,6 +816,7 @@ function getAccountHtml(data: {
 
 	<div class="actions">
 		<button class="primary" onclick="viewProfile()">${t('View Profile')}</button>
+		${data.isGlobalMarket ? `<button class="primary" onclick="buyCredits()">💳 ${t('Buy Credits')}</button>` : ''}
 		<button class="secondary" onclick="signOut()">${t('Sign Out')}</button>
 	</div>
 
@@ -826,6 +833,9 @@ function getAccountHtml(data: {
 		}
 		function viewMore(hash) {
 			vscode.postMessage({ command: 'viewMore', url: profileUrl + hash });
+		}
+		function buyCredits() {
+			vscode.postMessage({ command: 'buyCredits' });
 		}
 		function signOut() {
 			vscode.postMessage({ command: 'signOut' });
