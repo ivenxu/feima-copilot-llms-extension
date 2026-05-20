@@ -173,7 +173,7 @@ async function fetchUserProfile(authService: FeimaAuthenticationService, logger?
 			return null;
 		}
 		const apiBase = getResolvedConfig().apiBaseUrl || '';
-		const url = `${apiBase}/v1/user/me`;
+		const url = `${apiBase}/user/me`;
 		logger?.debug(`[AccountDialog] Fetching user profile from: ${url}`);
 		
 		const response = await fetch(url, {
@@ -399,6 +399,7 @@ export async function showAccountDialog(
 						panel.dispose();
 					}
 					break;
+				}
 				case 'buyCredits':
 					await vscode.commands.executeCommand('feima.buyCredits');
 					break;

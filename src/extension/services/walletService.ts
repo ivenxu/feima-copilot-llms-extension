@@ -52,7 +52,7 @@ export class WalletService implements vscode.Disposable {
       }
 
       const config = FeimaConfigService.getInstance().getConfig();
-      const url = `${config.apiBaseUrl}/v1/wallet/balance`;
+      const url = `${config.apiBaseUrl}/wallet/balance`;
 
       const response = await fetch(url, {
         headers: { 'Authorization': `Bearer ${session.accessToken}` },
