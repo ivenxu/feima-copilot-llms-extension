@@ -98,7 +98,7 @@ description: 为飞码扣设置 OAuth2 认证
 |------|-------|
 | **client_id** | `vscode-feima-client` |
 | **client_secret** | 无（公共客户端） |
-| **redirect_uri** | `vscode://feima.cn-model-for-copilot/oauth/callback` |
+| **redirect_uri** | `vscode://feima.copilot-cn-models/oauth/callback` |
 | **grant_types** | `authorization_code`、`refresh_token` |
 | **scopes** | `openid`、`profile`、`email` |
 | **auth method** | PKCE（Proof Key for Code Exchange） |

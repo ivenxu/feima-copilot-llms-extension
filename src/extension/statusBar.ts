@@ -6,6 +6,7 @@
 import * as vscode from 'vscode';
 import { ILogger } from './platform/log/common/logService';
 import { getQuotaService, QuotaSnapshot } from './services/quotaService';
+import { FEIMA_REGION } from '../config/regions';
 
 let statusBarItem: vscode.StatusBarItem | undefined;
 let logger: ILogger | undefined;
@@ -128,6 +129,9 @@ function buildTooltip(quota: QuotaSnapshot | null, userName: string | null): vsc
 	}
 
 	md.appendMarkdown('[View Account](command:feima.showAccount)');
+	if (FEIMA_REGION === 'global') {
+		md.appendMarkdown(' | [Buy Credits](command:feima.buyCredits)');
+	}
 	return md;
 }
 

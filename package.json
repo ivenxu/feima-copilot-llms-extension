@@ -12,12 +12,12 @@
   "icon": "assets/ext-icon3.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/feimacode/cn-model-for-copilot"
+    "url": "https://github.com/feimacode/feima-copilot-llms-extension"
   },
   "bugs": {
-    "url": "https://github.com/feimacode/cn-model-for-copilot/issues"
+    "url": "https://github.com/feimacode/feima-copilot-llms-extension/issues"
   },
-  "homepage": "https://github.com/feimacode/cn-model-for-copilot#readme",
+  "homepage": "https://github.com/feimacode/feima-copilot-llms-extension#readme",
   "keywords": [
     "Copilot",
     "飞码扣",

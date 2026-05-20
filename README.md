@@ -1,137 +1,139 @@
-# 飞码扣 (Feima Copilot)
+# Feima Copilot
 
-> **加速创意落地** - Accelerating intent into execution
+> **Accelerating Intent into Execution**
 
-为 GitHub Copilot 提供中国 AI 模型支持的 VS Code 扩展
+A VS Code extension that adds alternative AI model support to GitHub Copilot Chat
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-## 快速链接
+**English Version** | **[中文版](README-CN.md)**
 
-- 🛒 [VS Code 插件市场](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models) | [下载飞码扣](https://feimacode.cn/download)
-- 📖 [英文文档](https://ivenxu.github.io/feima-copilot-llms-extension/) | [中文文档](https://docs.feimacode.cn/)
-- 🚀 [快速入门](https://ivenxu.github.io/feima-copilot-llms-extension/guides/quickstart/) | [快速入门（中文）](https://docs.feimacode.cn/guides/quickstart/)
-- 📦 [安装指南](https://ivenxu.github.io/feima-copilot-llms-extension/guides/installation/) | [安装指南（中文）](https://docs.feimacode.cn/guides/installation/)
-- 🔧 [配置选项](https://ivenxu.github.io/feima-copilot-llms-extension/guides/configuration/) | [配置选项（中文）](https://docs.feimacode.cn/guides/configuration/)
-- 💻 [开发指南](https://ivenxu.github.io/feima-copilot-llms-extension/dev/setup/) | [开发指南（中文）](https://docs.feimacode.cn/dev/setup/)
+## Quick Links
 
-## 简介
+- 🛒 [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=feima.copilot-cn-models) | [Download Feima Copilot](https://feimacode.cn/download)
+- 📖 [English Docs](https://ivenxu.github.io/feima-copilot-llms-extension/) | [Chinese Docs](https://docs.feimacode.cn/)
+- 🚀 [Quick Start](https://ivenxu.github.io/feima-copilot-llms-extension/guides/quickstart/) | [快速入门](https://docs.feimacode.cn/guides/quickstart/)
+- 📦 [Installation Guide](https://ivenxu.github.io/feima-copilot-llms-extension/guides/installation/) | [安装指南](https://docs.feimacode.cn/guides/installation/)
+- 🔧 [Configuration Options](https://ivenxu.github.io/feima-copilot-llms-extension/guides/configuration/) | [配置选项](https://docs.feimacode.cn/guides/configuration/)
+- 💻 [Development Guide](https://ivenxu.github.io/feima-copilot-llms-extension/dev/setup/) | [开发指南](https://docs.feimacode.cn/dev/setup/)
 
-飞码扣是 VS Code 的扩展插件，为 GitHub Copilot Chat 添加中国 AI 模型支持。使用 DeepSeek、通义千问、智谱GLM、MiniMax、Moonshot Kimi 等国产顶级大模型，更懂中文，更适合中国开发者。
+## Overview
 
-### 核心特点
+Feima Copilot is a VS Code extension that adds alternative AI model support to GitHub Copilot Chat. Access top-tier models like DeepSeek, Qwen, and more — cost-effective alternatives with diverse model selection and benchmark-parity performance.
 
-- 🇨🇳 **国产顶级模型**: Qwen3 系列、DeepSeek V3.2、GLM-5、MiniMax M2.5、Kimi K2.5
-- 💬 **无缝集成**: 直接在 GitHub Copilot Chat 中使用，无需切换界面
-- 💰 **按次计费**: 请求数付费，成本可控，告别按月订阅
-- 🔒 **安全可靠**: OAuth2 认证，代码不离开 VS Code
-- 🧠 **深度思考**: 支持思维链推理，复杂问题迎刃而解
+### Key Features
 
-### 为什么选择飞码扣？
+- � **Diverse Model Selection**: Qwen3, DeepSeek V3.2, GLM-5, MiniMax M2.5, Kimi K2.5
+- 💬 **Seamless Integration**: Works directly in GitHub Copilot Chat, no interface switching needed
+- 💰 **Pay-per-Request**: Request-based pricing, cost-controllable, no monthly subscriptions
+- 🔒 **Secure & Reliable**: OAuth2 authentication, code never leaves VS Code
+- 🧠 **Chain-of-Thought**: Full support for reasoning models, solving complex problems effortlessly
 
-| 对比项 | GitHub Copilot 原生 | 飞码扣增强版 |
-|--------|-------------------|-------------|
-| 中文理解 | ✅ 良好 | 🔥 **优秀**（国产模型） |
-| 模型选择 | 3-4 个 | 🎉 **10+ 个模型** |
-| 思维链推理 | ⚠️ 有限 | ✅ **全面支持** |
-| 付费方式 | 按月订阅 | 💡 **按次付费** |
+### Why Choose Feima Copilot?
 
-### 支持的模型
+| Feature | GitHub Copilot Native | Feima Copilot Enhanced |
+|---------|----------------------|------------------------|
+| Model Selection | 3-4 models | 🎉 **10+ models** |
+| Cost Control | Fixed subscription | 💡 **Pay-per-request** |
+| Chain-of-Thought | ⚠️ Limited | ✅ **Full Support** |
+| Pricing | Monthly subscription | 🔥 **Cost-effective** |
 
-| 模型 | 提供商 | 特点 |
-|------|--------|------|
-| Qwen3 Max | 阿里云 | 256K 上下文，思维链推理 |
-| Qwen3 Coder Plus | 阿里云 | 100万 token 上下文，代码专精 |
-| Qwen3.5 Plus | 阿里云 | 100万 token 上下文，80K 思维链 |
-| DeepSeek V3.2 | DeepSeek | 深度思考，稀疏注意力 |
-| GLM-5 | 智谱AI | 200K 上下文，思维链推理 |
-| GLM-4.7 | 智谱AI | 200K 上下文，高级推理 |
-| MiniMax M2.5 | MiniMax | 200K 上下文，思维链推理 |
-| Kimi K2.5 | Moonshot | 256K 上下文，思维链推理 |
+### Supported Models
 
-## 开发状态
+| Model | Provider | Features |
+|-------|----------|----------|
+| Qwen3 Max | Alibaba Cloud | 256K context, chain-of-thought reasoning |
+| Qwen3 Coder Plus | Alibaba Cloud | 1M token context, code-specialized |
+| Qwen3.5 Plus | Alibaba Cloud | 1M token context, 80K chain-of-thought |
+| DeepSeek V3.2 | DeepSeek | Deep thinking, sparse attention |
+| GLM-5 | Zhipu AI | 200K context, chain-of-thought reasoning |
+| GLM-4.7 | Zhipu AI | 200K context, advanced reasoning |
+| MiniMax M2.5 | MiniMax | 200K context, chain-of-thought reasoning |
+| Kimi K2.5 | Moonshot | 256K context, chain-of-thought reasoning |
 
-**当前版本**: v0.1.0-alpha（开发中）
+## Development Status
 
-我们正在实现核心功能：
-- ✅ OAuth2 认证系统
-- ✅ 语言模型提供器
-- 🚧 与 GitHub Copilot Chat 集成测试
-- ⏸️ 配额管理（待验证后实现）
+**Current Version**: v0.1.0-alpha (In Development)
 
-## 发布流程
+We are implementing core features:
+- ✅ OAuth2 authentication system
+- ✅ Language model provider
+- 🚧 GitHub Copilot Chat integration testing
+- ⏸️ Quota management (to be implemented after validation)
 
-### 自动发布（GitHub Release）
+## Release Process
 
-推送版本标签即可触发自动构建和发布：
+### Automated Release (GitHub Release)
+
+Push version tags to trigger automatic build and release:
 
 ```bash
-# 更新 package.json 版本号
-npm version patch  # 或 minor / major
+# Update package.json version
+npm version patch  # or minor / major
 
-# 推送标签
+# Push tags
 git push --follow-tags
 ```
 
-工作流会自动：
-1. 构建两个 VSIX 变体（CN + Global）
-2. 生成 SHA-256 校验和
-3. 创建 GitHub Release 并附带所有产物
+The workflow automatically:
+1. Builds two VSIX variants (CN + Global)
+2. Generates SHA-256 checksums
+3. Creates GitHub Release with all artifacts
 
-### 手动发布到 VS Code Marketplace
+### Manual Publish to VS Code Marketplace
 
-1. 确保 GitHub Release 已创建
-2. 在 GitHub Actions 中触发 `publish-marketplace.yml` 工作流
-3. 输入版本号（不带 v 前缀）
-4. 输入 "PUBLISH" 确认发布
-5. 等待发布完成
+1. Ensure GitHub Release is created
+2. Trigger `publish-marketplace.yml` workflow in GitHub Actions
+3. Enter version number (without v prefix)
+4. Enter "PUBLISH" to confirm
+5. Wait for publishing to complete
 
-**前置条件**：
-- `VSCE_PAT` secret 已配置（Personal Access Token）
-- 版本号必须与 GitHub Release 匹配
-- 预发布版本（-alpha, -beta）无法发布到市场
+**Prerequisites**:
+- `VSCE_PAT` secret configured (Personal Access Token)
+- Version must match GitHub Release
+- Pre-release versions (-alpha, -beta) cannot be published to marketplace
 
 
-## 贡献
+## Contributing
 
-我们欢迎社区贡献！请查看[完整文档](https://docs.feimacode.cn/dev/setup/)了解如何参与开发。
+We welcome community contributions! Check out the [full documentation](https://docs.feimacode.com/dev/setup/) to learn how to participate in development.
 
 ```bash
-# 克隆仓库
+# Clone repository
 git clone https://github.com/feimacode/feima-copilot-llms-extension.git
 cd feima-copilot-llms-extension
 
-# 安装依赖
+# Install dependencies
 npm install
 
-# 编译
+# Compile
 npm run ext:compile
 
-# 在 VS Code 中打开
+# Open in VS Code
 code .
 
-# 按 F5 启动调试
+# Press F5 to start debugging
 ```
 
-## 文档
+## Documentation
 
-完整的文档请访问：
-- [中文文档](https://docs.feimacode.cn/)
-- [英文文档](https://ivenxu.github.io/feima-copilot-llms-extension/)
+For complete documentation, visit:
+- [Chinese Documentation](https://docs.feimacode.cn/)
+- [English Documentation](https://ivenxu.github.io/feima-copilot-llms-extension/)
 
-## 支持与联系
+## Support & Contact
 
-- 🐛 [报告问题](https://github.com/feimacode/feima-copilot-llms-extension/issues)
-- 💬 [功能建议](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
-- 📧 [邮件支持](mailto:support@feimacode.cn)
+- 🐛 [Report Issues](https://github.com/feimacode/feima-copilot-llms-extension/issues)
+- 💬 [Feature Requests](https://github.com/feimacode/feima-copilot-llms-extension/discussions)
+- 📧 [Email Support](mailto:support@feimacode.com)
 
-## 开源协议
+## License
 
-MIT License - 详见 [LICENSE](LICENSE) 文件
+MIT License - See [LICENSE](LICENSE) file for details
 
 ---
 
 <p align="center">
-  <strong>加速创意落地 - Accelerating intent into execution</strong><br>
-  Made with ❤️ by <a href="https://feimacode.cn">Feimacode Team</a>
+  <strong>Accelerating Intent into Execution - 加速创意落地</strong><br>
+  Made with ❤️ by <a href="https://feimacode.com">Feimacode Team</a>
 </p>

@@ -2,13 +2,17 @@ import * as vscode from 'vscode';
 import { FeimaAuthProvider } from './auth/feimaAuthProvider';
 import { FeimaAuthenticationService } from './platform/authentication/vscode/feimaAuthenticationService';
 import { registerAuthCommands } from './commands/authCommands';
+import { registerBuyCreditsCommand } from './commands/buyCredits';
+import { WalletService } from './services/walletService';
+import { showCreditsAdded } from './services/notificationService';
 import { FeimaLanguageModelProvider } from './models/feimaLanguageModelProvider';
 import { ModelCatalogService } from './models/modelCatalog';
 import { LogServiceImpl } from './platform/log/common/logService';
 import { VSCodeLogTarget, ConsoleLogTarget } from './platform/log/vscode/logService';
 import { LogLevel } from './platform/log/common/logService';
 import { FeimaConfigService } from '../config/configService';
-import { FEIMA_AUTH_SIGNED_IN_KEY } from './contextKeys';
+import { FEIMA_AUTH_SIGNED_IN_KEY, FEIMA_IS_GLOBAL_MARKET_KEY } from './contextKeys';
+import { FEIMA_REGION } from '../config/regions';
 import { initializeStatusBar, resetStatusBar } from './statusBar';
 import { getQuotaService } from './services/quotaService';
 
@@ -34,7 +38,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 	await vscode.commands.executeCommand('setContext', FEIMA_AUTH_SIGNED_IN_KEY, false);
 
 	try {
-		// 0. Initialize configuration service with VS Code settings integration
+		// Set market context key — baked in at build time, never changes at runtime
+		await vscode.commands.executeCommand('setContext', FEIMA_IS_GLOBAL_MARKET_KEY, FEIMA_REGION === 'global');
 		const configService = FeimaConfigService.getInstance();
 		context.subscriptions.push(configService);
 		const config = configService.getConfig();
@@ -60,11 +65,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 				{ supportsMultipleAccounts: false }
 			)
 		);
-		
-		// Register as URI handler (for OAuth callbacks)
-		context.subscriptions.push(
-			vscode.window.registerUriHandler(authProvider)
-		);
 		logService.info('[Init] ✅ Authentication service and provider registered');
 
 		// 2. Setup authentication menu integration
@@ -73,11 +73,45 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
 		// 3. Register commands
 		registerAuthCommands(context, authService, logService);
+		if (FEIMA_REGION === 'global') {
+			registerBuyCreditsCommand(context, authService, logService);
+		}
 		logService.info('[Init] ✅ Commands registered');
 
 		// 3.5 Initialize status bar
 		initializeStatusBar(context, logService);
 		logService.info('[Init] ✅ Status bar initialized');
+
+		// 3.6 Wallet service — global market only (purchase integration not available in CN)
+		// Captured as `let` so the combined URI handler below can reference it.
+		let walletService: WalletService | undefined;
+		if (FEIMA_REGION === 'global') {
+			const wallet = new WalletService(authService, logService);
+			walletService = wallet;
+			context.subscriptions.push(wallet);
+			context.subscriptions.push(
+				wallet.onBalanceChanged(balance => showCreditsAdded(balance))
+			);
+			logService.info('[Init] ✅ Wallet service registered (callback + manual refresh only)');
+		} else {
+			logService.info('[Init] ⏭️  Wallet service skipped (CN market)');
+		}
+
+		// Register combined URI handler: dispatches purchase-success URIs to the wallet
+		// service and delegates all other URIs (OAuth callbacks) to the auth provider.
+		context.subscriptions.push(
+			vscode.window.registerUriHandler({
+				handleUri: async (uri: vscode.Uri): Promise<void> => {
+					if (uri.path === '/purchase-success' && walletService !== undefined) {
+						logService.info('[URI] Purchase success callback received');
+						await walletService.refreshNow();
+					} else {
+						await authProvider.handleUri(uri);
+					}
+				},
+			})
+		);
+		logService.info('[Init] ✅ URI handler registered (auth + purchase-success)');
 
 		// 4. Create shared model catalog service
 		const catalogLog = logService.createSubLogger('ModelCatalog');

@@ -13,7 +13,7 @@ Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with alte
 
 **Feima Copilot** is a VS Code extension that provides:
 
-- � **Diverse Model Selection**: Direct access to Claude, Gemini, GPT-4o, Qwen3, DeepSeek V3.2, GLM-5, MiniMax M2.5, Kimi K2.5 and more
+- � **Diverse Model Selection**: Direct access to Qwen3, DeepSeek V3.2, GLM-5, MiniMax M2.5, Kimi K2.5 and more
 - 💬 **Seamless Integration**: Works directly within GitHub Copilot Chat without switching interfaces
 - 💰 **Pay-Per-Use**: Pay only for requests you make, not monthly subscriptions
 - 🔒 **Secure**: OAuth2 authentication with code that never leaves VS Code
@@ -48,9 +48,6 @@ Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with alte
 | GLM-4.7 | Zhipu AI | 200K | Advanced reasoning |
 | MiniMax M2.5 | MiniMax | 200K | Thinking chain |
 | Kimi K2.5 | Moonshot | 256K | Thinking chain |
-| GPT-4o | OpenAI | Complex logic, architecture design |
-| Claude 3.5 Sonnet | Anthropic | Code review, algorithm optimization |
-| Gemini 1.5 Pro | Google | Large codebase understanding |
 
 ## Why Feima Copilot?
 
@@ -60,6 +57,15 @@ Feima Copilot is a VS Code extension that enhances GitHub Copilot Chat with alte
 | Cost Control | Fixed subscription | 💡 **Pay-per-request** |
 | International Models | ⚠️ Limited access | ✅ **Full access** |
 | Pricing | Monthly subscription | 🔥 **Cost-effective** |
+| Data Residency | US/EU only | ✅ **Singapore-based** |
+
+### Data Residency & Privacy
+
+Our servers are located in **Singapore**, and most LLM providers we work with also operate in the same region. This ensures:
+
+- ✅ Your code and data stay within Southeast Asia
+- ✅ No data transfer to China
+- ✅ Compliance with regional data protection requirements
 
 ## Development Status
 
