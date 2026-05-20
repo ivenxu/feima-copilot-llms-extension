@@ -66,6 +66,13 @@ export interface ResolvedConfig {
 	 * Default: 300 (5 minutes)
 	 */
 	requestTimeout: number;
+
+	/**
+	 * When true, a system message is prepended to every LLM request instructing
+	 * the model to always respond in English. Sourced from the region config;
+	 * `true` for global, `false` for CN.
+	 */
+	enforceEnglish: boolean;
 }
 
 /**
@@ -148,6 +155,7 @@ export class FeimaConfigService implements vscode.Disposable {
 			promotionUrl,
 			websiteBaseUrl,
 			requestTimeout,
+			enforceEnglish: activeRegionConfig.enforceEnglish,
 		};
 
 		return this.cachedConfig;

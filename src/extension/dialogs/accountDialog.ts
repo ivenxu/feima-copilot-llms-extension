@@ -388,7 +388,7 @@ export async function showAccountDialog(
 						vscode.env.openExternal(vscode.Uri.parse(message.url));
 					}
 					break;
-				case 'signOut':
+				case 'signOut': {
 					const confirm = await vscode.window.showWarningMessage(
 						vscode.l10n.t('Are you sure you want to sign out of Feima?'),
 						{ modal: true },
@@ -451,7 +451,7 @@ function getAccountHtml(data: {
 	isGlobalMarket: boolean;
 }): string {
 	const formatNumber = (n: number) => n.toLocaleString();
-	const formatDate = (dateStr: string) => {
+	const _formatDate = (dateStr: string) => {
 		try {
 			const date = new Date(dateStr);
 			return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

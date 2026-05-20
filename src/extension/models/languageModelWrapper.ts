@@ -11,6 +11,17 @@ import { getConfigService } from '../../config/configService';
 import { FEIMA_INSUFFICIENT_BALANCE_KEY } from '../contextKeys';
 
 /**
+ * Returns true when the running VS Code version is at least `major.minor`.
+ * Used to guard APIs that were introduced or fixed in a specific release.
+ */
+function vscodeAtLeast(major: number, minor: number): boolean {
+	const parts = vscode.version.split('.');
+	const vMajor = parseInt(parts[0] ?? '0', 10);
+	const vMinor = parseInt(parts[1] ?? '0', 10);
+	return vMajor > major || (vMajor === major && vMinor >= minor);
+}
+
+/**
  * Wrapper class that handles VS Code language model API integration.
  * Delegates endpoint concerns to FeimaChatEndpoint.
  * 
@@ -32,7 +43,7 @@ export class FeimaLanguageModelWrapper {
 			tools?: readonly vscode.LanguageModelChatTool[];
 			toolMode?: vscode.LanguageModelChatToolMode;
 		},
-		progress: vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart>,
+		progress: vscode.Progress<vscode.LanguageModelTextPart | vscode.LanguageModelToolCallPart | vscode.LanguageModelThinkingPart | vscode.LanguageModelDataPart>,
 		token: vscode.CancellationToken
 	): Promise<void> {
 		this.log.info(`[Wrapper] provideLanguageModelResponse called for model: ${endpoint.model}`);
@@ -166,6 +177,23 @@ export class FeimaLanguageModelWrapper {
 				this.log.error(`[Wrapper] Chat request failed: ${result.reason}`);
 				throw new Error(result.reason);
 			}
+		}
+
+		// Emit token usage so VS Code 1.120+ can display the context window widget.
+		// On VS Code < 1.120, the host does not decode the 'usage' data part and instead
+		// leaks it into conversation history as '[object Object]', corrupting subsequent
+		// prompts. Guard with an explicit version check.
+		if (result.usage && vscodeAtLeast(1, 120)) {
+			progress.report(new vscode.LanguageModelDataPart(
+				new TextEncoder().encode(JSON.stringify({
+					prompt_tokens: result.usage.prompt_tokens,
+					completion_tokens: result.usage.completion_tokens,
+					total_tokens: result.usage.total_tokens,
+					prompt_tokens_details: { cached_tokens: result.usage.prompt_tokens_details?.cached_tokens ?? 0 },
+				})),
+				'usage'
+			));
+			this.log.debug(`[Wrapper] Emitted usage data part: prompt=${result.usage.prompt_tokens} completion=${result.usage.completion_tokens}`);
 		}
 
 		this.log.debug('[Wrapper] Chat request completed successfully');

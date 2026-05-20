@@ -6,7 +6,6 @@ import { registerBuyCreditsCommand } from './commands/buyCredits';
 import { WalletService } from './services/walletService';
 import { showCreditsAdded } from './services/notificationService';
 import { FeimaLanguageModelProvider } from './models/feimaLanguageModelProvider';
-import { registerInlineCompletionProvider } from './completion/feimaInlineCompletionProvider';
 import { ModelCatalogService } from './models/modelCatalog';
 import { LogServiceImpl } from './platform/log/common/logService';
 import { VSCodeLogTarget, ConsoleLogTarget } from './platform/log/vscode/logService';
